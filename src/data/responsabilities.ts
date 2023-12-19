@@ -1,0 +1,51 @@
+import { TResponsabilities } from '@/types/TResponsabilities'
+export const responsabilities: TResponsabilities[] = [
+  {
+    id: 4,
+    name: 'Professor',
+    description: 'Professor de classe da escola dominical.',
+    tailwindThemeColor: 'bg-choices-black',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    id: 1,
+    name: 'Louvor',
+    description: 'Integrantes do grupo de louvor',
+    tailwindThemeColor: 'bg-choices-white',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    id: 3,
+    name: 'Administração',
+    description: 'Pessoas que fazem parte da administração',
+    tailwindThemeColor: 'bg-choices-blue',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    id: 5,
+    name: 'Recepção',
+    description: 'Responsável pela recepção nos cultos.',
+    tailwindThemeColor: 'bg-choices-red',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    id: 6,
+    name: 'Caverna',
+    description: 'Membros responsáveis pelas mídias',
+    tailwindThemeColor: 'bg-choices-green',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    id: 7,
+    name: 'Tecnologia',
+    description: 'Membros responsáveis por trabalhos relacionados a TI.',
+    tailwindThemeColor: 'bg-choices-gold',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+]
