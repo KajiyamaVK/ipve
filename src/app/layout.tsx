@@ -6,7 +6,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="pt-BR">
       <GeneralContextProvider>
-        <body>{children}</body>
+        <body suppressHydrationWarning={true}>{children}</body>
       </GeneralContextProvider>
     </html>
   )
