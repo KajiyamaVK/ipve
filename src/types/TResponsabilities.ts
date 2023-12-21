@@ -1,5 +1,5 @@
 export type TResponsabilities = {
-  id: number
+  id: string
   name: string
   description: string
   tailwindThemeColor: string
