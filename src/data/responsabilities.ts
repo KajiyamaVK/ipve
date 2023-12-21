@@ -1,7 +1,7 @@
 import { TResponsabilities } from '@/types/TResponsabilities'
 export const responsabilities: TResponsabilities[] = [
   {
-    id: 4,
+    id: '4',
     name: 'Professor',
     description: 'Professor de classe da escola dominical.',
     tailwindThemeColor: 'bg-choices-black',
@@ -9,7 +9,7 @@ export const responsabilities: TResponsabilities[] = [
     updatedAt: new Date(),
   },
   {
-    id: 1,
+    id: '1',
     name: 'Louvor',
     description: 'Integrantes do grupo de louvor',
     tailwindThemeColor: 'bg-choices-white',
@@ -17,7 +17,7 @@ export const responsabilities: TResponsabilities[] = [
     updatedAt: new Date(),
   },
   {
-    id: 3,
+    id: '3',
     name: 'Administração',
     description: 'Pessoas que fazem parte da administração',
     tailwindThemeColor: 'bg-choices-blue',
@@ -25,7 +25,7 @@ export const responsabilities: TResponsabilities[] = [
     updatedAt: new Date(),
   },
   {
-    id: 5,
+    id: '5',
     name: 'Recepção',
     description: 'Responsável pela recepção nos cultos.',
     tailwindThemeColor: 'bg-choices-red',
@@ -33,7 +33,7 @@ export const responsabilities: TResponsabilities[] = [
     updatedAt: new Date(),
   },
   {
-    id: 6,
+    id: '6',
     name: 'Caverna',
     description: 'Membros responsáveis pelas mídias',
     tailwindThemeColor: 'bg-choices-green',
@@ -41,7 +41,7 @@ export const responsabilities: TResponsabilities[] = [
     updatedAt: new Date(),
   },
   {
-    id: 7,
+    id: '7',
     name: 'Tecnologia',
     description: 'Membros responsáveis por trabalhos relacionados a TI.',
     tailwindThemeColor: 'bg-choices-gold',
