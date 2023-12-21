@@ -6,7 +6,11 @@ export default function responsabilitiesGrid() {
   return (
     <center>
       <div className="m-10">
-        <DataTable columns={columns} data={responsabilities} />
+        <DataTable
+          columns={columns}
+          data={responsabilities}
+          formType="dialog"
+        />
       </div>
     </center>
   )

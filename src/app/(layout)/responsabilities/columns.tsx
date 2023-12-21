@@ -1,8 +1,6 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
 import { TResponsabilities } from '@/types/TResponsabilities'
-import { CaretUpDown, CaretDown, CaretUp } from '@phosphor-icons/react'
 import { ColumnDef } from '@tanstack/react-table'
 import { SortedGridHeader } from '@/components/ui/sortedGridHeader'
 
