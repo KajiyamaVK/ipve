@@ -1,9 +1,7 @@
-import { Input } from '@/components/ui/input'
-
 export default function people() {
   return (
     <div>
-      <Input placeholder="Digite para buscar" />
+      <h1>People</h1>
     </div>
   )
 }

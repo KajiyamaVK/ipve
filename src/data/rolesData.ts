@@ -1,5 +1,5 @@
-import { TResponsabilities } from '@/types/TResponsabilities'
-export const responsabilities: TResponsabilities[] = [
+import { TRoles } from '@/types/TRoles'
+export const rolesData: TRoles[] = [
   {
     id: '4',
     name: 'Professor',

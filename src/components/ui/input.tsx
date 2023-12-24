@@ -1,28 +1,18 @@
-'use client'
+import * as React from 'react'
 
-import { forwardRef, useState } from 'react'
+import { cn } from '@/lib/utils'
 
 export type InputProps = React.InputHTMLAttributes<HTMLInputElement>
 
-const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type, placeholder, name, ...props }, ref) => {
-    const [isOnFocus, setOnFocus] = useState(false)
-
-    function activateOnFocusState() {
-      setOnFocus(true)
-    }
-
-    function deactivateOnFocusState() {
-      setOnFocus(false)
-    }
-
-    name = name || ''
-
+const Input = React.forwardRef<HTMLInputElement, InputProps>(
+  ({ className, type, ...props }, ref) => {
     return (
       <input
         type={type}
-        className={`border-b-2 border-gray-500  text-foreground p-2 m-2 focus:outline-none focus:border-b-[3px] ${className}`}
-        placeholder={placeholder}
+        className={cn(
+          'border-b-2 border-gray-500  text-foreground p-2 m-2 focus:outline-none focus:border-b-[3px] flex h-10 w-full rounded-md  bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
+          className,
+        )}
         ref={ref}
         {...props}
       />

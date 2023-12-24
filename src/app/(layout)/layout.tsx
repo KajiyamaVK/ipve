@@ -1,18 +1,18 @@
 import TopBar from '@/components/TopBar'
 import { MenuDrawer } from '@/components/MenuDrawer'
+import { ReactNode } from 'react'
+import { FormsContextProvider } from '@/contexts/formsContext'
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <div className="flex h-full w-full">
-      <MenuDrawer />
-      <div className="w-full h-full">
-        <TopBar />
-        {children}
+    <FormsContextProvider>
+      <div className="flex h-full w-full">
+        <MenuDrawer />
+        <div className="w-full h-full">
+          <TopBar />
+          {children}
+        </div>
       </div>
-    </div>
+    </FormsContextProvider>
   )
 }

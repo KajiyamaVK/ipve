@@ -1,6 +1,6 @@
-import { TResponsabilities } from '@/types/TResponsabilities'
+import { TRoles } from '@/types/TRoles'
 import { ColumnDef } from '@tanstack/react-table'
 
-export type TColumns = ColumnDef<TResponsabilities, any> & {
+export type TColumns = ColumnDef<TRoles> & {
   searchInputOptionLabel?: string
 }

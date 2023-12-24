@@ -1,4 +1,4 @@
-import LoginForm from '@/components/loginForm'
+import LoginForm from '@/app/(noLayout)/login/loginForm'
 import Image from 'next/image'
 
 export default function login() {

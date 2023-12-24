@@ -3,14 +3,15 @@ import { TMenuDrawerItem } from '@/types/TMenuDrawerItem'
 
 export const menuItems: TMenuDrawerItem[] = [
   {
+    id: 'dashboard',
     displayName: 'Dashboard',
     menuLabel: 'Dashboard',
     type: 'normal',
     order: 1,
     icon: <Gauge size={32} />,
-    path: '/dashboard',
   },
   {
+    id: 'register',
     displayName: 'Cadastros',
     menuLabel: 'Cadastros',
     type: 'parent',
@@ -18,25 +19,28 @@ export const menuItems: TMenuDrawerItem[] = [
     icon: <Keyboard size={32} />,
     children: [
       {
+        id: 'people',
         displayName: 'Cadastro de Pessoas',
         menuLabel: 'Pessoas',
         type: 'children',
         order: 1,
-        path: '/people',
+        formType: 'page',
       },
       {
-        displayName: 'Cadastro de Status',
-        menuLabel: 'Status',
+        id: 'memberTitles',
+        displayName: 'Cadastro de Cargos',
+        menuLabel: 'Cargos',
         type: 'children',
         order: 2,
-        path: '/status',
+        formType: 'dialog',
       },
       {
-        displayName: 'Cadastro de Responsabilidades',
-        menuLabel: 'Responsabilidades',
+        id: 'roles',
+        displayName: 'Cadastro de Funções',
+        menuLabel: 'Funções',
         type: 'children',
         order: 3,
-        path: '/responsabilities',
+        formType: 'dialog',
       },
     ],
   },

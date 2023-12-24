@@ -1,45 +1,41 @@
-import { IMenuDrawerItem } from '@/types/TMenuDrawerItem'
+import { TMenuDrawerItem } from '@/types/TMenuDrawerItem'
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from './ui/accordion'
-import { ReactNode, useContext } from 'react'
+import { useContext } from 'react'
 import { generalContext } from '@/contexts/generalContext'
 import Link from 'next/link'
 
 export function MenuItemParent({
+  id,
   menuLabel,
   children,
   icon,
-}: {
-  menuLabel: string
-  children: IMenuDrawerItem[]
-  icon: ReactNode
-}) {
+}: TMenuDrawerItem) {
   const { changeScreen } = useContext(generalContext)
 
   function checkChildrenData() {
-    let result = true
+    if (children === undefined) {
+      throw new Error('children is undefined')
+    }
+    if (!menuLabel) {
+      throw new Error('menuLabel is null')
+    }
+    if (!id) {
+      throw new Error('id is null')
+    }
 
     if (!children) {
-      console.error('children is null')
-      result = false
+      throw new Error('children is null')
     }
 
     if (children.length === 0) {
-      console.error('children is empty')
-      result = false
+      throw new Error('children is empty')
     }
-
-    children.map((child) => {
-      if (!child.path || typeof child.path === 'undefined') {
-        console.error('child.path is null')
-        result = false
-      }
-    })
-    return result
+    return true
   }
 
   const resultCheckChildrenData = checkChildrenData()
@@ -58,13 +54,13 @@ export function MenuItemParent({
           </AccordionTrigger>
           <AccordionContent>
             {children.map((child) => {
-              if (child.type === 'children' && child.path) {
+              if (child.type === 'children') {
                 return (
                   <Link
-                    href={child.path}
+                    href={`/${child.id}`}
                     className="p-5 pt-1 "
                     key={child.menuLabel}
-                    onClick={() => changeScreen(child.displayName)}
+                    onClick={() => changeScreen(child.id)}
                   >
                     <p className="hover:underline cursor-pointer">
                       {child.menuLabel}

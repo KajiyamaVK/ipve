@@ -1,11 +1,13 @@
+import { Column } from '@tanstack/react-table'
 import { Button } from './button'
 import { CaretUpDown, CaretDown, CaretUp } from '@phosphor-icons/react'
+import { TRoles } from '@/types/TRoles'
 
 export function SortedGridHeader({
   column,
   label,
 }: {
-  column: any
+  column: Column<TRoles, unknown>
   label: string
 }) {
   return (

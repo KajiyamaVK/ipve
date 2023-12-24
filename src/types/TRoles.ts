@@ -1,4 +1,4 @@
-export type TResponsabilities = {
+export type TRoles = {
   id: string
   name: string
   description: string

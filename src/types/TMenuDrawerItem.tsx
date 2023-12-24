@@ -8,5 +8,6 @@ export type TMenuDrawerItem = {
   order: number
   children?: TMenuDrawerItem[]
   icon?: ReactNode
-  path?: string
+  id: string
+  formType?: 'dialog' | 'page'
 }

@@ -5,7 +5,6 @@ import * as AccordionPrimitive from '@radix-ui/react-accordion'
 import { ChevronDownIcon } from '@radix-ui/react-icons'
 
 import { cn } from '@/lib/utils'
-import { useRouter, usePathname } from 'next/navigation'
 
 const Accordion = AccordionPrimitive.Root
 

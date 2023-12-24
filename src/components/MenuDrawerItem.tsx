@@ -10,7 +10,6 @@ function renderMenuItem({
   children,
   displayName,
   icon,
-  path,
 }: TMenuDrawerItem) {
   if (type === 'parent') {
     if (children !== undefined)

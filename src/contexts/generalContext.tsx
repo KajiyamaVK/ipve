@@ -11,6 +11,7 @@ import {
 interface iGeneralContext {
   isLoading: boolean
   setIsLoading: Dispatch<SetStateAction<boolean>>
+
   changeScreen: (screen: string) => void
   currentScreen: string
 }
@@ -19,7 +20,7 @@ export const generalContext = createContext({} as iGeneralContext)
 
 export function GeneralContextProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(false)
-  const [currentScreen, setCurrentScreen] = useState('Dashboard')
+  const [currentScreen, setCurrentScreen] = useState('dashboard')
 
   function changeScreen(screen: string) {
     setCurrentScreen(screen)

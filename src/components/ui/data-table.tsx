@@ -28,24 +28,19 @@ import {
 } from './accordion'
 
 import { Pencil, Trash } from '@phosphor-icons/react'
-import { ReactNode, useEffect, useState } from 'react'
+import { ReactNode, useContext, useEffect, useState } from 'react'
 import { Input } from './input'
 import { Button } from './button'
 import { useRouter, usePathname } from 'next/navigation'
 import { TFormMode } from '@/types/TFormMode'
-import { DataTableFormDialog } from './dataTableFormDialog'
-
-type TFormType = 'dialog' | 'page'
+// import { DataTableFormDialog } from './dataTableFormDialog'
+import { useForm } from 'react-hook-form'
+import { formsContext } from '@/contexts/formsContext'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
-  formType: TFormType
-  dialogTitle?: string
-  dialogDescription?: string
-  dialogTrigger?: string
-  dialogContent?: ReactNode
-  dialogFooter?: ReactNode
+  dialogForm?: ReactNode
 }
 
 function useTable<TData, TValue>(
@@ -84,7 +79,8 @@ function renderTableCell<TData>(cell: Cell<TData, unknown>) {
   }
 }
 
-function renderSelectOptions(header: any) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function renderSearchColumnsSelectOptions(header: any) {
   const headerDataType = typeof header.column.columnDef.header
 
   const label =
@@ -97,6 +93,7 @@ function renderSelectOptions(header: any) {
     </option>
   )
 }
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function renderHeaders(header: any) {
   const label = flexRender(header.column.columnDef.header, header.getContext())
 
@@ -110,44 +107,46 @@ function renderHeaders(header: any) {
 export function DataTable<TData, TValue>({
   columns,
   data,
-  formType,
-  dialogTitle = '',
-  dialogDescription = '',
-  dialogTrigger = '',
-  dialogContent = <></>,
-  dialogFooter = <></>,
+  dialogForm = <></>,
 }: DataTableProps<TData, TValue>) {
   const { table } = useTable(columns, data)
   const [searchColumn, setSearchColumn] = useState('id')
   const router = useRouter()
   const currentRoute = usePathname()
 
-  const [headerRows, setHeaderRows] = useState<ReactNode[]>([])
-  const [selectOptions, setSelectOptions] = useState<ReactNode[]>([])
+  const [tableHeaderRow, TableHetHeaderRow] = useState<ReactNode[]>([])
+  const [SearchColumnsSelectOptions, setSearchColumnsSelectOptions] = useState<
+    ReactNode[]
+  >([])
+
+  const { register, watch } = useForm()
+
+  const { formType, formMode } = useContext(formsContext)
 
   useEffect(() => {
-    const headerRowsArray: ReactNode[] = []
-    const headerRowsArrayHeaders: ReactNode[] = []
+    const TableHeaderRowArray: ReactNode[] = []
+    const TableHeaderRowArrayHeaders: ReactNode[] = []
     const tempArray: ReactNode[] = []
 
-    const headerGroups = table.getHeaderGroups().slice() // ou .concat()
+    const headerGroups = table.getHeaderGroups().slice()
 
     headerGroups.forEach((headerGroup) => {
-      headerGroup.headers.map((header) => {
-        headerRowsArrayHeaders.push(renderHeaders(header))
-        tempArray.push(renderSelectOptions(header))
+      headerGroup.headers.forEach((header) => {
+        TableHeaderRowArrayHeaders.push(renderHeaders(header))
+        tempArray.push(renderSearchColumnsSelectOptions(header))
       })
 
-      headerRowsArray.push(
+      TableHeaderRowArray.push(
         <TableRow key={headerGroup.id}>
-          {headerRowsArrayHeaders}
+          {TableHeaderRowArrayHeaders}
           <TableHead>Ações</TableHead>
         </TableRow>,
       )
     })
 
-    setHeaderRows(headerRowsArray)
-    setSelectOptions(tempArray)
+    TableHetHeaderRow(TableHeaderRowArray)
+    setSearchColumnsSelectOptions(tempArray)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   function pushToProperRoute(TFormMode: TFormMode) {
@@ -176,7 +175,7 @@ export function DataTable<TData, TValue>({
                     value={searchColumn}
                     onChange={(e) => setSearchColumn(e.target.value)}
                   >
-                    {selectOptions}
+                    {SearchColumnsSelectOptions}
                   </select>
                   <Input
                     placeholder="Escolha a coluna que deseja filtrar..."
@@ -185,12 +184,14 @@ export function DataTable<TData, TValue>({
                         .getColumn(searchColumn)
                         ?.getFilterValue() as string) ?? ''
                     }
-                    onChange={(event) => {
+                    onKeyUp={() => {
                       table
                         .getColumn(searchColumn)
-                        ?.setFilterValue(event.target.value)
+                        ?.setFilterValue(watch('search'))
                     }}
                     className="min-w-2xl w-[700px]"
+                    type="text"
+                    {...register('search')}
                   />
                 </div>
               </AccordionContent>
@@ -207,28 +208,17 @@ export function DataTable<TData, TValue>({
               Novo
             </Button>
           ) : (
-            <DataTableFormDialog
-              trigger="Novo"
-              title={dialogTitle}
-              description={dialogDescription}
-              content={dialogContent}
-              footer={dialogFooter}
-            />
+            dialogForm
           )}
         </div>
       </div>
       <Table>
         <TableHeader className="text-white bg-[#68b3c6] ">
-          {headerRows}
+          {tableHeaderRow}
         </TableHeader>
         <TableBody>
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => {
-              const idValue = row
-                .getAllCells()
-                .find((cell) => cell.column.id === 'id')
-                ?.getValue()
-
               return (
                 <TableRow
                   key={row.id}

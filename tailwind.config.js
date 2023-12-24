@@ -1,4 +1,4 @@
-/** @type {import('tailwindcss').Config} */
+/** @type {import("tailwindcss").Config} */
 module.exports = {
   darkMode: ['class'],
   content: [
@@ -17,7 +17,7 @@ module.exports = {
     },
     extend: {
       backgroundImage: {
-        loginBG: "url('/loginImg1.png')",
+        loginBG: 'url("/loginImg1.png")',
       },
       colors: {
         border: 'var(--border)',
