@@ -121,7 +121,7 @@ export function DataTable<TData, TValue>({
 
   const { register, watch } = useForm()
 
-  const { formType, formMode } = useContext(formsContext)
+  const { formType } = useContext(formsContext)
 
   useEffect(() => {
     const TableHeaderRowArray: ReactNode[] = []

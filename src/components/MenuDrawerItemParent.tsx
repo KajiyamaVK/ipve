@@ -15,7 +15,7 @@ export function MenuItemParent({
   children,
   icon,
 }: TMenuDrawerItem) {
-  const { changeScreen } = useContext(generalContext)
+  const { changeScreen, currentScreen } = useContext(generalContext)
 
   function checkChildrenData() {
     if (children === undefined) {
@@ -38,11 +38,7 @@ export function MenuItemParent({
     return true
   }
 
-  const resultCheckChildrenData = checkChildrenData()
-
-  if (!resultCheckChildrenData) {
-    return null
-  }
+  checkChildrenData()
 
   return (
     <div key={menuLabel}>
@@ -53,23 +49,23 @@ export function MenuItemParent({
             {menuLabel}
           </AccordionTrigger>
           <AccordionContent>
-            {children.map((child) => {
-              if (child.type === 'children') {
-                return (
-                  <Link
-                    href={`/${child.id}`}
-                    className="p-5 pt-1 "
-                    key={child.menuLabel}
-                    onClick={() => changeScreen(child.id)}
-                  >
-                    <p className="hover:underline cursor-pointer">
+            {
+              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+              children!.map((child) => {
+                if (child.type === 'children') {
+                  return (
+                    <Link
+                      href={`/${child.id}`}
+                      key={child.menuLabel}
+                      className="hover:underline cursor-pointer p-5 pt-1 "
+                    >
                       {child.menuLabel}
-                    </p>
-                  </Link>
-                )
-              }
-              return null
-            })}
+                    </Link>
+                  )
+                }
+                return null
+              })
+            }
           </AccordionContent>
         </AccordionItem>
       </Accordion>

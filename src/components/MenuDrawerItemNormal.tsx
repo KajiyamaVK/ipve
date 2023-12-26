@@ -5,17 +5,14 @@ import { ReactNode, useContext } from 'react'
 
 export function MenuItemNormal(
   menuLabel: string,
-  screenId: string,
+  displayName: string,
   icon: ReactNode,
+  id: string,
 ) {
   const { changeScreen } = useContext(generalContext)
-  console.log(screenId)
+
   return (
-    <Link
-      href={`/${screenId}`}
-      key={menuLabel}
-      onClick={() => changeScreen(screenId)}
-    >
+    <Link href={`/${id}`} key={menuLabel}>
       <div className="p-5 border-b-2 border-b-white flex gap-2 items-center">
         {icon}
         {menuLabel}

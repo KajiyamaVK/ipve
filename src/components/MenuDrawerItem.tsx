@@ -10,12 +10,22 @@ function renderMenuItem({
   children,
   displayName,
   icon,
+  order,
+  id,
 }: TMenuDrawerItem) {
   if (type === 'parent') {
     if (children !== undefined)
-      return MenuItemParent({ menuLabel, children, icon })
+      return MenuItemParent({
+        menuLabel,
+        children,
+        icon,
+        displayName,
+        type,
+        order,
+        id,
+      })
   } else if (type === 'normal') {
-    return MenuItemNormal(menuLabel, displayName, icon)
+    return MenuItemNormal(menuLabel, displayName, icon, id)
   }
 }
 

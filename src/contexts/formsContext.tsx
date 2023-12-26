@@ -38,7 +38,7 @@ export function FormsContextProvider({ children }: { children: ReactNode }) {
     const formType = menuItems.filter(
       (item) => item.path === `/${currentScreen.toLowerCase()}`,
     )[0]?.formType
-    console.log(formType)
+
     return formType
   }
 

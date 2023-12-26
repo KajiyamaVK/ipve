@@ -20,7 +20,7 @@ export const generalContext = createContext({} as iGeneralContext)
 
 export function GeneralContextProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(false)
-  const [currentScreen, setCurrentScreen] = useState('dashboard')
+  const [currentScreen, setCurrentScreen] = useState('')
 
   function changeScreen(screen: string) {
     setCurrentScreen(screen)

@@ -1,11 +1,13 @@
 import { NextResponse, NextRequest } from 'next/server'
+import { useContext } from 'react'
+import { generalContext } from './contexts/generalContext'
 
 export const config = {
   matcher: ['/'],
 }
 
 export default function middleware(request: NextRequest) {
-  console.log('middleware')
+  const { } = useContext(generalContext)
 
   const { pathname } = request.nextUrl
   const urls = {
@@ -14,7 +16,6 @@ export default function middleware(request: NextRequest) {
   }
   const token = request.cookies.get('ipve_auth_token')?.value
 
-  console.log('a')
   if (!token && pathname !== '/login') {
     return NextResponse.redirect(new URL(urls.login, request.url))
   } else if (token) {
