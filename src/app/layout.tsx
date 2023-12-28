@@ -1,11 +1,11 @@
-import { ReactNode } from "react";
-import { GeneralContextProvider } from "@/contexts/generalContext";
-import "@/app/globals.css";
-import { Toaster } from "@/components/ui/toaster";
+import { ReactNode } from 'react'
+import { GeneralContextProvider } from '@/contexts/generalContext'
+import '@/app/globals.css'
+import { Toaster } from '@/components/ui/toaster'
 
 export const metadata = {
-  title: "IPVE",
-};
+  title: 'IPVE',
+}
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="pt-BR">
@@ -16,5 +16,5 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         </body>
       </GeneralContextProvider>
     </html>
-  );
+  )
 }
