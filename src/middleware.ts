@@ -1,14 +1,10 @@
 import { NextResponse, NextRequest } from 'next/server'
-import { useContext } from 'react'
-import { generalContext } from './contexts/generalContext'
 
 export const config = {
   matcher: ['/'],
 }
 
 export default function middleware(request: NextRequest) {
-  const { } = useContext(generalContext)
-
   const { pathname } = request.nextUrl
   const urls = {
     login: new URL('/login', request.url),
