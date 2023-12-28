@@ -1,7 +1,3 @@
 {
-  "extends": [
-    "eslint:@rocketseat/eslint-config/react",
-    "plugin:prettier/recommended",
-    "plugin:tailwind/recommended"
-  ]
+  "extends": "@rocketseat/eslint-config/react"
 }
