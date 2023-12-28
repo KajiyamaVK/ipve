@@ -1,37 +1,51 @@
 'use client'
 
+import { usePathname } from 'next/navigation'
 import {
   Dispatch,
   ReactNode,
   SetStateAction,
   createContext,
+  useEffect,
   useState,
 } from 'react'
+import { getRouteData } from '@/utils/getRouteData'
+import { TMenuDrawerItem } from '@/types/TMenuDrawerItem'
 
 interface iGeneralContext {
   isLoading: boolean
   setIsLoading: Dispatch<SetStateAction<boolean>>
 
-  changeScreen: (screen: string) => void
-  currentScreen: string
+  currentScreen: TMenuDrawerItem
 }
 
 export const generalContext = createContext({} as iGeneralContext)
 
 export function GeneralContextProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(false)
-  const [currentScreen, setCurrentScreen] = useState('')
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [currentScreen, setCurrentScreen] = useState<TMenuDrawerItem>(
+    {} as TMenuDrawerItem,
+  )
 
-  function changeScreen(screen: string) {
-    setCurrentScreen(screen)
-  }
+  const path = usePathname()
+
+  useEffect(() => {
+    const pathnameParts = path.split('/').filter((part) => part !== '')
+    if (pathnameParts.length > 0) {
+      const currentScreenData = getRouteData(pathnameParts[0])
+      if (!currentScreenData) throw new Error('Screen not found')
+      setCurrentScreen(currentScreenData)
+    } else {
+      setCurrentScreen({} as TMenuDrawerItem)
+    }
+  }, [path])
 
   return (
     <generalContext.Provider
       value={{
         isLoading,
         setIsLoading,
-        changeScreen,
         currentScreen,
       }}
     >

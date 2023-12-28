@@ -9,6 +9,7 @@ export const menuItems: TMenuDrawerItem[] = [
     type: 'normal',
     order: 1,
     icon: <Gauge size={32} />,
+    formType: null,
   },
   {
     id: 'register',
@@ -17,6 +18,7 @@ export const menuItems: TMenuDrawerItem[] = [
     type: 'parent',
     order: 2,
     icon: <Keyboard size={32} />,
+    formType: null,
     children: [
       {
         id: 'people',
@@ -27,7 +29,7 @@ export const menuItems: TMenuDrawerItem[] = [
         formType: 'page',
       },
       {
-        id: 'memberTitles',
+        id: 'member_titles',
         displayName: 'Cadastro de Cargos',
         menuLabel: 'Cargos',
         type: 'children',

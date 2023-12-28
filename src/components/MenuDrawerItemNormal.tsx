@@ -1,22 +1,17 @@
 'use client'
-import { generalContext } from '@/contexts/generalContext'
+import { getRouteData } from '@/utils/getRouteData'
 import Link from 'next/link'
-import { ReactNode, useContext } from 'react'
 
-export function MenuItemNormal(
-  menuLabel: string,
-  displayName: string,
-  icon: ReactNode,
-  id: string,
-) {
-  const { changeScreen } = useContext(generalContext)
-
+export function MenuItemNormal(id: string) {
+  const { menuLabel, icon } = getRouteData(id)
   return (
-    <Link href={`/${id}`} key={menuLabel}>
-      <div className="p-5 border-b-2 border-b-white flex gap-2 items-center">
-        {icon}
-        {menuLabel}
-      </div>
+    <Link
+      href={`/${id}`}
+      key={id}
+      className="p-5 border-b-2 border-b-white flex gap-2 items-center"
+    >
+      {icon}
+      {menuLabel}
     </Link>
   )
 }

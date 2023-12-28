@@ -8,8 +8,6 @@ import { loginFormValidationSchema } from './inputValidationSchema'
 import Cookie from 'js-cookie'
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime'
 
-const inputClasses = 'w-full'
-
 export default function LoginForm() {
   const router = useRouter()
   const { register, handleSubmit, formState } = useForm({

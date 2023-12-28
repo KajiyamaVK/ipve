@@ -36,6 +36,8 @@ import { TFormMode } from '@/types/TFormMode'
 // import { DataTableFormDialog } from './dataTableFormDialog'
 import { useForm } from 'react-hook-form'
 import { formsContext } from '@/contexts/formsContext'
+import { generalContext } from '@/contexts/generalContext'
+import { toast } from './use-toast'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -104,6 +106,50 @@ function renderHeaders(header: any) {
   )
 }
 
+interface IRegisterButtonProps {
+  id: string
+  type: 'edit' | 'delete'
+}
+
+export function RegisterButton({ type, id }: IRegisterButtonProps) {
+  const router = useRouter()
+  const { setIsDialogOpen, setFormMode, setCurrentSelectedItem } =
+    useContext(formsContext)
+  const { currentScreen } = useContext(generalContext)
+
+  function handleEdit() {
+    if (currentScreen.formType === 'dialog') {
+      setCurrentSelectedItem(id)
+      setFormMode('edit')
+      setIsDialogOpen(true)
+    } else router.push(`/${currentScreen}/${id}`)
+  }
+
+  function handleDelete() {
+    toast({
+      title: 'Função apagada com sucesso!',
+      description: 'A função foi apagada com sucesso',
+      type: 'background',
+    })
+  }
+
+  if (type === 'edit') {
+    return (
+      <button aria-label="Editar" onClick={handleEdit}>
+        <Pencil size={24} />
+      </button>
+    )
+  }
+
+  if (type === 'delete') {
+    return (
+      <button aria-label="Deletar" onClick={handleDelete}>
+        <Trash size={24} />
+      </button>
+    )
+  }
+}
+
 export function DataTable<TData, TValue>({
   columns,
   data,
@@ -112,7 +158,6 @@ export function DataTable<TData, TValue>({
   const { table } = useTable(columns, data)
   const [searchColumn, setSearchColumn] = useState('id')
   const router = useRouter()
-  const currentRoute = usePathname()
 
   const [tableHeaderRow, TableHetHeaderRow] = useState<ReactNode[]>([])
   const [SearchColumnsSelectOptions, setSearchColumnsSelectOptions] = useState<
@@ -121,9 +166,12 @@ export function DataTable<TData, TValue>({
 
   const { register, watch } = useForm()
 
-  const { formType } = useContext(formsContext)
+  const { setFormMode, setIsDialogOpen } = useContext(formsContext)
+  const { currentScreen } = useContext(generalContext)
+  const { formType } = currentScreen
 
   useEffect(() => {
+    setIsDialogOpen(false)
     const TableHeaderRowArray: ReactNode[] = []
     const TableHeaderRowArrayHeaders: ReactNode[] = []
     const tempArray: ReactNode[] = []
@@ -149,9 +197,18 @@ export function DataTable<TData, TValue>({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  function pushToProperRoute(TFormMode: TFormMode) {
-    const registerRoute = `${currentRoute}/${TFormMode}`
-    router.push(registerRoute)
+  function pushToProperRoute() {
+    setFormMode('add')
+    if (formType === 'page') {
+      console.log('formType', formType)
+      const registerRoute = `/${currentScreen.id}/form`
+      router.push(registerRoute)
+    } else {
+      console.log('jasp')
+      console.log('currentScreen', currentScreen)
+
+      setIsDialogOpen(true)
+    }
   }
 
   return (
@@ -199,18 +256,15 @@ export function DataTable<TData, TValue>({
           </Accordion>
         </div>
         <div className="text-right mb-10">
-          {formType === 'page' ? (
-            <Button
-              className="w-20"
-              variant={'default'}
-              onClick={() => pushToProperRoute('register')}
-            >
-              Novo
-            </Button>
-          ) : (
-            dialogForm
-          )}
+          <Button
+            className="w-20"
+            variant={'default'}
+            onClick={pushToProperRoute}
+          >
+            Novo
+          </Button>
         </div>
+        {dialogForm}
       </div>
       <Table>
         <TableHeader className="text-white bg-[#68b3c6] ">
@@ -219,6 +273,7 @@ export function DataTable<TData, TValue>({
         <TableBody>
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => {
+              const idValue = row.getValue('id') as string
               return (
                 <TableRow
                   key={row.id}
@@ -226,12 +281,8 @@ export function DataTable<TData, TValue>({
                 >
                   {row.getVisibleCells().map((cell) => renderTableCell(cell))}
                   <TableCell className="flex gap-2 cursor-pointer">
-                    <button aria-label="Editar">
-                      <Pencil size={24} />
-                    </button>
-                    <button aria-label="Deletar">
-                      <Trash size={24} />
-                    </button>
+                    <RegisterButton type="edit" id={idValue} />
+                    <RegisterButton type="delete" id={idValue} />
                   </TableCell>
                 </TableRow>
               )

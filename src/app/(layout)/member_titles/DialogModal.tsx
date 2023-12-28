@@ -12,9 +12,8 @@ import {
 import { useForm } from 'react-hook-form'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { DialogColorSelection, availableColors } from './DialogColorSelection'
 import { formsContext } from '@/contexts/formsContext'
 import { useToast } from '@/components/ui/use-toast'
 import { rolesData } from '@/data/rolesData'
@@ -24,19 +23,11 @@ const DialogFormSchema = z.object({
   description: z.string(),
 })
 
-function obterElementoAleatorio(array: string[]) {
-  const indiceAleatorio = Math.floor(Math.random() * array.length)
-  return array[indiceAleatorio]
-}
-
 export function DialogModal() {
   const { handleSubmit, register, formState, setValue } = useForm({
     resolver: zodResolver(DialogFormSchema),
   })
 
-  const elementoAleatorio = obterElementoAleatorio(availableColors)
-
-  const [colorSelected, setColorSelected] = useState<string>(elementoAleatorio)
   const { toast } = useToast()
   const { isDialogOpen, setIsDialogOpen, formMode, currentItem } =
     useContext(formsContext)
@@ -53,33 +44,29 @@ export function DialogModal() {
 
   useEffect(() => {
     if (formMode === 'edit') {
+      console.log('1')
       const role = rolesData.filter((role) => role.id === currentItem)[0]
       if (role) {
         setValue('roleName', role.name)
         setValue('description', role.description)
-        setColorSelected(role.tailwindThemeColor)
       }
     } else {
+      console.log('2')
       setValue('roleName', '')
       setValue('description', '')
-      setColorSelected(elementoAleatorio)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isDialogOpen])
+  }, [isDialogOpen, currentItem, formMode, setValue])
 
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-      {/* <DialogTrigger className="bg-primary text-primary-foreground px-5 py-2 rounded-lg">
-        Novo
-      </DialogTrigger> */}
       <DialogContent>
         <DialogHeader>
           <DialogTitle className="border-b-2 border-gray-500">
-            Cadastro de Funções
+            Cadastro de Cargos
           </DialogTitle>
           <DialogDescription>
             <i className="text-sm">
-              Cadastro das funções que são atribuidas no cadastro de pessoas.
+              Cadastro dos cargos que são atribuidos no cadastro de pessoas.
             </i>
           </DialogDescription>
         </DialogHeader>
@@ -90,7 +77,7 @@ export function DialogModal() {
           <div className="flex justify-between">
             <div className="flex flex-col flex-grow pr-5">
               <label htmlFor="roleName" className="font-bold">
-                Nome da função
+                Nome do cargo
               </label>
               <Input
                 type="text"
@@ -100,15 +87,6 @@ export function DialogModal() {
               <p className="text-destructive">
                 {formState.errors.roleName?.message?.toString()}
               </p>
-            </div>
-            <div className="flex items-center">
-              <b>Cor:</b>
-              <div className="mt-2 ml-2">
-                <DialogColorSelection
-                  colorSelected={colorSelected}
-                  setColorSelected={setColorSelected}
-                />
-              </div>
             </div>
           </div>
 

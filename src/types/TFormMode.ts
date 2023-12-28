@@ -1,1 +1,1 @@
-export type TFormMode = 'register' | 'edit'
+export type TFormMode = 'add' | 'edit'
