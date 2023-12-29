@@ -39,15 +39,20 @@ import { z } from 'zod'
 // },
 export const schema = z.object({
   name: z.string().min(1, { message: 'Nome é obrigatório' }),
+  isActive: z.boolean().default(true),
+  isUser: z.boolean().default(true),
+  hasFamilyInChurch: z.boolean().default(false),
+  familyRelations: z.array(z.number()).optional(),
   surname: z.string().min(1, { message: 'O sobrenome é obrigatório' }),
   title: z.string().min(1, { message: 'Atribua um título a pessoa.' }),
   roles: z.array(z.string()).optional(),
-  dateOfBirth: z.date().optional(),
+  dateOfBirth: z.string().optional(),
   address: z.string().optional(),
+  number: z.string().optional(),
   complement: z.string().optional(),
   city: z.string().optional(),
   suburb: z.string().optional(),
-  uf: z.string().optional(),
+  state: z.string().optional(),
   cep: z.string().optional(),
   phones: z
     .array(
@@ -61,4 +66,5 @@ export const schema = z.object({
     .optional(),
   photoUrl: z.string().optional(),
   email: z.string().email('Formato de e-mail inválido.').optional(),
+  obs: z.string().optional(),
 })
