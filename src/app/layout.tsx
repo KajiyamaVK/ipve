@@ -10,7 +10,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="pt-BR">
       <GeneralContextProvider>
-        <body suppressHydrationWarning={true}>
+        <body>
           <Toaster />
           {children}
         </body>

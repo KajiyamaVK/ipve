@@ -11,21 +11,24 @@ export function MenuDrawer() {
     console.log('logOut')
     Cookie.remove('ipve_auth_token')
   }
+
   return (
-    <div className="w-80 bg-primary h-full shadow-lg shadow-black text-primary-foreground z-50 flex justify-between flex-col">
-      <div>
-        <MenuDrawerProfile />
-        <MenuDrawerItems />
-      </div>
-      <Link href={'/login'}>
-        <div
-          className="p-5 border-t-2 cursor-pointer flex items-center gap-2"
-          onClick={logOut}
-        >
-          <SignOut size={32} />
-          Sair
+    <div className="hidden lg:block fixed top-0 left-0 z-50 h-screen">
+      <div className="w-80 bg-primary h-full shadow-lg shadow-black text-primary-foreground z-50 flex flex-col">
+        <div className="flex-1">
+          <MenuDrawerProfile />
+          <MenuDrawerItems />
         </div>
-      </Link>
+        <Link href="/login">
+          <div
+            className="p-5 border-t-2 cursor-pointer flex items-center gap-2"
+            onClick={logOut}
+          >
+            <SignOut size={32} />
+            Sair
+          </div>
+        </Link>
+      </div>
     </div>
   )
 }

@@ -17,12 +17,15 @@ interface iGeneralContext {
   setIsLoading: Dispatch<SetStateAction<boolean>>
 
   currentScreen: TMenuDrawerItem
+  isMenuOpen: boolean
+  setIsMenuOpen: Dispatch<SetStateAction<boolean>>
 }
 
 export const generalContext = createContext({} as iGeneralContext)
 
 export function GeneralContextProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(false)
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [currentScreen, setCurrentScreen] = useState<TMenuDrawerItem>(
     {} as TMenuDrawerItem,
@@ -47,6 +50,8 @@ export function GeneralContextProvider({ children }: { children: ReactNode }) {
         isLoading,
         setIsLoading,
         currentScreen,
+        isMenuOpen,
+        setIsMenuOpen,
       }}
     >
       {children}

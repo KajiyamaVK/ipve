@@ -6,7 +6,7 @@ export default function login() {
     <div className="flex w-full h-full">
       <div className="bg-loginBG w-1/2 bg-cover hidden md:inline-block" />
       <div className="bg-background w-full md:w-1/2 h-screen min-w-[500px] flex ">
-        <div className="mt-20 flex flex-col text-left min-w-[300px] mx-auto">
+        <div className="mt-32 flex flex-col text-left min-w-[300px] mx-auto">
           <center className="mb-10">
             <Image
               src="/logo.png"
