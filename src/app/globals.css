@@ -23,7 +23,7 @@
     --secondary-foreground: 222.2 47.4% 11.2%;
 
     --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted-foreground: #8b8b8b;
 
     --accent: 210 40% 96.1%;
     --accent-foreground: 222.2 47.4% 11.2%;
@@ -87,11 +87,19 @@
     @apply text-foreground;
   }
 
-  label {
-    @apply font-bold;
-  }
-
+  
   h1 {
     @apply text-2xl font-bold;
   }
+
+  label {
+    @apply font-bold;
+    
+    &.required::after {
+      @apply text-red-500;
+      content: " *";
+    }
+  }
+
+  
 }
