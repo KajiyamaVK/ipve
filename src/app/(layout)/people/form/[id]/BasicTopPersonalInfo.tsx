@@ -25,7 +25,7 @@ export function BasicTopPersonalInfo(formControl: any) {
     ))
   }
   return (
-    <div className="flex flex-col gap-5 ">
+    <div className="flex flex-col gap-5 border rounded-lg border-gray-400 p-5">
       {/* Início - Informações (Nome e sobrenome) */}
       <div className="flex gap-5 ">
         <FormField

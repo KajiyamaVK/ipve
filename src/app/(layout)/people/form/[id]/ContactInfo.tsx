@@ -11,7 +11,7 @@ import { Input } from '@/components/ui/input'
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function ContactInfo(form: any) {
   return (
-    <div className="  mt-5 border-gray-300 border p-5 w-1/2 ">
+    <div className="  mt-5 border-gray-400 border p-5 w-1/2 bg-white">
       <h1 className="text-left text-2xl font-bold mb-5">Contato</h1>
       {/* Início - Informações (Email e telefone) */}
       <div className="flex gap-5 p-5">

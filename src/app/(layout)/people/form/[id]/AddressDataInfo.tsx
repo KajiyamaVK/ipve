@@ -17,7 +17,7 @@ export function AddressDataInfo(form: any) {
     form.setValue('cep', cep)
   }
   return (
-    <div className="flex flex-col gap-5 mt-5 border rounded-lg p-10">
+    <div className="flex flex-col gap-5 mt-5 border border-gray-400 rounded-lg p-10 bg-white">
       <h1 className="text-left text-2xl font-bold">Endereço</h1>
 
       {/* Início - Informações (Cep, endereço e número) */}
@@ -132,7 +132,11 @@ export function AddressDataInfo(form: any) {
             <FormItem className="text-left flex-1">
               <FormLabel>Cidade</FormLabel>
               <FormControl>
-                <Input placeholder="Ex.: São Paulo" w-full {...field} />
+                <Input
+                  placeholder="Ex.: São Paulo"
+                  className="w-full"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -146,7 +150,7 @@ export function AddressDataInfo(form: any) {
             <FormItem className="text-left flex-1">
               <FormLabel>Estado</FormLabel>
               <FormControl>
-                <Input placeholder="Ex.: SP" w-full {...field} />
+                <Input placeholder="Ex.: SP" className="w-full" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

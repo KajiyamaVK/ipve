@@ -27,7 +27,7 @@ import {
   AccordionTrigger,
 } from './accordion'
 
-import { Pencil, Trash } from '@phosphor-icons/react'
+import { Trash } from '@phosphor-icons/react'
 import { ReactNode, useContext, useEffect, useState } from 'react'
 import { Input } from './input'
 import { Button } from './button'
@@ -104,50 +104,6 @@ function renderHeaders(header: any) {
   )
 }
 
-interface IRegisterButtonProps {
-  id: string
-  type: 'edit' | 'delete'
-}
-
-export function RegisterButton({ type, id }: IRegisterButtonProps) {
-  const router = useRouter()
-  const { setIsDialogOpen, setFormMode, setCurrentSelectedItem } =
-    useContext(formsContext)
-  const { currentScreen } = useContext(generalContext)
-
-  function handleEdit() {
-    if (currentScreen.formType === 'dialog') {
-      setCurrentSelectedItem(id)
-      setFormMode('edit')
-      setIsDialogOpen(true)
-    } else router.push(`/${currentScreen}/${id}`)
-  }
-
-  function handleDelete() {
-    toast({
-      title: 'Função apagada com sucesso!',
-      description: 'A função foi apagada com sucesso',
-      type: 'background',
-    })
-  }
-
-  if (type === 'edit') {
-    return (
-      <button aria-label="Editar" onClick={handleEdit}>
-        <Pencil size={24} />
-      </button>
-    )
-  }
-
-  if (type === 'delete') {
-    return (
-      <button aria-label="Deletar" onClick={handleDelete}>
-        <Trash size={24} />
-      </button>
-    )
-  }
-}
-
 export function DataTable<TData, TValue>({
   columns,
   data,
@@ -164,7 +120,8 @@ export function DataTable<TData, TValue>({
 
   const { register, watch } = useForm()
 
-  const { setFormMode, setIsDialogOpen } = useContext(formsContext)
+  const { setFormMode, setIsDialogOpen, setCurrentSelectedItem } =
+    useContext(formsContext)
   const { currentScreen } = useContext(generalContext)
   const { formType } = currentScreen
 
@@ -197,12 +154,29 @@ export function DataTable<TData, TValue>({
 
   function pushToProperRoute() {
     setFormMode('add')
+
     if (formType === 'page') {
-      const registerRoute = `/${currentScreen.id}/form`
+      const registerRoute = `/${currentScreen.id}/form/0`
       router.push(registerRoute)
     } else {
       setIsDialogOpen(true)
     }
+  }
+
+  function handleViewState(id: string) {
+    if (currentScreen.formType === 'dialog') {
+      setCurrentSelectedItem(id)
+      setFormMode('view')
+      setIsDialogOpen(true)
+    } else router.push(`/${currentScreen.id}/form/${id}`)
+  }
+
+  function handleDelete(id: string) {
+    toast({
+      title: `Registro ${id} com sucesso!`,
+      description: 'A função foi apagada com sucesso',
+      type: 'background',
+    })
   }
 
   return (
@@ -271,13 +245,19 @@ export function DataTable<TData, TValue>({
               return (
                 <TableRow
                   key={row.id}
-                  className="hover:bg-gray-100 hover:font-bold cursor-pointer "
+                  id={idValue}
+                  className="hover:bg-primary-dark hover:text-primary-foreground cursor-pointer "
                   data-state={row.getIsSelected() && 'selected'}
+                  onClick={() => handleViewState(idValue)}
                 >
                   {row.getVisibleCells().map((cell) => renderTableCell(cell))}
                   <TableCell className="flex gap-2 cursor-pointer">
-                    <RegisterButton type="edit" id={idValue} />
-                    <RegisterButton type="delete" id={idValue} />
+                    <button
+                      aria-label="Deletar"
+                      onClick={() => handleDelete(idValue)}
+                    >
+                      <Trash size={24} />
+                    </button>
                   </TableCell>
                 </TableRow>
               )

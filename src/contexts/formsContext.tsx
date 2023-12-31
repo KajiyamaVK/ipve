@@ -8,7 +8,7 @@ import {
   useState,
 } from 'react'
 
-type TFormMode = 'add' | 'edit' | null
+type TFormMode = 'add' | 'edit' | 'view' | null
 
 interface IFormsContext {
   isDialogOpen: boolean
