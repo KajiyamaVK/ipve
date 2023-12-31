@@ -2,9 +2,12 @@ import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
 
 export function MenuDrawerProfile() {
   return (
-    <div className="flex gap-5 bg-primary-dark p-5">
+    <div className="flex gap-5 p-5 bg-primary-dark">
       <Avatar className="border-4 border-white w-20 h-20">
-        <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+        <AvatarImage
+          src="https://github.com/kajiyamavk.png"
+          alt="Foto do usuário do sistema"
+        />
         <AvatarFallback>CN</AvatarFallback>
       </Avatar>
       <div className="flex flex-col justify-center gap-2 w-full">

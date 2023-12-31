@@ -200,13 +200,9 @@ export function DataTable<TData, TValue>({
   function pushToProperRoute() {
     setFormMode('add')
     if (formType === 'page') {
-      console.log('formType', formType)
       const registerRoute = `/${currentScreen.id}/form`
       router.push(registerRoute)
     } else {
-      console.log('jasp')
-      console.log('currentScreen', currentScreen)
-
       setIsDialogOpen(true)
     }
   }

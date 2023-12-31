@@ -29,7 +29,7 @@ export function DialogModal() {
   })
 
   const { toast } = useToast()
-  const { isDialogOpen, setIsDialogOpen, formMode, currentItem } =
+  const { isDialogOpen, setIsDialogOpen, formMode, currentSelectedItem } =
     useContext(formsContext)
 
   function saveData() {
@@ -44,18 +44,18 @@ export function DialogModal() {
 
   useEffect(() => {
     if (formMode === 'edit') {
-      console.log('1')
-      const role = rolesData.filter((role) => role.id === currentItem)[0]
+      const role = rolesData.filter(
+        (role) => role.id === currentSelectedItem,
+      )[0]
       if (role) {
         setValue('roleName', role.name)
         setValue('description', role.description)
       }
     } else {
-      console.log('2')
       setValue('roleName', '')
       setValue('description', '')
     }
-  }, [isDialogOpen, currentItem, formMode, setValue])
+  }, [isDialogOpen, currentSelectedItem, formMode, setValue])
 
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>

@@ -1,4 +1,12 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {}
+const nextConfig = {
+  reactStrictMode: true,
+  images: {
+    domains: ['images.unsplash.com', 'localhost'],
+  },
+  env: {
+    API_URL: process.env.API_URL,
+  },
+}
 
 module.exports = nextConfig
