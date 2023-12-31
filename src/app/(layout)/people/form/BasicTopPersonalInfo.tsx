@@ -15,6 +15,7 @@ import {
 } from '@/components/ui/select'
 import { memberTitlesData } from '@/data/memberTitles'
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function BasicTopPersonalInfo(formControl: any) {
   function getAllTitles() {
     return memberTitlesData.map((title) => (

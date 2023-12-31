@@ -38,7 +38,7 @@ export function DialogModal() {
 
   const [colorSelected, setColorSelected] = useState<string>(elementoAleatorio)
   const { toast } = useToast()
-  const { isDialogOpen, setIsDialogOpen, formMode, currentItem } =
+  const { isDialogOpen, setIsDialogOpen, formMode, currentSelectedItem } =
     useContext(formsContext)
 
   function saveData() {
@@ -53,7 +53,9 @@ export function DialogModal() {
 
   useEffect(() => {
     if (formMode === 'edit') {
-      const role = rolesData.filter((role) => role.id === currentItem)[0]
+      const role = rolesData.filter(
+        (role) => role.id === currentSelectedItem,
+      )[0]
       if (role) {
         setValue('roleName', role.name)
         setValue('description', role.description)

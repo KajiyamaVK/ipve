@@ -8,6 +8,7 @@ import {
 import { Input } from '@/components/ui/input'
 import Image from 'next/image'
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function ProfileAvatar(formControl: any) {
   return (
     <FormField

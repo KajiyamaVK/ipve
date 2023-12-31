@@ -6,6 +6,7 @@ import {
   FormLabel,
 } from '@/components/ui/form'
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function ActiveControl(formControl: any) {
   return (
     <div className="flex flex-col gap-2 justify-center mt-5">

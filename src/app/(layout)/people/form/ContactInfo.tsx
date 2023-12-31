@@ -8,6 +8,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function ContactInfo(form: any) {
   return (
     <div className="  mt-5 border-gray-300 border p-5 w-1/2 ">
