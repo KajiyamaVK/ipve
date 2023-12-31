@@ -210,7 +210,7 @@ export function DataTable<TData, TValue>({
   return (
     <div>
       <div className="text-left flex justify-between items-end">
-        <div className="border-2 border-gray-300 p-5 rounded-lg mb-10 max-w-[500px] w-[500px]">
+        <div className="border-b-2 border-gray-300 px-5 rounded-lg mb-10 bg-white shadow-sm shadow-black">
           <Accordion type="single" collapsible>
             <AccordionItem value="item-1">
               <AccordionTrigger>
@@ -223,7 +223,7 @@ export function DataTable<TData, TValue>({
                   Escolha uma das colunas no seletor e digite o texto que deseja
                   procurar.
                 </p>
-                <div className="flex ">
+                <div className="flex gap-5">
                   <select
                     value={searchColumn}
                     onChange={(e) => setSearchColumn(e.target.value)}
@@ -262,7 +262,7 @@ export function DataTable<TData, TValue>({
         </div>
         {dialogForm}
       </div>
-      <Table>
+      <Table className="bg-white">
         <TableHeader className="text-white bg-[#68b3c6] ">
           {tableHeaderRow}
         </TableHeader>
@@ -273,6 +273,7 @@ export function DataTable<TData, TValue>({
               return (
                 <TableRow
                   key={row.id}
+                  className="hover:bg-gray-100 hover:font-bold cursor-pointer "
                   data-state={row.getIsSelected() && 'selected'}
                 >
                   {row.getVisibleCells().map((cell) => renderTableCell(cell))}

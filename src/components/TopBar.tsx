@@ -13,8 +13,10 @@ export default function TopBar() {
     let displayName
 
     const pathParts = pathname.split('/')
-    const currentScreen = pathParts[pathParts.length - 2] || ''
-    const isForm = pathParts[pathParts.length - 1] === 'form'
+    console.log('🚀 ~ getDisplayName ~ pathParts:', pathParts)
+    const currentScreen = pathParts[pathParts.length - 1] || ''
+    console.log('🚀 ~ getDisplayName ~ currentScreen:', currentScreen)
+    const isForm = pathParts[pathParts.length - 2] === 'form'
 
     menuItems.forEach((item) => {
       if (item.id === currentScreen) {

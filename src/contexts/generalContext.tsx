@@ -25,7 +25,7 @@ export const generalContext = createContext({} as iGeneralContext)
 
 export function GeneralContextProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(false)
-  const [isMenuOpen, setIsMenuOpen] = useState(window.innerWidth > 768)
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [currentScreen, setCurrentScreen] = useState<TMenuDrawerItem>(
     {} as TMenuDrawerItem,
@@ -43,6 +43,10 @@ export function GeneralContextProvider({ children }: { children: ReactNode }) {
       setCurrentScreen({} as TMenuDrawerItem)
     }
   }, [path])
+
+  useEffect(() => {
+    if (window.innerWidth > 768) setIsMenuOpen(true)
+  }, [])
 
   return (
     <generalContext.Provider

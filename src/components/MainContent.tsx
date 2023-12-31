@@ -8,8 +8,8 @@ export function MainContent({ children }: { children: ReactNode }) {
 
   return (
     <div
-      className={`flex-1  h-full w-full transition-[margin-left] ${
-        isMenuOpen ? 'lg:ml-80' : 'lg:ml-10'
+      className={`flex-1  h-full w-full transition-[margin-left] md:mr-[20px] ${
+        isMenuOpen ? 'md:ml-[277px]' : 'md:ml-[20px]'
       }`}
     >
       <TopBar />

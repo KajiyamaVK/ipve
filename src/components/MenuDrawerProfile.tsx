@@ -7,7 +7,7 @@ export function MenuDrawerProfile() {
     return ''
   }
   return (
-    <div className="flex flex-col gap-5 p-5 bg-primary-dark items-center">
+    <div className="flex flex-col  p-5 bg-primary-dark items-center">
       <Avatar className="border-4 border-secondary w-20 h-20 bg-white">
         <AvatarImage
           src={getPhotoUrl() || '/avatar.png'}

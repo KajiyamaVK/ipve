@@ -14,5 +14,6 @@ export function getRouteData(id: string): TMenuDrawerItem {
       }
     }
   }
+
   return menuData
 }

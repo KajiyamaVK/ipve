@@ -1,13 +1,14 @@
 'use client'
 
 import { MenuDrawerProfile } from './MenuDrawerProfile'
-import { MenuDrawerItems } from './MenuDrawerItem'
+import { MenuDrawerItems } from './MenuDrawerItems'
 import Link from 'next/link'
 import { SignOut } from '@phosphor-icons/react'
 import Cookie from 'js-cookie'
 import { useContext } from 'react'
 import { generalContext } from '@/contexts/generalContext'
-import { HiChevronDoubleLeft, HiChevronDoubleRight } from 'react-icons/hi2'
+import { FiMenu } from 'react-icons/fi'
+import { HiChevronDoubleLeft } from 'react-icons/hi2'
 export function MenuDrawer() {
   const { isMenuOpen, setIsMenuOpen } = useContext(generalContext)
   function logOut() {
@@ -21,7 +22,7 @@ export function MenuDrawer() {
   return (
     <div
       className={` fixed top-0   z-30 h-screen transition-transform flex ${
-        isMenuOpen ? 'translate-x-0' : 'translate-x-[-90%]'
+        isMenuOpen ? 'translate-x-0' : 'translate-x-[-85%]'
       }`}
     >
       <div>
@@ -32,7 +33,7 @@ export function MenuDrawer() {
           </div>
           <Link href="/login">
             <div
-              className="p-5 border-t-2 cursor-pointer flex items-center gap-2"
+              className="px-5 py-2 border-t border-gray-200 cursor-pointer flex items-center gap-2 mb-5"
               onClick={logOut}
             >
               <SignOut size={32} />
@@ -43,14 +44,10 @@ export function MenuDrawer() {
       </div>
 
       <div
-        className="cursor-pointer bg-primary-dark h-20 w-10 mt-20 flex justify-center items-center rounded-r-lg text-white shadow-black drop-shadow-lg z-40"
+        className="cursor-pointer bg-primary-dark h-12 w-12  mt-20 flex justify-center items-center rounded-r-lg text-white shadow-black drop-shadow-lg z-40"
         onClick={toggleMenu}
       >
-        {isMenuOpen ? (
-          <HiChevronDoubleLeft size={40} />
-        ) : (
-          <HiChevronDoubleRight size={40} />
-        )}
+        {isMenuOpen ? <HiChevronDoubleLeft size={30} /> : <FiMenu size={30} />}
       </div>
     </div>
   )

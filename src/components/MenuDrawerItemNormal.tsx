@@ -8,7 +8,7 @@ export function MenuItemNormal(id: string) {
     <Link
       href={`/${id}`}
       key={id}
-      className="p-5 border-b-2 border-b-white flex gap-2 items-center"
+      className="px-5 py-2 flex gap-2 items-center hover:underline cursor-pointer"
     >
       {icon}
       {menuLabel}
