@@ -173,9 +173,10 @@ export function DataTable<TData, TValue>({
 
   function handleDelete(id: string) {
     toast({
-      title: `Registro ${id} com sucesso!`,
+      title: `Registro ${id} apagado com sucesso!`,
       description: 'A função foi apagada com sucesso',
       type: 'background',
+      variant: 'destructive',
     })
   }
 
@@ -254,7 +255,10 @@ export function DataTable<TData, TValue>({
                   <TableCell className="flex gap-2 cursor-pointer">
                     <button
                       aria-label="Deletar"
-                      onClick={() => handleDelete(idValue)}
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        handleDelete(idValue)
+                      }}
                     >
                       <Trash size={24} />
                     </button>

@@ -13,19 +13,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { memberTitlesData } from '@/data/memberTitles'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function BasicTopPersonalInfo(formControl: any) {
-  function getAllTitles() {
-    return memberTitlesData.map((title) => (
-      <SelectItem key={title.id} value={title.id} className="cursor-pointer ">
-        {title.name}
-      </SelectItem>
-    ))
-  }
   return (
-    <div className="flex flex-col gap-5 border rounded-lg border-gray-400 p-5">
+    <div className="flex flex-col gap-5 border rounded-lg border-gray-400 p-5 bg-white">
+      <h1 className="text-left">DADOS PESSOAIS</h1>
       {/* Início - Informações (Nome e sobrenome) */}
       <div className="flex gap-5 ">
         <FormField
@@ -81,17 +74,13 @@ export function BasicTopPersonalInfo(formControl: any) {
             </FormItem>
           )}
         />
-      </div>
-      {/* Fim - Informações (Nome e sobrenome) */}
 
-      {/* Início - Dt Nascimento e Ativo */}
-      <div className="flex gap-5">
         <FormField
           control={formControl}
           name="gender"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="required">Gênero</FormLabel>
+              <FormLabel className="required ">Gênero</FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
                   <SelectTrigger className="w-full lg:min-w-40 lg:max-w-40">
@@ -111,27 +100,8 @@ export function BasicTopPersonalInfo(formControl: any) {
             </FormItem>
           )}
         />
-        <FormField
-          control={formControl}
-          name="title"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="required">Cargo</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
-                  <SelectTrigger className="w-full lg:min-w-40 ">
-                    <SelectValue placeholder="Selecione" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent className="bg-white ">
-                  {getAllTitles()}
-                </SelectContent>
-              </Select>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
       </div>
+
       {/* Fim - Dt Nascimento e Ativo */}
     </div>
   )

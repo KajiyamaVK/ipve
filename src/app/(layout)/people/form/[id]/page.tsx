@@ -23,6 +23,7 @@ import { ActiveControl } from './activeControl'
 import { BasicTopPersonalInfo } from './BasicTopPersonalInfo'
 import { AddressDataInfo } from './AddressDataInfo'
 import { ContactInfo } from './ContactInfo'
+import { ChurchInfo } from './ChurchInfo'
 
 export default function PeopleForm() {
   const form = useForm<z.infer<typeof schema>>({
@@ -77,6 +78,7 @@ export default function PeopleForm() {
             <div className="flex flex-col gap-5">
               <ActiveControl {...form.control} />
               <BasicTopPersonalInfo {...form.control} />
+              <ChurchInfo {...form.control} />
             </div>
           </div>
 
