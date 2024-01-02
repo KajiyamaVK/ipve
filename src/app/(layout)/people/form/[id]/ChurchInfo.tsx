@@ -33,7 +33,7 @@ export function ChurchInfo(formControl: any) {
 
     const data: IChurch[] = []
 
-    churchesBranch.map((church) => {
+    churchesBranch.forEach((church) => {
       const churchData: IChurch = {
         value: church,
         label: church,
