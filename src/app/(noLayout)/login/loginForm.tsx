@@ -30,7 +30,7 @@ export default function LoginForm() {
   function markAsLogged(router: AppRouterInstance) {
     setIsLoading(true)
     router.push('/dashboard')
-    Cookie.set('ipve_auth_token', 'ajahdgfkajsdhgkh')
+    Cookie.set('ipve_auth_token', 'ajahdgfkajsdhgkh', { expires: 7 })
   }
 
   return (

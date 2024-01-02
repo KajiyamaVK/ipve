@@ -36,72 +36,12 @@ import { useForm } from 'react-hook-form'
 import { formsContext } from '@/contexts/formsContext'
 import { generalContext } from '@/contexts/generalContext'
 import { toast } from './use-toast'
+import { set } from 'zod'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
   dialogForm?: ReactNode
-}
-
-function useTable<TData, TValue>(
-  columns: ColumnDef<TData, TValue>[],
-  data: TData[],
-) {
-  const [sorting, setSorting] = useState<SortingState>([])
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
-
-  const table = useReactTable({
-    data,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-    onSortingChange: setSorting,
-    getSortedRowModel: getSortedRowModel(),
-    onColumnFiltersChange: setColumnFilters,
-    getFilteredRowModel: getFilteredRowModel(),
-    state: {
-      sorting,
-      columnFilters,
-    },
-  })
-
-  return { table, sorting, setSorting, columnFilters, setColumnFilters }
-}
-
-function renderTableCell<TData>(cell: Cell<TData, unknown>) {
-  if (cell.id !== '') {
-    return (
-      <TableCell key={cell.id}>
-        {flexRender(cell.column.columnDef.cell, cell.getContext())}
-      </TableCell>
-    )
-  } else {
-    return <TableCell key="default">Default Value</TableCell>
-  }
-}
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function renderSearchColumnsSelectOptions(header: any) {
-  const headerDataType = typeof header.column.columnDef.header
-
-  const label =
-    headerDataType === 'string'
-      ? header.column.columnDef.header
-      : header.column.columnDef.header({ column: {} }).props.label
-  return (
-    <option key={`${header.id}-option`} value={header.id}>
-      {label}
-    </option>
-  )
-}
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function renderHeaders(header: any) {
-  const label = flexRender(header.column.columnDef.header, header.getContext())
-
-  return (
-    <TableHead key={`${header.id}-TH`}>
-      {header.isPlaceholder ? null : label}
-    </TableHead>
-  )
 }
 
 export function DataTable<TData, TValue>({
@@ -111,6 +51,8 @@ export function DataTable<TData, TValue>({
 }: DataTableProps<TData, TValue>) {
   const { table } = useTable(columns, data)
   const [searchColumn, setSearchColumn] = useState('id')
+  const [buttonIsLoading, setButtonIsLoading] = useState(false)
+
   const router = useRouter()
 
   const [tableHeaderRow, TableHetHeaderRow] = useState<ReactNode[]>([])
@@ -154,7 +96,7 @@ export function DataTable<TData, TValue>({
 
   function pushToProperRoute() {
     setFormMode('add')
-
+    setButtonIsLoading(true)
     if (formType === 'page') {
       const registerRoute = `/${currentScreen.id}/form/0`
       router.push(registerRoute)
@@ -178,6 +120,70 @@ export function DataTable<TData, TValue>({
       type: 'background',
       variant: 'destructive',
     })
+  }
+
+  function useTable<TData, TValue>(
+    columns: ColumnDef<TData, TValue>[],
+    data: TData[],
+  ) {
+    const [sorting, setSorting] = useState<SortingState>([])
+    const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+
+    const table = useReactTable({
+      data,
+      columns,
+      getCoreRowModel: getCoreRowModel(),
+      onSortingChange: setSorting,
+      getSortedRowModel: getSortedRowModel(),
+      onColumnFiltersChange: setColumnFilters,
+      getFilteredRowModel: getFilteredRowModel(),
+      state: {
+        sorting,
+        columnFilters,
+      },
+    })
+
+    return { table, sorting, setSorting, columnFilters, setColumnFilters }
+  }
+
+  function renderTableCell<TData>(cell: Cell<TData, unknown>) {
+    if (cell.id !== '') {
+      return (
+        <TableCell key={cell.id}>
+          {flexRender(cell.column.columnDef.cell, cell.getContext())}
+        </TableCell>
+      )
+    } else {
+      return <TableCell key="default">Default Value</TableCell>
+    }
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  function renderSearchColumnsSelectOptions(header: any) {
+    const headerDataType = typeof header.column.columnDef.header
+
+    const label =
+      headerDataType === 'string'
+        ? header.column.columnDef.header
+        : header.column.columnDef.header({ column: {} }).props.label
+    return (
+      <option key={`${header.id}-option`} value={header.id}>
+        {label}
+      </option>
+    )
+  }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  function renderHeaders(header: any) {
+    const label = flexRender(
+      header.column.columnDef.header,
+      header.getContext(),
+    )
+
+    return (
+      <TableHead key={`${header.id}-TH`}>
+        {header.isPlaceholder ? null : label}
+      </TableHead>
+    )
   }
 
   return (
@@ -229,6 +235,7 @@ export function DataTable<TData, TValue>({
             className="w-20"
             variant={'default'}
             onClick={pushToProperRoute}
+            isLoading={buttonIsLoading}
           >
             Novo
           </Button>
