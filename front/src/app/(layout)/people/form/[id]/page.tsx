@@ -24,6 +24,7 @@ import { BasicTopPersonalInfo } from './BasicTopPersonalInfo'
 import { AddressDataInfo } from './AddressDataInfo'
 import { ContactInfo } from './ContactInfo'
 import { ChurchInfo } from './ChurchInfo'
+import { AccessControl } from './AccessControl'
 
 export default function PeopleForm() {
   const form = useForm<z.infer<typeof schema>>({
@@ -35,6 +36,14 @@ export default function PeopleForm() {
 
   const toast = useToast()
   const router = useRouter()
+
+  useEffect(() => {
+    const cep = form.watch('cep')
+    if (cep && cep.length === 9) {
+      handleCepSearch(cep)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form.watch('cep')])
   function onSubmit(values: z.infer<typeof schema>) {
     console.log(values)
     router.push('/people')
@@ -56,14 +65,6 @@ export default function PeopleForm() {
     form.setValue('city', data.localidade)
     form.setValue('state', data.uf)
   }
-
-  useEffect(() => {
-    const cep = form.watch('cep')
-    if (cep && cep.length === 9) {
-      handleCepSearch(cep)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [form.watch('cep')])
 
   return (
     <Form {...form}>
@@ -105,7 +106,7 @@ export default function PeopleForm() {
               )}
             />
           </div>
-          <div className="flex flex-col mt-5 gap-5">
+          <div className="flex mt-5 gap-10 ">
             <FormField
               control={form.control}
               name="isUser"
@@ -124,24 +125,28 @@ export default function PeopleForm() {
               )}
             />
 
-            <FormField
-              control={form.control}
-              name="hasFamilyInChurch"
-              render={({ field }) => (
-                <FormItem className="flex flex-row items-center space-x-3 space-y-0 ">
-                  <FormControl>
-                    <Checkbox
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                    />
-                  </FormControl>
-                  <div className="space-y-1 leading-none">
-                    <FormLabel>Possui família na igreja?</FormLabel>
-                  </div>
-                </FormItem>
-              )}
+            <AccessControl
+              form={form}
+              className="border-l-8 border-primary-dark pl-10"
             />
           </div>
+          <FormField
+            control={form.control}
+            name="hasFamilyInChurch"
+            render={({ field }) => (
+              <FormItem className="flex flex-row items-center space-x-3 space-y-0 ">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+                <div className="space-y-1 leading-none">
+                  <FormLabel>Possui família na igreja?</FormLabel>
+                </div>
+              </FormItem>
+            )}
+          />
         </div>
       </form>
     </Form>

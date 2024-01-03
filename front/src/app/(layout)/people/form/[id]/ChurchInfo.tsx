@@ -98,12 +98,13 @@ export function ChurchInfo(formControl: any) {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent className="bg-white w-full">
-                  <SelectItem value="SAF" className="cursor-pointer ">
-                    SAF
-                  </SelectItem>
-                  <SelectItem value="UMP" className="cursor-pointer ">
-                    UMP
-                  </SelectItem>
+                  {['UPH', 'SAF', 'UMP', 'UPA', 'UCP'].map((classes) => (
+                    <SelectContent key={classes} className="bg-white ">
+                      <SelectItem value={classes} className="cursor-pointer ">
+                        {classes}
+                      </SelectItem>
+                    </SelectContent>
+                  ))}
                 </SelectContent>
               </Select>
               <FormMessage />
