@@ -1,0 +1,19 @@
+{
+  "name": "ipve-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "tsc ./src/server.ts && node ./src/server.js"
+  },
+  "keywords": [],
+  "author": "Victor Kajiyama",
+  "license": "ISC",
+  "dependencies": {
+    "fastify": "^4.25.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.6"
+  }
+}
