@@ -1,0 +1,78 @@
+// This is your Prisma schema file,
+// learn more about it in the docs https//pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum ScreenType {
+  parent
+  child
+  normal
+}
+
+enum FormType {
+  page 
+  dialog
+  null
+}
+
+model screens{
+  id          Int      @id @default(autoincrement())
+  name        String
+  displayName String
+  menuLabel   String
+  type        ScreenType
+  order       Int
+  icon        String?
+  formType    FormType?
+  parentId    Int?  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+/////////////////////////////////////////////////////////////////////
+
+
+model peopleTitles {
+  id          Int      @id @default(autoincrement())
+  name        String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+/////////////////////////////////////////////////////////////////////
+
+model peopleRoles {
+  id          Int      @id @default(autoincrement())
+  name        String
+  hexColor    String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+/////////////////////////////////////////////////////////////////////
+
+model persons {
+    id Int @id @default(autoincrement())
+    memberFirstName String
+    memberLastName String
+    memberTitleId peopleTitles @relation( fields: [memberTitleId], references: [id])) 
+    roles ['Tecnologia' 'Tesouraria']
+    dateOfBirth '1988-05-21'
+    address 'Rua Primeiro de Janeiro'
+    complement 'Apt 1'
+    city 'São Paulo'
+    suburb 'Lapa'
+    uf 'SP'
+    cep '12345-123'
+    phones1 '1234567890'
+    phone1IsWhatsapp false
+    phone2 '0987654321'
+    photoUrl 'https//via.placeholder.com/150'
+    email 'victor.kajiyama@gmail.com'
+  }

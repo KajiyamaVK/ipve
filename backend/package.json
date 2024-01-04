@@ -1,19 +1,17 @@
 {
-  "name": "ipve-backend",
-  "version": "1.0.0",
-  "description": "",
-  "main": "server.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "tsc ./src/server.ts && node ./src/server.js"
-  },
-  "keywords": [],
-  "author": "Victor Kajiyama",
-  "license": "ISC",
-  "dependencies": {
-    "fastify": "^4.25.2"
-  },
-  "devDependencies": {
-    "@types/node": "^20.10.6"
-  }
+	"devDependencies": {
+		"@prisma/client": "^5.7.1",
+		"@rocketseat/eslint-config": "^2.1.0",
+		"eslint": "^8.56.0",
+		"nodemon": "^3.0.2",
+		"prisma": "5.7.1",
+		"ts-node": "^10.9.2"
+	},
+	"scripts": {
+		"prisma-script": "nodemon script.ts"
+	},
+	"dependencies": {
+		"@fastify/cookie": "^9.2.0",
+		"fastify": "^4.25.2"
+	}
 }
