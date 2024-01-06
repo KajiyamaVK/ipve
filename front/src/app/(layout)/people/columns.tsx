@@ -2,7 +2,6 @@
 
 import { ColumnDef } from '@tanstack/react-table'
 import { SortedGridHeader } from '@/components/ui/sortedGridHeader'
-import { TMembersGridHeader } from '@/types/TMembersGridHeader'
 import { TMembers } from '@/types/TMembers'
 
 export const columns: ColumnDef<TMembers>[] = [
@@ -11,7 +10,7 @@ export const columns: ColumnDef<TMembers>[] = [
     header: ({ column }) => <SortedGridHeader column={column} label="ID" />,
   },
   {
-    accessorKey: 'name',
+    accessorKey: 'fullname',
     header: ({ column }) => <SortedGridHeader column={column} label="Nome" />,
   },
   {
@@ -31,7 +30,7 @@ export const columns: ColumnDef<TMembers>[] = [
                 key={role}
                 className={`mr-2 text-white ${row.getValue} px-2 pt-1 pb-2 rounded-lg`}
               >
-                {role.name}
+                {role}
               </span>
             ))}
           </div>
@@ -39,67 +38,51 @@ export const columns: ColumnDef<TMembers>[] = [
     },
   },
   {
+    accessorKey: 'dateOfBirth',
+    header: 'Data de Nascimento',
+  },
+  {
+    accessorKey: 'address',
+    header: 'Endereço',
+  },
+  {
+    accessorKey: 'complement',
+    header: 'Complemento',
+  },
+  {
+    accessorKey: 'suburb',
+    header: 'Bairro',
+  },
+  {
+    accessorKey: 'city',
+    header: 'Cidade',
+  },
+  {
+    accessorKey: 'uf',
+    header: 'UF',
+  },
+  {
+    accessorKey: 'cep',
+    header: 'Cep',
+  },
+  {
+    accessorKey: 'phone1',
+    header: 'Telefone 1',
+  },
+  {
+    accessorKey: 'phone1isWhatsapp',
+    header: 'Whatsapp?',
+  },
+  {
+    accessorKey: 'phone2',
+    header: 'Telefone 2',
+  },
+  {
     accessorKey: 'email',
-    accessorFn: (row) => row.email,
     header: 'Email',
   },
   {
-    accessorKey: 'mainPhone',
-    accessorFn: (row) => row.mainPhone,
-    header: 'Telefone Principal',
-  },
-  {
-    accessorKey: 'dateOfBirth',
-    accessorFn: (row) => row.dateOfBirth,
-    header: 'Data de Nascimento',
+    accessorKey: 'photoUrl',
+    header: 'Url da Foto',
   },
 ]
-// export const columns: ColumnDef<TMembersGridHeader>[] = [
-//   {
-//     accessorKey: 'id',
-//     header: ({ column }) => <SortedGridHeader column={column} label="ID" />,
-//   },
-//   {
-//     accessorKey: 'name',
-//     header: ({ column }) => <SortedGridHeader column={column} label="Nome" />,
-//   },
-//   {
-//     accessorKey: 'memberTitle',
-//     header: ({ column }) => <SortedGridHeader column={column} label="Cargo" />,
-//   },
-//   {
-//     accessorKey: 'roles',
-//     header: 'Funções',
-//     cell: ({ row }) => {
-//       const roles = row.original.roles
-//       if (roles)
-//         return (
-//           <div>
-//             {roles.map((role) => (
-//               <span
-//                 key={role.name.toLowerCase()}
-//                 className={`mr-2 text-white ${role.color} px-2 pt-1 pb-2 rounded-lg`}
-//               >
-//                 {role.name}
-//               </span>
-//             ))}
-//           </div>
-//         )
-//     },
-//   },
-//   {
-//     accessorKey: 'email',
-//     accessorFn: (row) => row.email,
-//     header: 'Email',
-//   },
-//   {
-//     accessorKey: 'mainPhone',
-//     accessorFn: (row) => row.mainPhone,
-//     header: 'Telefone Principal',
-//   },
-//   {
-//     accessorKey: 'dateOfBirth',
-//     accessorFn: (row) => row.dateOfBirth,
-//     header: 'Data de Nascimento',
-//   },
-// ]

@@ -18,11 +18,19 @@ import { churchesBranch } from '@/data/churchesBranch'
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function ChurchInfo(formControl: any) {
   function getAllTitles() {
-    return memberTitlesData.map((title) => (
-      <SelectItem key={title.id} value={title.id} className="cursor-pointer ">
-        {title.name}
-      </SelectItem>
-    ))
+    return memberTitlesData.map((title) => {
+      if (title.id)
+        return (
+          <SelectItem
+            key={title.id}
+            value={title.id.toString()}
+            className="cursor-pointer "
+          >
+            {title.name}
+          </SelectItem>
+        )
+      return <></>
+    })
   }
 
   function populateChurchesSelect() {
