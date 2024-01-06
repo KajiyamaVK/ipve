@@ -19,9 +19,9 @@ export const columns: ColumnDef<TRoles>[] = [
   },
   {
     header: 'Cor',
-    accessorKey: 'tailwindThemeColor',
+    accessorKey: 'tailwindColor',
     cell: ({ row }) => {
-      const color = row.getValue('tailwindThemeColor')
+      const color = row.getValue('tailwindColor')
 
       return (
         <div>

@@ -21,7 +21,7 @@ export function MenuDrawer() {
 
   return (
     <div
-      className={` fixed top-0   z-30 h-screen transition-transform flex ${
+      className={` fixed top-0   z-50 h-screen transition-transform flex ${
         isMenuOpen ? 'translate-x-0' : 'translate-x-[-85%]'
       }`}
     >

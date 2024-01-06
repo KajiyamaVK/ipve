@@ -1,7 +1,7 @@
 'use client'
 
 import { z } from 'zod'
-
+import { TRoles } from '@/types/TRoles'
 import {
   Dialog,
   DialogContent,
@@ -12,12 +12,12 @@ import {
 import { useForm } from 'react-hook-form'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { useContext, useEffect, useState } from 'react'
+import { Dispatch, use, useContext, useEffect, useState } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { DialogColorSelection, availableColors } from './DialogColorSelection'
 import { formsContext } from '@/contexts/formsContext'
 import { useToast } from '@/components/ui/use-toast'
-import { rolesData } from '@/data/rolesData'
+import { usePathname } from 'next/navigation'
 
 const DialogFormSchema = z.object({
   roleName: z.string().min(1, 'Campo obrigatório'),
@@ -29,8 +29,14 @@ function obterElementoAleatorio(array: string[]) {
   return array[indiceAleatorio]
 }
 
-export function DialogModal() {
-  const { handleSubmit, register, formState, setValue } = useForm({
+interface IDialogModal {
+  setData: Dispatch<React.SetStateAction<TRoles[]>>
+  getData: () => void
+  data: TRoles[]
+}
+
+export function DialogModal({ setData, getData, data }: IDialogModal) {
+  const { handleSubmit, register, formState, setValue, watch } = useForm({
     resolver: zodResolver(DialogFormSchema),
   })
 
@@ -38,42 +44,85 @@ export function DialogModal() {
 
   const [colorSelected, setColorSelected] = useState<string>(elementoAleatorio)
   const { toast } = useToast()
-  const { isDialogOpen, setIsDialogOpen, formMode, currentSelectedItem } =
-    useContext(formsContext)
-
-  function saveData() {
-    toast({
-      title: 'Função cadastrada com sucesso!',
-      description:
-        'A função foi cadastrada com sucesso e já pode ser utilizada no cadastro de pessoas.',
-      type: 'background',
-    })
-    setIsDialogOpen(false)
-  }
+  const {
+    isDialogOpen,
+    setIsDialogOpen,
+    formMode,
+    setFormMode,
+    currentSelectedItem,
+  } = useContext(formsContext)
+  const path = usePathname()
 
   useEffect(() => {
-    if (formMode === 'edit') {
-      const role = rolesData.filter(
-        (role) => role.id === currentSelectedItem,
-      )[0]
-      if (role) {
-        setValue('roleName', role.name)
-        setValue('description', role.description)
-        setColorSelected(role.tailwindThemeColor)
+    if (isDialogOpen) {
+      console.log('currentSelectedItem', currentSelectedItem)
+      console.log('formMode', formMode)
+
+      if (formMode === 'view') {
+        const selectedItem = data.find(
+          (item) => item.id === currentSelectedItem,
+        )
+        setValue('roleName', selectedItem?.name)
+        setValue('description', selectedItem?.description)
+        if (selectedItem?.tailwindColor)
+          setColorSelected(selectedItem?.tailwindColor)
       }
-    } else {
-      setValue('roleName', '')
-      setValue('description', '')
-      setColorSelected(elementoAleatorio)
+
+      if (formMode === 'add') {
+        setValue('roleName', '')
+        setValue('description', '')
+        setColorSelected(elementoAleatorio)
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isDialogOpen])
+  }, [currentSelectedItem, formMode, isDialogOpen])
+
+  async function saveData() {
+    const data: TRoles = {
+      name: watch('roleName'),
+      description: watch('description'),
+      tailwindColor: colorSelected,
+    }
+
+    const endPoint = `${process.env.NEXT_PUBLIC_API_URL}${path}${
+      currentSelectedItem === 0 && formMode === 'edit'
+        ? ''
+        : `/${currentSelectedItem}`
+    }`
+
+    fetch(endPoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    })
+      .then(() => {
+        console.log('Success:', data)
+        toast({
+          title: 'Função registrada com sucesso!',
+          description:
+            'A função foi registrada com sucesso e já pode ser utilizada no cadastro de pessoas.',
+          type: 'background',
+        })
+      })
+      .then(() => {
+        getData()
+        setIsDialogOpen(false)
+      })
+      .catch((error) => {
+        console.error('Error:', error)
+        throw new Error(error)
+      })
+  }
+
+  function enableForm(e: React.MouseEvent<HTMLButtonElement>) {
+    e.preventDefault()
+    setFormMode('edit')
+  }
 
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-      {/* <DialogTrigger className="bg-primary text-primary-foreground px-5 py-2 rounded-lg">
-        Novo
-      </DialogTrigger> */}
       <DialogContent>
         <DialogHeader>
           <DialogTitle className="border-b-2 border-gray-500">
@@ -97,6 +146,7 @@ export function DialogModal() {
               <Input
                 type="text"
                 placeholder="Ex: Louvor, Pregação, Tesouraria, etc."
+                disabled={formMode === 'view'}
                 {...register('roleName')}
               />
               <p className="text-destructive">
@@ -109,6 +159,7 @@ export function DialogModal() {
                 <DialogColorSelection
                   colorSelected={colorSelected}
                   setColorSelected={setColorSelected}
+                  isDisabled={formMode === 'view'}
                 />
               </div>
             </div>
@@ -120,13 +171,23 @@ export function DialogModal() {
             </label>
             <Input
               placeholder="Ex.: Função administrativa de controle financeiro da igreja"
+              disabled={formMode === 'view'}
               {...register('description')}
             />
           </div>
-
-          <Button type="submit" className="mt-5 float-right mr-5">
-            Salvar
-          </Button>
+          {formMode === 'view' ? (
+            <Button
+              type="button"
+              className="mt-5 float-right mr-5"
+              onClick={(e) => enableForm(e)}
+            >
+              Editar
+            </Button>
+          ) : (
+            <Button type="submit" className="mt-5 float-right mr-5">
+              Salvar
+            </Button>
+          )}
         </form>
       </DialogContent>
     </Dialog>

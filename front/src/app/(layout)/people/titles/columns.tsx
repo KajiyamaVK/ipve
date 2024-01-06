@@ -13,8 +13,4 @@ export const columns: ColumnDef<TMembersTitles>[] = [
     accessorKey: 'name',
     header: ({ column }) => <SortedGridHeader column={column} label="Cargo" />,
   },
-  {
-    header: 'Descrição',
-    accessorKey: 'description',
-  },
 ]

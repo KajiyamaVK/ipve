@@ -13,8 +13,8 @@ type TFormMode = 'add' | 'edit' | 'view' | null
 interface IFormsContext {
   isDialogOpen: boolean
   setIsDialogOpen: Dispatch<SetStateAction<boolean>>
-  currentSelectedItem?: string | null
-  setCurrentSelectedItem: Dispatch<SetStateAction<string>>
+  currentSelectedItem?: number | null
+  setCurrentSelectedItem: Dispatch<SetStateAction<number>>
   formMode: TFormMode
   setFormMode: Dispatch<SetStateAction<TFormMode>>
 }
@@ -24,7 +24,7 @@ export const formsContext = createContext({} as IFormsContext)
 export function FormsContextProvider({ children }: { children: ReactNode }) {
   const [formMode, setFormMode] = useState<TFormMode>('add')
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false)
-  const [currentSelectedItem, setCurrentSelectedItem] = useState<string>('')
+  const [currentSelectedItem, setCurrentSelectedItem] = useState<number>(0)
 
   return (
     <formsContext.Provider

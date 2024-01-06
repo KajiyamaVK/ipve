@@ -28,10 +28,10 @@ import {
 } from './accordion'
 
 import { Trash } from '@phosphor-icons/react'
-import { ReactNode, useContext, useEffect, useState } from 'react'
+import { Dispatch, ReactNode, useContext, useEffect, useState } from 'react'
 import { Input } from './input'
 import { Button } from './button'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { formsContext } from '@/contexts/formsContext'
 import { generalContext } from '@/contexts/generalContext'
@@ -39,35 +39,41 @@ import { toast } from './use-toast'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
-  data: TData[]
+  dataValues: TData[]
   dialogForm?: ReactNode
+  setData?: Dispatch<React.SetStateAction<TData[]>>
+  getData: () => void
 }
 
 export function DataTable<TData, TValue>({
   columns,
-  data,
+  dataValues,
   dialogForm = <></>,
+  setData,
+  getData,
 }: DataTableProps<TData, TValue>) {
-  const { table } = useTable(columns, data)
+  const { table } = useTable(columns, dataValues)
   const [searchColumn, setSearchColumn] = useState('id')
   const [buttonIsLoading, setButtonIsLoading] = useState(false)
 
   const router = useRouter()
 
-  const [tableHeaderRow, TableHetHeaderRow] = useState<ReactNode[]>([])
+  const [tableHeaderRow, setTableHetHeaderRow] = useState<ReactNode[]>([])
   const [SearchColumnsSelectOptions, setSearchColumnsSelectOptions] = useState<
     ReactNode[]
   >([])
 
   const { register, watch } = useForm()
 
-  const { setFormMode, setIsDialogOpen, setCurrentSelectedItem } =
+  const { setFormMode, setIsDialogOpen, setCurrentSelectedItem, isDialogOpen } =
     useContext(formsContext)
-  const { currentScreen } = useContext(generalContext)
+  const { currentScreen, setIsScreenLoading } = useContext(generalContext)
   const { formType } = currentScreen
+  const path = usePathname()
 
   useEffect(() => {
     setIsDialogOpen(false)
+
     const TableHeaderRowArray: ReactNode[] = []
     const TableHeaderRowArrayHeaders: ReactNode[] = []
     const tempArray: ReactNode[] = []
@@ -88,10 +94,17 @@ export function DataTable<TData, TValue>({
       )
     })
 
-    TableHetHeaderRow(TableHeaderRowArray)
+    setTableHetHeaderRow(TableHeaderRowArray)
     setSearchColumnsSelectOptions(tempArray)
+    setIsScreenLoading(false)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  useEffect(() => {
+    if (isDialogOpen) {
+      setButtonIsLoading(false)
+    }
+  }, [isDialogOpen])
 
   function pushToProperRoute() {
     setFormMode('add')
@@ -104,21 +117,12 @@ export function DataTable<TData, TValue>({
     }
   }
 
-  function handleViewState(id: string) {
+  function handleViewState(id: number) {
     if (currentScreen.formType === 'dialog') {
       setCurrentSelectedItem(id)
       setFormMode('view')
       setIsDialogOpen(true)
     } else router.push(`/${currentScreen.id}/form/${id}`)
-  }
-
-  function handleDelete(id: string) {
-    toast({
-      title: `Registro ${id} apagado com sucesso!`,
-      description: 'A função foi apagada com sucesso',
-      type: 'background',
-      variant: 'destructive',
-    })
   }
 
   function useTable<TData, TValue>(
@@ -143,6 +147,35 @@ export function DataTable<TData, TValue>({
     })
 
     return { table, sorting, setSorting, columnFilters, setColumnFilters }
+  }
+
+  async function handleDelete(id: number) {
+    await fetch(`${process.env.NEXT_PUBLIC_API_URL}${path}/${id}`, {
+      method: 'DELETE',
+    })
+      .then((response) => {
+        if (response.status === 200) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          // const newTableData = dataValues.filter((item: any) => item.id !== id)
+          getData()
+          if (typeof setData === 'undefined')
+            throw new Error('setData is undefined')
+          toast({
+            title: `Registro ${id} apagado com sucesso!`,
+            description: 'A função foi apagada com sucesso',
+            type: 'background',
+          })
+        } else {
+          toast({
+            title: `Erro ao apagar o registro ${id}`,
+            description: 'A função não foi apagada',
+            type: 'background',
+          })
+        }
+      })
+      .catch((err) => {
+        throw new Error(err)
+      })
   }
 
   function renderTableCell<TData>(cell: Cell<TData, unknown>) {
@@ -241,49 +274,54 @@ export function DataTable<TData, TValue>({
         </div>
         {dialogForm}
       </div>
-      <Table className="bg-white">
-        <TableHeader className="text-white bg-[#68b3c6] ">
-          {tableHeaderRow}
-        </TableHeader>
-        <TableBody>
-          {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row) => {
-              const idValue = row.getValue('id') as string
-              return (
-                <TableRow
-                  key={row.id}
-                  id={idValue}
-                  className="hover:bg-primary-dark hover:text-primary-foreground cursor-pointer "
-                  data-state={row.getIsSelected() && 'selected'}
-                  onClick={() => handleViewState(idValue)}
+      <div className="shadow-md shadow-black">
+        <Table className="bg-white ">
+          <TableHeader className="text-white bg-[#68b3c6] ">
+            {tableHeaderRow}
+          </TableHeader>
+          <TableBody>
+            {table.getRowModel().rows?.length ? (
+              table.getRowModel().rows.map((row) => {
+                const idValue = row.getValue('id') as number
+                return (
+                  <TableRow
+                    key={row.id}
+                    id={idValue}
+                    className="hover:bg-primary-dark hover:text-primary-foreground cursor-pointer "
+                    data-state={row.getIsSelected() && 'selected'}
+                    onClick={() => handleViewState(idValue)}
+                  >
+                    {row.getVisibleCells().map((cell) => renderTableCell(cell))}
+                    <TableCell className="flex gap-2 cursor-pointer">
+                      <button
+                        aria-label="Deletar"
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          handleDelete(idValue)
+                        }}
+                      >
+                        <Trash size={24} />
+                      </button>
+                    </TableCell>
+                  </TableRow>
+                )
+              })
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center"
                 >
-                  {row.getVisibleCells().map((cell) => renderTableCell(cell))}
-                  <TableCell className="flex gap-2 cursor-pointer">
-                    <button
-                      aria-label="Deletar"
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        handleDelete(idValue)
-                      }}
-                    >
-                      <Trash size={24} />
-                    </button>
-                  </TableCell>
-                </TableRow>
-              )
-            })
-          ) : (
-            <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center">
-                Nenhum resultado encontrado
-                <p className="text-destructive font-bold">
-                  A coluna selecionada na busca é a correta?
-                </p>
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
+                  Nenhum resultado encontrado
+                  <p className="text-destructive font-bold">
+                    A coluna selecionada na busca é a correta?
+                  </p>
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </div>
     </div>
   )
 }

@@ -19,6 +19,8 @@ interface iGeneralContext {
   currentScreen: TMenuDrawerItem
   isMenuOpen: boolean
   setIsMenuOpen: Dispatch<SetStateAction<boolean>>
+  isScreenLoading: boolean
+  setIsScreenLoading: Dispatch<SetStateAction<boolean>>
 }
 
 export const generalContext = createContext({} as iGeneralContext)
@@ -26,6 +28,7 @@ export const generalContext = createContext({} as iGeneralContext)
 export function GeneralContextProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isScreenLoading, setIsScreenLoading] = useState(false)
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [currentScreen, setCurrentScreen] = useState<TMenuDrawerItem>(
     {} as TMenuDrawerItem,
@@ -36,7 +39,7 @@ export function GeneralContextProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const pathnameParts = path.split('/').filter((part) => part !== '')
     if (pathnameParts.length > 0) {
-      const currentScreenData = getRouteData(pathnameParts[0])
+      const currentScreenData = getRouteData(pathnameParts.pop() ?? '')
       if (!currentScreenData) throw new Error('Screen not found')
       setCurrentScreen(currentScreenData)
     } else {
@@ -56,6 +59,8 @@ export function GeneralContextProvider({ children }: { children: ReactNode }) {
         currentScreen,
         isMenuOpen,
         setIsMenuOpen,
+        isScreenLoading,
+        setIsScreenLoading,
       }}
     >
       {children}

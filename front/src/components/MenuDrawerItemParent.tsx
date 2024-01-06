@@ -6,10 +6,12 @@ import {
 } from './ui/accordion'
 import Link from 'next/link'
 import { getRouteData } from '@/utils/getRouteData'
+import { useContext } from 'react'
+import { generalContext } from '@/contexts/generalContext'
 
 export function MenuItemParent(id: string) {
   const { menuLabel, icon, children } = getRouteData(id)
-
+  const { setIsScreenLoading } = useContext(generalContext)
   return (
     <div key={menuLabel}>
       <Accordion type="single" collapsible>
@@ -24,13 +26,20 @@ export function MenuItemParent(id: string) {
               children!.map((child) => {
                 if (child.type === 'children') {
                   return (
-                    <Link
-                      href={`/${child.id}`}
-                      className="hover:underline cursor-pointer px-5  pt-1"
+                    <div
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        setIsScreenLoading(true)
+                      }}
                       key={child.menuLabel}
                     >
-                      {child.menuLabel}
-                    </Link>
+                      <Link
+                        href={`${child.path}`}
+                        className="hover:underline cursor-pointer px-5  pt-1"
+                      >
+                        {child.menuLabel}
+                      </Link>
+                    </div>
                   )
                 }
                 return null

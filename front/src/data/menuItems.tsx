@@ -4,6 +4,7 @@ import { TMenuDrawerItem } from '@/types/TMenuDrawerItem'
 export const menuItems: TMenuDrawerItem[] = [
   {
     id: 'dashboard',
+    path: '/',
     displayName: 'Dashboard',
     menuLabel: 'Dashboard',
     type: 'normal',
@@ -24,6 +25,7 @@ export const menuItems: TMenuDrawerItem[] = [
         id: 'people',
         displayName: 'Cadastro de Pessoas',
         menuLabel: 'Pessoas',
+        path: '/people',
         type: 'children',
         order: 1,
         formType: 'page',
@@ -32,6 +34,7 @@ export const menuItems: TMenuDrawerItem[] = [
         id: 'member_titles',
         displayName: 'Cadastro de Cargos',
         menuLabel: 'Cargos',
+        path: '/people/titles',
         type: 'children',
         order: 2,
         formType: 'dialog',
@@ -40,6 +43,7 @@ export const menuItems: TMenuDrawerItem[] = [
         id: 'roles',
         displayName: 'Cadastro de Funções',
         menuLabel: 'Funções',
+        path: '/people/roles',
         type: 'children',
         order: 3,
         formType: 'dialog',
