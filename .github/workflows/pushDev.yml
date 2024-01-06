@@ -15,13 +15,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository Code
-    - uses: actions/checkout@v3
-      with:
-        node-version: '18.x'
-    - run: npm install
-    - run: npm run lint --fix
-    - run: npm run build 
+      - name: Checkout repository Code
+      - uses: actions/checkout@v3
+        with:
+          node-version: '18.x'
+      - run: npm install
+      - run: npm run lint --fix
+      - run: npm run build 
 
           
           
