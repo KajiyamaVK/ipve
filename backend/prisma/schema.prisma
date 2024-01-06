@@ -44,35 +44,49 @@ model peopleTitles {
   name        String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  persons people[] @relation()
 }
 
 /////////////////////////////////////////////////////////////////////
 
 model peopleRoles {
-  id          Int      @id @default(autoincrement())
-  name        String
-  hexColor    String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id            Int      @id @default(autoincrement())
+  name          String
+  tailwindColor String
+  description   String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
 }
 /////////////////////////////////////////////////////////////////////
 
-model persons {
+enum genderType {
+  m
+  f
+} 
+
+/////////////////////////////////////////////////////////////////////
+model people {
     id Int @id @default(autoincrement())
-    memberFirstName String
-    memberLastName String
-    memberTitleId peopleTitles @relation( fields: [memberTitleId], references: [id])) 
-    roles ['Tecnologia' 'Tesouraria']
-    dateOfBirth '1988-05-21'
-    address 'Rua Primeiro de Janeiro'
-    complement 'Apt 1'
-    city 'São Paulo'
-    suburb 'Lapa'
-    uf 'SP'
-    cep '12345-123'
-    phones1 '1234567890'
-    phone1IsWhatsapp false
-    phone2 '0987654321'
-    photoUrl 'https//via.placeholder.com/150'
-    email 'victor.kajiyama@gmail.com'
+    fullName String
+    titleId Int
+    memberTitle peopleTitles @relation( fields: [titleId], references: [id])
+    rolesId String?
+    dateOfBirth DateTime?
+    gender genderType
+    address String?
+    complement String?
+    city String?
+    suburb String?
+    uf String?
+    cep String?
+    phone1 String?
+    phone1IsWhatsapp Boolean?
+    phone2 String?
+    photoUrl String?
+    email String?
   }
+
+/////////////////////////////////////////////////////////////////////
+
+

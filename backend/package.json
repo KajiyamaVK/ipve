@@ -5,13 +5,17 @@
 		"eslint": "^8.56.0",
 		"nodemon": "^3.0.2",
 		"prisma": "5.7.1",
-		"ts-node": "^10.9.2"
+		"ts-node": "^10.9.2",
+		"zod": "^3.22.4"
 	},
 	"scripts": {
-		"prisma-script": "nodemon script.ts"
+		"prisma-script": "nodemon script.ts",
+		"lint": "eslint . --ext .ts", 
+		"build": "eslint . --ext .ts && tsc"
 	},
 	"dependencies": {
 		"@fastify/cookie": "^9.2.0",
+		"@fastify/cors": "^8.5.0",
 		"fastify": "^4.25.2"
 	}
 }

@@ -3,7 +3,7 @@ import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 
 async function main() {
-  const allUsers = await prisma.screen.createMany({
+  const allUsers = await prisma.screens.createMany({
     data: [
       {
         id: 1,

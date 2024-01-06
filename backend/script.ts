@@ -3,8 +3,8 @@ import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 // script to select all screens
 async function main() {
-  const allUsers = await prisma.screen.findMany()
-  console.log(allUsers)
+  const result = await prisma.peopleRoles.deleteMany()
+  console.log(result)
 }
 
 main()
@@ -13,4 +13,5 @@ main()
   })
   .finally(async () => {
     await prisma.$disconnect()
+    process.exit(0)
   })
