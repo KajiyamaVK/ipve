@@ -12,7 +12,7 @@
 	"scripts": {
 		"prisma-script": "nodemon script.ts",
 		"lint": "eslint . --ext .ts",
-		"build": "eslint . --ext .ts && tsc && prisma generate"
+		"build": "prisma generate && eslint . --ext .ts && tsc "
 	},
 	"dependencies": {
 		"@fastify/cookie": "^9.2.0",
