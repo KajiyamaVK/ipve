@@ -12,7 +12,8 @@
 	"scripts": {
 		"prisma-script": "nodemon script.ts",
 		"lint": "eslint . --ext .ts",
-		"build": "prisma generate && eslint . --ext .ts && tsc "
+		"build": "prisma generate && eslint . --ext .ts && tsc ",
+		"vercel-build": "npm run build && prisma generate" 
 	},
 	"dependencies": {
 		"@fastify/cookie": "^9.2.0",
