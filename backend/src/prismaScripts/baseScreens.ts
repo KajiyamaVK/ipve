@@ -55,7 +55,7 @@ async function main() {
       },
     ],
   })
-  console.log(allUsers)
+  
 }
 
 main()

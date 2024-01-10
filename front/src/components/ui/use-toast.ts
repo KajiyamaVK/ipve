@@ -40,11 +40,11 @@ type Action =
     }
   | {
       type: ActionType['DISMISS_TOAST']
-      toastId?: ToasterToast['id']
+      toastId: string
     }
   | {
       type: ActionType['REMOVE_TOAST']
-      toastId?: ToasterToast['id']
+      toastId: string
     }
 
 interface State {
@@ -143,7 +143,7 @@ function toast({ ...props }: Toast) {
   const update = (props: ToasterToast) =>
     dispatch({
       type: 'UPDATE_TOAST',
-      toast: { ...props, id },
+      toast: { ...props },
     })
   const dismiss = () => dispatch({ type: 'DISMISS_TOAST', toastId: id })
 
@@ -151,7 +151,7 @@ function toast({ ...props }: Toast) {
     type: 'ADD_TOAST',
     toast: {
       ...props,
-      id,
+      id: id as never,
       open: true,
       onOpenChange: (open) => {
         if (!open) dismiss()
@@ -182,7 +182,7 @@ function useToast() {
   return {
     ...state,
     toast,
-    dismiss: (toastId?: string) => dispatch({ type: 'DISMISS_TOAST', toastId }),
+    dismiss: (toastId: string) => dispatch({ type: 'DISMISS_TOAST', toastId }),
   }
 }
 

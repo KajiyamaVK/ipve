@@ -1,12 +1,40 @@
 import { PrismaClient } from '@prisma/client'
 import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify'
+import { z } from 'zod'
+
+const getBaseData = z.object({
+  typeOfData: z.enum(['screens', 'churchBranches']),
+})
 
 export async function generalRoutes(app: FastifyInstance) {
   const prisma = new PrismaClient()
+  app.post('/', async (req: FastifyRequest, res: FastifyReply) => {
+    let body
 
-  app.get('/menuScreens', async (req: FastifyRequest, res: FastifyReply) => {
-    const result = await prisma.screens.findMany()
+    try {
+      body = getBaseData.parse(req.body)
+    } catch (err) {
+      res.status(500).send({ message: `Zod Parse: ${err}` })
+    }
 
-    return res.status(200).send(result)
+    if (body) {
+      let data
+      try {
+        switch (body.typeOfData) {
+          case 'screens':
+            data = await prisma.screens.findMany()
+            break
+          case 'churchBranches':
+            data = await prisma.churchBranches.findMany()
+            break
+          default:
+            res.status(500).send({ message: 'Invalid typeOfData' })
+            break
+        }
+        res.status(200).send({ data })
+      } catch (err) {
+        res.status(500).send({ message: `Erro ao rodar o Prisma: ${err}` })
+      }
+    }
   })
 }

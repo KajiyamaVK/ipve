@@ -1,3 +1,5 @@
+'use client'
+
 import {
   FormControl,
   FormField,
@@ -5,7 +7,6 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
-import Select2 from 'react-select'
 import {
   Select,
   SelectContent,
@@ -13,42 +14,65 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { memberTitlesData } from '@/data/memberTitles'
-import { churchesBranch } from '@/data/churchesBranch'
+import { getAllDataPost } from '@/utils/fetchData'
+import { ReactNode, useEffect, useState } from 'react'
+
+interface IChurch {
+  id: number
+  name: string
+}
+
+function populatingSociety(): ReactNode {
+  const societies = ['UPH', 'SAF', 'UMP', 'UPA', 'UCP']
+
+  return societies.map((data) => (
+    <SelectItem key={data} value={data} className="cursor-pointer ">
+      {data}
+    </SelectItem>
+  ))
+}
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function ChurchInfo(formControl: any) {
-  function getAllTitles() {
-    return memberTitlesData.map((title) => {
-      if (title.id)
-        return (
-          <SelectItem
-            key={title.id}
-            value={title.id.toString()}
-            className="cursor-pointer "
-          >
-            {title.name}
-          </SelectItem>
-        )
-      return <></>
+  const [churchOptions, setChurchOptions] = useState<ReactNode[]>([])
+
+  useEffect(() => {
+    populateChurchesSelect()
+    console.log('render')
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  useEffect(() => {
+    console.log('churchOptions', churchOptions)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [churchOptions])
+
+  async function getAllChurches(): Promise<IChurch[]> {
+    const data = await getAllDataPost<{ data: IChurch[] }>({
+      endpoint: '',
+      body: {
+        typeOfData: 'churchBranches',
+      },
     })
+
+    return data.data
   }
+  async function populateChurchesSelect() {
+    const churchesBranch = await getAllChurches()
+    const element: ReactNode[] = []
+    churchesBranch.forEach((church: IChurch) =>
+      element.push(
+        <SelectItem
+          key={church.id}
+          value={church.id.toString()}
+          className="cursor-pointer "
+        >
+          {church.name}
+        </SelectItem>,
+      ),
+    )
 
-  function populateChurchesSelect() {
-    interface IChurch {
-      value: string
-      label: string
-    }
-
-    const data: IChurch[] = []
-
-    churchesBranch.forEach((church) => {
-      const churchData: IChurch = {
-        value: church,
-        label: church,
-      }
-      data.push(churchData)
-    })
-    return data
+    setChurchOptions(element)
   }
 
   return (
@@ -58,61 +82,18 @@ export function ChurchInfo(formControl: any) {
       <div className="flex gap-5 text-left">
         <FormField
           control={formControl}
-          name="branch"
+          name="churchId"
           render={({ field }) => (
             <FormItem>
               <FormLabel className="required  ">Igreja</FormLabel>
-              <Select2
-                styles={{
-                  control: (baseStyles, state) => ({
-                    ...baseStyles,
-                    borderColor: state.isFocused ? '#747474' : '#747474',
-                    boxShadow: state.isFocused ? '#747474' : '#747474',
-                  }),
-                  placeholder: (baseStyles) => ({
-                    ...baseStyles,
-                    color: '#000',
-                  }),
-                  dropdownIndicator: (baseStyles) => ({
-                    ...baseStyles,
-                    color: '#747474',
-                  }),
-                  option: (baseStyles, state) => ({
-                    ...baseStyles,
-                    color: state.isFocused ? 'white' : 'black',
-                    backgroundColor: state.isFocused ? '#406f7a' : 'white',
-                  }),
-                }}
-                onChange={field.onChange}
-                defaultInputValue={field.value}
-                options={populateChurchesSelect()}
-                className="w-full lg:min-w-80 lg:max-w-40 bg-white"
-                placeholder="Selecione"
-              />
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={formControl}
-          name="Society"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Sociedade</FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
-                  <SelectTrigger className="w-full lg:min-w-40 lg:max-w-40">
+                  <SelectTrigger className="w-full lg:min-w-40 ">
                     <SelectValue placeholder="Selecione" />
                   </SelectTrigger>
                 </FormControl>
-                <SelectContent className="bg-white w-full">
-                  {['UPH', 'SAF', 'UMP', 'UPA', 'UCP'].map((classes) => (
-                    <SelectContent key={classes} className="bg-white ">
-                      <SelectItem value={classes} className="cursor-pointer ">
-                        {classes}
-                      </SelectItem>
-                    </SelectContent>
-                  ))}
+                <SelectContent className="bg-white ">
+                  {churchOptions}
                 </SelectContent>
               </Select>
               <FormMessage />
@@ -121,7 +102,27 @@ export function ChurchInfo(formControl: any) {
         />
         <FormField
           control={formControl}
-          name="title"
+          name="society"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Sociedade</FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger className="w-full lg:min-w-40 ">
+                    <SelectValue placeholder="Selecione" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent className="bg-white ">
+                  {populatingSociety()}
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={formControl}
+          name="memberTitle"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Cargo</FormLabel>
@@ -132,7 +133,7 @@ export function ChurchInfo(formControl: any) {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent className="bg-white ">
-                  {getAllTitles()}
+                  {populatingSociety()}
                 </SelectContent>
               </Select>
               <FormMessage />
@@ -152,7 +153,7 @@ export function ChurchInfo(formControl: any) {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent className="bg-white ">
-                  {getAllTitles()}
+                  {populatingSociety()}
                 </SelectContent>
               </Select>
               <FormMessage />

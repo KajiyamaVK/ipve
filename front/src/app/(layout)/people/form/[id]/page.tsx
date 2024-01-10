@@ -1,6 +1,5 @@
 'use client'
 import { useForm } from 'react-hook-form'
-import { schema } from './schema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import {
@@ -11,7 +10,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
-
+import { ZPeople } from '@/types/TPeople'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Textarea } from '@/components/ui/textarea'
 import { useEffect } from 'react'
@@ -25,10 +24,11 @@ import { AddressDataInfo } from './AddressDataInfo'
 import { ContactInfo } from './ContactInfo'
 import { ChurchInfo } from './ChurchInfo'
 import { AccessControl } from './AccessControl'
+import { getEnv } from '@/envSchema'
 
 export default function PeopleForm() {
-  const form = useForm<z.infer<typeof schema>>({
-    resolver: zodResolver(schema),
+  const form = useForm<z.infer<typeof ZPeople>>({
+    resolver: zodResolver(ZPeople),
     defaultValues: {
       isActive: true,
     },
@@ -44,13 +44,37 @@ export default function PeopleForm() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form.watch('cep')])
-  function onSubmit(values: z.infer<typeof schema>) {
-    console.log(values)
-    router.push('/people')
-    toast.toast({
-      title: 'Sucesso',
-      description: 'Cadastro realizado com sucesso!',
+
+  useEffect(() => {
+    console.log(form.watch('memberTitle'))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form.watch('memberTitle')])
+  useEffect(() => {
+    console.log(form.watch('churchId'))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form.watch('churchId')])
+
+  async function saveData() {
+    const values = form.getValues()
+    await fetch(`${getEnv().NEXT_PUBLIC_API_URL}/people`, {
+      method: 'POST',
+      body: JSON.stringify(values),
     })
+      .then(() => {
+        toast.toast({
+          title: 'Sucesso!',
+          description: 'Dados salvos com sucesso!',
+        })
+
+        router.push('/people')
+      })
+      .catch((err) => {
+        toast.toast({
+          title: 'Erro!',
+          description: `Ocorreu um erro ao salvar os dados! Erro: ${err.message}`,
+          variant: 'destructive',
+        })
+      })
   }
 
   async function handleCepSearch(cep: string) {
@@ -59,18 +83,18 @@ export default function PeopleForm() {
       `https://viacep.com.br/ws/${cepWithoutMask}/json/`,
     )
     const data = await response.json()
-    console.log(data)
+
     form.setValue('address', data.logradouro)
     form.setValue('suburb', data.bairro)
     form.setValue('city', data.localidade)
-    form.setValue('state', data.uf)
+    form.setValue('uf', data.uf)
   }
 
   return (
     <Form {...form}>
       <form
         className="mx-auto mt-10 max-w-[1500px] text-center "
-        onSubmit={form.handleSubmit(onSubmit)}
+        onSubmit={form.handleSubmit(saveData)}
       >
         <div>
           <Toolbar />
@@ -99,6 +123,7 @@ export default function PeopleForm() {
                       placeholder="Caso necessário algum detalhe adicional, informe aqui."
                       className="resize-none h-48 "
                       {...field}
+                      value={field.value || ''}
                     />
                   </FormControl>
                   <FormMessage />

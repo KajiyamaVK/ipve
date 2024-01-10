@@ -1,4 +1,5 @@
 import { NextResponse, NextRequest } from 'next/server'
+import { getEnv } from './envSchema'
 
 export const config = {
   matcher: ['/'],
@@ -16,6 +17,13 @@ export default function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL(urls.login, request.url))
   } else if (token) {
     return NextResponse.redirect(new URL(urls.dashboard, request.url))
+  }
+
+  try {
+    getEnv()
+  } catch (error) {
+    console.error('Error parsing environment variables:', error)
+    throw error
   }
 
   // return NextResponse.next()

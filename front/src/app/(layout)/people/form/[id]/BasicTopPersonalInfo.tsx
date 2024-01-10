@@ -17,38 +17,21 @@ import {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function BasicTopPersonalInfo(formControl: any) {
   return (
-    <div className="flex flex-col gap-5 border rounded-lg border-gray-400 p-5 bg-white">
+    <div className="flex flex-col gap-5 border border-gray-400 rounded-lg p-5">
       <h1 className="text-left">DADOS PESSOAIS</h1>
       {/* Início - Informações (Nome e sobrenome) */}
-      <div className="flex gap-5 ">
+      <div className="flex gap-5">
         <FormField
           control={formControl}
-          name="name"
+          name="fullName"
           render={({ field }) => (
-            <FormItem className="text-left">
-              <FormLabel className="required">Primeiro Nome</FormLabel>
+            <FormItem className="text-left flex-1">
+              <FormLabel className="required">Nome completo</FormLabel>
               <FormControl>
                 <Input
-                  placeholder="Ex.: Fulano"
-                  className="w-full lg:min-w-40 lg:max-w-40"
+                  placeholder="Ex.: Fulano da Silva Mendes"
+                  className="lg:min-w-40 "
                   {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={formControl}
-          name="surname"
-          render={({ field }) => (
-            <FormItem className="text-left">
-              <FormLabel className="required">Sobrenome</FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="Silva"
-                  {...field}
-                  className="w-full lg:min-w-40 lg:max-w-40"
                 />
               </FormControl>
               <FormMessage />

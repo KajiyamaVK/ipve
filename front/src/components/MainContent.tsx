@@ -7,8 +7,6 @@ import Image from 'next/image'
 export function MainContent({ children }: { children: ReactNode }) {
   const { isMenuOpen, isScreenLoading } = useContext(generalContext)
 
-  console.log('isScreenloading', isScreenLoading)
-
   return (
     <div
       className={`flex-1  h-full w-full transition-[margin-left] md:mr-[20px] ${

@@ -1,6 +1,6 @@
 'use client'
 
-import { set, z } from 'zod'
+import { z } from 'zod'
 
 import {
   Dialog,
@@ -16,8 +16,7 @@ import { Dispatch, useContext, useEffect, useState } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { formsContext } from '@/contexts/formsContext'
 import { useToast } from '@/components/ui/use-toast'
-import { TMembersTitles, ZMembersTitles } from '@/types/TMembersTitles'
-import { generalContext } from '@/contexts/generalContext'
+import { TMembersTitles } from '@/types/TMembersTitles'
 
 const DialogFormSchema = z.object({
   roleName: z.string().min(1, 'Campo obrigatório'),
@@ -29,7 +28,7 @@ interface IDialogModal {
   data: TMembersTitles[]
 }
 
-export function DialogModal({ setData, getData, data }: IDialogModal) {
+export function DialogModal({ getData }: IDialogModal) {
   const { handleSubmit, register, formState, setValue, watch } = useForm({
     resolver: zodResolver(DialogFormSchema),
   })
@@ -73,13 +72,11 @@ export function DialogModal({ setData, getData, data }: IDialogModal) {
     const data = {
       name: watch('roleName'),
     }
-    console.log('formMode', formMode)
 
     const endpointUrl = `${process.env.NEXT_PUBLIC_API_URL}/people/titles/${
       formMode === 'edit' ? '/' + currentSelectedItem : ''
     }`
 
-    console.log('endpointUrl', endpointUrl)
     await fetch(endpointUrl, {
       method: 'post',
       headers: {

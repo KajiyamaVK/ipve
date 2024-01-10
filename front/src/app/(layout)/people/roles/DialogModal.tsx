@@ -12,7 +12,7 @@ import {
 import { useForm } from 'react-hook-form'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Dispatch, use, useContext, useEffect, useState } from 'react'
+import { Dispatch, useContext, useEffect, useState } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { DialogColorSelection, availableColors } from './DialogColorSelection'
 import { formsContext } from '@/contexts/formsContext'
@@ -35,7 +35,7 @@ interface IDialogModal {
   data: TRoles[]
 }
 
-export function DialogModal({ setData, getData, data }: IDialogModal) {
+export function DialogModal({ getData, data }: IDialogModal) {
   const { handleSubmit, register, formState, setValue, watch } = useForm({
     resolver: zodResolver(DialogFormSchema),
   })
@@ -55,9 +55,6 @@ export function DialogModal({ setData, getData, data }: IDialogModal) {
 
   useEffect(() => {
     if (isDialogOpen) {
-      console.log('currentSelectedItem', currentSelectedItem)
-      console.log('formMode', formMode)
-
       if (formMode === 'view') {
         const selectedItem = data.find(
           (item) => item.id === currentSelectedItem,
@@ -98,7 +95,6 @@ export function DialogModal({ setData, getData, data }: IDialogModal) {
       body: JSON.stringify(data),
     })
       .then(() => {
-        console.log('Success:', data)
         toast({
           title: 'Função registrada com sucesso!',
           description:

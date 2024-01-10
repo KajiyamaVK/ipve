@@ -23,7 +23,6 @@ export function ProfileAvatar(formControl: any) {
                 alt="avatar_photo"
                 height={150}
                 width={150}
-                objectFit="cover"
                 className="rounded-full border-[10px] border-primary hover:border-primary-dark hover:bg-gray-300 cursor-pointer"
               />
               <center>

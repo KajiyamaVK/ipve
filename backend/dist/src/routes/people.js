@@ -26,7 +26,7 @@ async function people(app) {
         if (!req.body)
             return res.status(400).send({ message: 'No body provided' });
         const { id, name, tailwindColor, description } = req.body;
-        console.log('app.post  name', name);
+        ;
         try {
             prisma.peopleRoles
                 .create({
@@ -51,7 +51,7 @@ async function people(app) {
         if (!req.body)
             return res.status(400).send({ message: 'No body provided' });
         const { name, tailwindColor, description } = req.body;
-        console.log('app.post  name', name);
+        ;
         try {
             const data = await prisma.peopleRoles.update({
                 where: {
@@ -72,8 +72,8 @@ async function people(app) {
     app.delete('/roles/:id', async (req, res) => {
         const params = paramsSchema.parse(req.params);
         const id = parseInt(params.id);
-        console.log('app.delete  id', id);
-        console.log('app.get /roles/[id] req.params', req.params);
+        ;
+        ;
         try {
             await prisma.peopleRoles.delete({
                 where: {
@@ -88,7 +88,7 @@ async function people(app) {
     });
     app.get('/titles', async (req, res) => {
         await prisma.peopleTitles.findMany().then((data) => {
-            console.log('Get Titles success', data);
+            ;
             return res.status(200).send(data);
         });
     });
@@ -105,7 +105,7 @@ async function people(app) {
         if (!req.body)
             return res.status(400).send({ message: 'No body provided' });
         const { id, name } = req.body;
-        console.log('app.post  name', name);
+        ;
         try {
             await prisma.peopleTitles
                 .create({
@@ -128,7 +128,7 @@ async function people(app) {
         if (!req.body)
             return res.status(400).send({ message: 'No body provided' });
         const { name } = req.body;
-        console.log('app.post  name', name);
+        ;
         try {
             const data = await prisma.peopleTitles.update({
                 where: {
@@ -147,8 +147,8 @@ async function people(app) {
     app.delete('/titles/:id', async (req, res) => {
         const params = paramsSchema.parse(req.params);
         const id = parseInt(params.id);
-        console.log('app.delete  id', id);
-        console.log('app.get /roles/[id] req.params', req.params);
+        ;
+        ;
         try {
             await prisma.peopleTitles.delete({
                 where: {
@@ -191,7 +191,7 @@ async function people(app) {
         if (!req.body)
             return res.status(400).send({ message: 'No body provided' });
         const { id, fullName, titleId, rolesId, dateOfBirth, gender, address, complement, city, suburb, uf, cep, phone1, phone1IsWhatsapp, phone2, photoUrl, email, } = req.body;
-        console.log('app.post  name', fullName);
+        ;
         try {
             await prisma.people
                 .create({
@@ -258,8 +258,8 @@ async function people(app) {
     app.delete('/:id', async (req, res) => {
         const params = paramsSchema.parse(req.params);
         const id = parseInt(params.id);
-        console.log('app.delete  id', id);
-        console.log('app.get /roles/[id] req.params', req.params);
+        ;
+        ;
         try {
             await prisma.people.delete({
                 where: {

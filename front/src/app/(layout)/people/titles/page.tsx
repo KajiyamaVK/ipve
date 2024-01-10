@@ -26,7 +26,7 @@ export default function MemberTitlesGrid() {
         const gridData: TMembersTitles[] = json.map((item: TMembersTitles) =>
           ZMembersTitles.parse(item),
         )
-        console.log('gridData', gridData)
+
         setData(gridData)
       })
 
@@ -43,10 +43,10 @@ export default function MemberTitlesGrid() {
     <center>
       <div className="m-10">
         <DataTable
-          columns={columns}
-          getData={getTitles}
-          setData={setData}
           dataValues={data}
+          setData={setData}
+          getData={getTitles}
+          columns={columns}
           dialogForm={
             <DialogModal setData={setData} getData={getTitles} data={data} />
           }

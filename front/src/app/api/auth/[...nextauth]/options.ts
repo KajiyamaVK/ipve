@@ -9,7 +9,8 @@ export const options: NextAuthOptions = {
         email: { label: 'Email', type: 'text' },
         password: { label: 'Password', type: 'password' },
       },
-      async authorize(credentials, req) {
+      // async authorize(credentials, req) {
+      async authorize(credentials) {
         const res = await fetch('http://localhost:3001/auth/login', {
           method: 'POST',
           body: JSON.stringify(credentials),

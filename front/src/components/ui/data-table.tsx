@@ -149,6 +149,10 @@ export function DataTable<TData, TValue>({
     return { table, sorting, setSorting, columnFilters, setColumnFilters }
   }
 
+  function refreshData() {
+    getData()
+  }
+
   async function handleDelete(id: number) {
     await fetch(`${process.env.NEXT_PUBLIC_API_URL}${path}/${id}`, {
       method: 'DELETE',
@@ -157,7 +161,7 @@ export function DataTable<TData, TValue>({
         if (response.status === 200) {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           // const newTableData = dataValues.filter((item: any) => item.id !== id)
-          getData()
+          refreshData()
           if (typeof setData === 'undefined')
             throw new Error('setData is undefined')
           toast({

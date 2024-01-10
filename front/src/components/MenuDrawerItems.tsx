@@ -15,7 +15,7 @@ export function MenuDrawerItems() {
   const elements: ReactNode[] = []
 
   for (const item of menuItems) {
-    elements.push(renderMenuItem(item.id, item.type))
+    elements.push(<div key={item.id}>{renderMenuItem(item.id, item.type)}</div>)
   }
 
   return <>{elements}</>

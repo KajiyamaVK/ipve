@@ -110,7 +110,7 @@ const FormControl = React.forwardRef<
   return (
     <Slot
       ref={ref}
-      id={formItemId}
+      id={parseInt(formItemId)}
       aria-describedby={
         !error
           ? `${formDescriptionId}`
@@ -132,7 +132,7 @@ const FormDescription = React.forwardRef<
   return (
     <p
       ref={ref}
-      id={formDescriptionId}
+      id={parseInt(formDescriptionId)}
       className={cn('text-sm text-muted-foreground', className)}
       {...props}
     />
@@ -154,7 +154,7 @@ const FormMessage = React.forwardRef<
   return (
     <p
       ref={ref}
-      id={formMessageId}
+      id={parseInt(formMessageId)}
       className={cn('text-sm font-medium text-destructive', className)}
       {...props}
     >

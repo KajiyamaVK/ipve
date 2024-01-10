@@ -16,7 +16,6 @@ export default function RolesGrid() {
   }, [])
 
   async function getRoles() {
-    console.log('getRoles')
     const endPoint = `${process.env.NEXT_PUBLIC_API_URL}/people/roles`
 
     await fetch(endPoint, {
@@ -27,7 +26,7 @@ export default function RolesGrid() {
         const gridData: TRoles[] = json.map((item: TRoles) =>
           ZRoles.parse(item),
         )
-        console.log('gridData', gridData)
+
         setData(gridData)
       })
 

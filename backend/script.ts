@@ -4,7 +4,7 @@ const prisma = new PrismaClient()
 // script to select all screens
 async function main() {
   const result = await prisma.peopleRoles.deleteMany()
-  console.log(result)
+  
 }
 
 main()

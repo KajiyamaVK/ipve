@@ -85,8 +85,17 @@ model people {
     phone2 String?
     photoUrl String?
     email String?
-  }
+    isActive Boolean @default(true)  
+    }
 
 /////////////////////////////////////////////////////////////////////
 
+model churchBranches {
+  id          Int      @id @default(autoincrement())
+  name        String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+/////////////////////////////////////////////////////////////////////
 
