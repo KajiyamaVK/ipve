@@ -62,7 +62,7 @@ export function DataTable<TData, TValue>({
   const [SearchColumnsSelectOptions, setSearchColumnsSelectOptions] = useState<
     ReactNode[]
   >([])
-  //
+
   const { register, watch } = useForm()
 
   const { setFormMode, setIsDialogOpen, setCurrentSelectedItem, isDialogOpen } =
@@ -290,7 +290,7 @@ export function DataTable<TData, TValue>({
                 return (
                   <TableRow
                     key={row.id}
-                    id={idValue}
+                    id={idValue.toString()}
                     className="hover:bg-primary-dark hover:text-primary-foreground cursor-pointer "
                     data-state={row.getIsSelected() && 'selected'}
                     onClick={() => handleViewState(idValue)}
