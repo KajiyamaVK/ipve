@@ -286,7 +286,7 @@ export function DataTable<TData, TValue>({
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => {
-                const idValue = row.getValue('id') as number
+                const idValue = parseInt(row.getValue('id'))
                 return (
                   <TableRow
                     key={row.id}
