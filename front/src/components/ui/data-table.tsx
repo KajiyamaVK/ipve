@@ -290,7 +290,7 @@ export function DataTable<TData, TValue>({
                 return (
                   <TableRow
                     key={row.id}
-                    id={idValue.toString()}
+                    id={idValue}
                     className="hover:bg-primary-dark hover:text-primary-foreground cursor-pointer "
                     data-state={row.getIsSelected() && 'selected'}
                     onClick={() => handleViewState(idValue)}
