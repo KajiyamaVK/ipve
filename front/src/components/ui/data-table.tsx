@@ -62,7 +62,7 @@ export function DataTable<TData, TValue>({
   const [SearchColumnsSelectOptions, setSearchColumnsSelectOptions] = useState<
     ReactNode[]
   >([])
-
+  //
   const { register, watch } = useForm()
 
   const { setFormMode, setIsDialogOpen, setCurrentSelectedItem, isDialogOpen } =
