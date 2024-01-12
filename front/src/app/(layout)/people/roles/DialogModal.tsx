@@ -82,7 +82,7 @@ export function DialogModal({ getData, data }: IDialogModal) {
     }
 
     const endPoint = `${process.env.NEXT_PUBLIC_API_URL}${path}${
-      currentSelectedItem === 0 && formMode === 'edit'
+      currentSelectedItem === '' && formMode === 'edit'
         ? ''
         : `/${currentSelectedItem}`
     }`
