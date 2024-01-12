@@ -31,7 +31,7 @@ export const menuItems: TMenuDrawerItem[] = [
         formType: 'page',
       },
       {
-        id: 'member_titles',
+        id: 'titles',
         displayName: 'Cadastro de Cargos',
         menuLabel: 'Cargos',
         path: '/people/titles',

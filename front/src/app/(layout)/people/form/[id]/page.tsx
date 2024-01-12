@@ -102,8 +102,10 @@ export default function PeopleForm() {
             <ProfileAvatar {...form.control} />
             <div className="flex flex-col gap-5">
               <ActiveControl {...form.control} />
-              <BasicTopPersonalInfo {...form.control} />
-              <ChurchInfo {...form.control} />
+              <div className="flex  flex-wrap gap-5 w-min-5">
+                <BasicTopPersonalInfo {...form.control} />
+                <ChurchInfo {...form.control} />
+              </div>
             </div>
           </div>
 

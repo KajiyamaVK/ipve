@@ -96,7 +96,6 @@ export function DataTable<TData, TValue>({
 
     setTableHetHeaderRow(TableHeaderRowArray)
     setSearchColumnsSelectOptions(tempArray)
-    setIsScreenLoading(false)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -105,6 +104,10 @@ export function DataTable<TData, TValue>({
       setButtonIsLoading(false)
     }
   }, [isDialogOpen])
+
+  useEffect(() => {
+    setIsScreenLoading(false)
+  }, [dataValues])
 
   function pushToProperRoute() {
     setFormMode('add')

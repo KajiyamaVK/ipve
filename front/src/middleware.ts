@@ -13,6 +13,8 @@ export default function middleware(request: NextRequest) {
   }
   const token = request.cookies.get('ipve_auth_token')?.value
 
+  console.log('pathname', pathname)
+
   if (!token && pathname !== '/login') {
     return NextResponse.redirect(new URL(urls.login, request.url))
   } else if (token) {
@@ -26,5 +28,5 @@ export default function middleware(request: NextRequest) {
     throw error
   }
 
-  // return NextResponse.next()
+  return NextResponse.next()
 }

@@ -1,3 +1,5 @@
+'use client'
+
 import {
   Accordion,
   AccordionContent,
@@ -8,10 +10,22 @@ import Link from 'next/link'
 import { getRouteData } from '@/utils/getRouteData'
 import { useContext } from 'react'
 import { generalContext } from '@/contexts/generalContext'
+import { usePathname } from 'next/navigation'
 
 export function MenuItemParent(id: string) {
-  const { menuLabel, icon, children } = getRouteData(id)
+  const { menuLabel, icon, children, path } = getRouteData(id)
   const { setIsScreenLoading } = useContext(generalContext)
+  const currentPath = usePathname()
+
+  function handleLinkClick(e: React.MouseEvent<HTMLDivElement>) {
+    e.stopPropagation()
+    console.log('path', path)
+    console.log('currentPath', currentPath)
+    if (path === currentPath) {
+      return
+    }
+    setIsScreenLoading(true)
+  }
   return (
     <div key={menuLabel}>
       <Accordion type="single" collapsible>
@@ -28,8 +42,10 @@ export function MenuItemParent(id: string) {
                   return (
                     <div
                       onClick={(e) => {
-                        e.stopPropagation()
-                        setIsScreenLoading(true)
+                        if (child.path === currentPath) {
+                          return
+                        }
+                        handleLinkClick(e)
                       }}
                       key={child.menuLabel}
                     >
@@ -42,7 +58,7 @@ export function MenuItemParent(id: string) {
                     </div>
                   )
                 }
-                return null
+                return <></>
               })
             }
           </AccordionContent>

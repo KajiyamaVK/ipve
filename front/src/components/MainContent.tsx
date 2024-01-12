@@ -16,7 +16,7 @@ export function MainContent({ children }: { children: ReactNode }) {
       <TopBar />
       <div
         className={`absolute inset-0 flex justify-center items-center z-40
-        bg-black bg-opacity-50 transition-opacity ${
+        bg-black bg-opacity-50 transition-opacity h-full ${
           isScreenLoading ? 'block' : 'hidden'
         }
         `}

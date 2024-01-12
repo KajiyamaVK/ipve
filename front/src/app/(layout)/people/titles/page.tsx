@@ -3,15 +3,18 @@
 import { DataTable } from '@/components/ui/data-table'
 import { columns } from '@/app/(layout)/people/titles/columns'
 import { DialogModal } from './DialogModal'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { TMembersTitles, ZMembersTitles } from '@/types/TMembersTitles'
 import { toast } from '@/components/ui/use-toast'
+import { formsContext } from '@/contexts/formsContext'
 
 export default function MemberTitlesGrid() {
   const [data, setData] = useState<TMembersTitles[]>([])
+  const { setFormMode } = useContext(formsContext)
 
   useEffect(() => {
     getTitles()
+    setFormMode('add')
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -26,7 +29,6 @@ export default function MemberTitlesGrid() {
         const gridData: TMembersTitles[] = json.map((item: TMembersTitles) =>
           ZMembersTitles.parse(item),
         )
-
         setData(gridData)
       })
 

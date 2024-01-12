@@ -84,21 +84,21 @@ export function DialogModal({ getData }: IDialogModal) {
       },
       body: JSON.stringify(data),
     })
-      .then((res) => {
-        if (res.status === 200) {
-          toast({
-            variant: 'default',
-            content: 'Cargo gravado com sucesso',
-          })
-          getData()
-          setIsDialogOpen(false)
-        }
-      })
-      .catch((err) => {
+      .then(() => {
         toast({
-          variant: 'destructive',
-          content: `Erro ao atualizar o cargo: ${err.message}}`,
+          title: 'Cargo registrado com sucesso!',
+          description:
+            'O cargo foi registrado com sucesso e já pode ser utilizada no cadastro de pessoas.',
+          type: 'background',
         })
+      })
+      .then(() => {
+        getData()
+        setIsDialogOpen(false)
+      })
+      .catch((error) => {
+        console.error('Error:', error)
+        throw new Error(error)
       })
 
     setButtonIsLoading(false)
@@ -133,7 +133,7 @@ export function DialogModal({ getData }: IDialogModal) {
               </label>
               <Input
                 type="text"
-                placeholder="Ex: Louvor, Pregação, Tesouraria, etc."
+                placeholder="Ex: Pastor, presbítero, membro, visitante, etc."
                 disabled={formMode === 'view'}
                 {...register('roleName')}
               />

@@ -17,7 +17,7 @@ import {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function BasicTopPersonalInfo(formControl: any) {
   return (
-    <div className="flex flex-col gap-5 border border-gray-400 rounded-lg p-5">
+    <div className="flex flex-col gap-5 border border-gray-400 rounded-lg p-5 flex-1">
       <h1 className="text-left">DADOS PESSOAIS</h1>
       {/* Início - Informações (Nome e sobrenome) */}
       <div className="flex gap-5">

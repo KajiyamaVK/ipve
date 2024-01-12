@@ -6,15 +6,15 @@ import { useState } from 'react'
 
 export function Toolbar() {
   const router = useRouter()
-  const [isLoding, setIsLoading] = useState(false)
+  const [isButtonLoading, setIsButtonLoading] = useState(false)
 
   function handleBack() {
-    setIsLoading(true)
+    setIsButtonLoading(true)
     router.push('/people')
   }
   return (
     <div className="flex gap-5 justify-end">
-      <Button isLoading={isLoding} onClick={handleBack}>
+      <Button isLoading={isButtonLoading} onClick={handleBack}>
         Voltar
       </Button>
 

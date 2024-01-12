@@ -15,7 +15,7 @@ export function ProfileAvatar(formControl: any) {
       control={formControl}
       name="photoUrl"
       render={({ field }) => (
-        <FormItem className="text-left">
+        <FormItem className="text-left min-w-36 md:min-w-52">
           <FormLabel>
             <div className="flex flex-col items-center my-auto mr-10">
               <Image

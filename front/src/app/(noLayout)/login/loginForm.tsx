@@ -51,7 +51,11 @@ export default function LoginForm() {
               <FormItem className="text-left">
                 <FormLabel className="required">E-mail</FormLabel>
                 <FormControl>
-                  <Input placeholder="Ex.: igreja@ipve.com.br" {...field} />
+                  <Input
+                    id={1}
+                    placeholder="Ex.: igreja@ipve.com.br"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -65,7 +69,12 @@ export default function LoginForm() {
               <FormItem className="text-left">
                 <FormLabel className="required">Senha</FormLabel>
                 <FormControl>
-                  <Input placeholder="Senha" type="password" {...field} />
+                  <Input
+                    id={2}
+                    placeholder="Senha"
+                    type="password"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
