@@ -133,7 +133,7 @@ export function DialogModal({ getData }: IDialogModal) {
               </label>
               <Input
                 type="text"
-                placeholder="Ex: Pastor, presbítero, membro, visitante, etc."
+                placeholder="Ex: Pastor, presbítero, membro, etc."
                 disabled={formMode === 'view'}
                 {...register('roleName')}
               />
