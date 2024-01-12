@@ -107,6 +107,7 @@ export function DataTable<TData, TValue>({
 
   useEffect(() => {
     setIsScreenLoading(false)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dataValues])
 
   function pushToProperRoute() {
@@ -120,7 +121,7 @@ export function DataTable<TData, TValue>({
     }
   }
 
-  function handleViewState(id: number) {
+  function handleViewState(id: string) {
     if (currentScreen.formType === 'dialog') {
       setCurrentSelectedItem(id)
       setFormMode('view')
@@ -156,7 +157,7 @@ export function DataTable<TData, TValue>({
     getData()
   }
 
-  async function handleDelete(id: number) {
+  async function handleDelete(id: string) {
     await fetch(`${process.env.NEXT_PUBLIC_API_URL}${path}/${id}`, {
       method: 'DELETE',
     })
@@ -289,11 +290,10 @@ export function DataTable<TData, TValue>({
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => {
-                const idValue = parseInt(row.getValue('id'))
+                const idValue = row.getValue('id') as string
                 return (
                   <TableRow
                     key={row.id}
-                    id={idValue}
                     className="hover:bg-primary-dark hover:text-primary-foreground cursor-pointer "
                     data-state={row.getIsSelected() && 'selected'}
                     onClick={() => handleViewState(idValue)}
