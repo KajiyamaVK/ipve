@@ -5,7 +5,7 @@ const ZGetPatchDeleteDataSchema = z.object({
   endpoint: ZDataTypesEnum,
   body: z.any().optional(),
   headers: z.any().optional(),
-  id: z.number(),
+  id: z.string(),
 })
 
 type TGetPatchDeleteDataSchema = z.infer<typeof ZGetPatchDeleteDataSchema>

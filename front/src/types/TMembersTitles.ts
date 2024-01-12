@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
 export const ZMembersTitles = z.object({
-  id: z.number().nullable().optional(),
+  id: z.string().nullable().optional(),
   name: z.string(),
   createdAt: z.string().optional(),
   updatedAt: z.string().optional(),
