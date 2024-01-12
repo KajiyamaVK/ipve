@@ -17,5 +17,5 @@ app
     port: 3001,
   })
   .then(() => {
-    
+    console.log('Server listening on port 3001')
   })

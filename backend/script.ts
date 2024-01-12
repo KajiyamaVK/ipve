@@ -3,8 +3,8 @@ import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 // script to select all screens
 async function main() {
-  const result = await prisma.peopleRoles.deleteMany()
-  
+  const screens = await prisma.screens.findMany()
+  console.log(screens)
 }
 
 main()

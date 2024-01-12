@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 async function main() {
-    const allUsers = await prisma.screens.createMany({
+    await prisma.screens.createMany({
         data: [
             {
                 id: 1,
@@ -55,7 +55,6 @@ async function main() {
             },
         ],
     });
-    ;
 }
 main()
     .catch((e) => {
