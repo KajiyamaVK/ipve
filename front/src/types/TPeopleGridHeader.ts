@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
 export const ZPeopleGridHeader = z.object({
-  id: z.string(),
+  id: z.number(),
   fullrName: z.string(),
   title: z.string(),
   roles: z.array(

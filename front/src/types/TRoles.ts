@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
 export const ZRoles = z.object({
-  id: z.string().nullable().optional(),
+  id: z.number().nullable().optional(),
   name: z.string(),
   description: z.string().nullable().optional(),
   tailwindColor: z.string().min(1, 'Formato de HexColor inválido'),

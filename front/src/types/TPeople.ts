@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
 export const ZPeople = z.object({
-  id: z.string().optional(),
+  id: z.number().optional(),
   fullName: z
     .string({ required_error: 'Nome completo é um campo obrigatório' })
     .min(1),
