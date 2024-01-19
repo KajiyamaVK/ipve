@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { number, z } from 'zod'
 
 export const ZRoles = z.object({
   id: z.number(),
@@ -16,11 +16,9 @@ const ZGenderType = z.enum(GenderTypeValues)
 
 export const ZPeople = z.object({
   id: z.number().optional(),
-  fullName: z
-    .string({ required_error: 'Nome completo é um campo obrigatório' })
-    .min(1),
-  titleId: z.number({ required_error: 'Cargo é um campo obrigatório' }),
-  rolesId: z.string().optional().nullable(),
+  fullName: z.string({ required_error: 'Nome completo é um campo obrigatório' }).min(1),
+  titleIdFK: z.number({ required_error: 'Cargo é um campo obrigatório' }).min(1),
+  peopleRolesDataFK: z.array(number()).optional().nullable(),
   dateOfBirth: z.date().optional().nullable(),
   gender: ZGenderType,
   address: z.string().optional().nullable(),

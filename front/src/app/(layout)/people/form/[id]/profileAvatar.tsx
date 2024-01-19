@@ -1,10 +1,4 @@
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form'
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import Image from 'next/image'
 
@@ -31,13 +25,7 @@ export function ProfileAvatar(formControl: any) {
             </div>
           </FormLabel>
           <FormControl>
-            <Input
-              placeholder=""
-              type="file"
-              accept="image/*"
-              className="hidden"
-              {...field}
-            />
+            <Input placeholder="" type="file" accept="image/*" className="hidden" {...field} />
           </FormControl>
           <FormMessage />
         </FormItem>

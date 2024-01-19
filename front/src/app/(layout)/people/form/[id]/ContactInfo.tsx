@@ -1,11 +1,5 @@
 import { Checkbox } from '@/components/ui/checkbox'
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form'
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -22,11 +16,7 @@ export function ContactInfo(form: any) {
             <FormItem className="text-left">
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input
-                  placeholder="Ex.: contato@ipb.com.br"
-                  type="email"
-                  {...field}
-                />
+                <Input placeholder="Ex.: contato@ipb.com.br" type="email" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -41,11 +31,7 @@ export function ContactInfo(form: any) {
                 <FormItem className="text-left">
                   <FormLabel>Celular</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="(11) 99999-5555"
-                      type="text"
-                      {...field}
-                    />
+                    <Input placeholder="(11) 99999-5555" type="text" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -64,9 +50,7 @@ export function ContactInfo(form: any) {
                     />
                   </FormControl>
                   <div className="space-y-1 leading-none">
-                    <FormLabel className="font-normal italic">
-                      Whatsapp?
-                    </FormLabel>
+                    <FormLabel className="font-normal italic">Whatsapp?</FormLabel>
                   </div>
                 </FormItem>
               )}

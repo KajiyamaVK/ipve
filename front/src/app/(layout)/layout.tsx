@@ -6,7 +6,7 @@ import { MainContent } from '@/components/MainContent'
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <FormsContextProvider>
-      <div className="flex h-full w-full">
+      <div className="flex h-full w-full overflow-y-scroll">
         <MenuDrawer />
 
         <MainContent>{children}</MainContent>

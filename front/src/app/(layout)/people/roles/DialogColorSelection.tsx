@@ -27,17 +27,11 @@ export const availableColors: string[] = [
   'bg-white',
 ]
 
-export function DialogColorSelection({
-  colorSelected,
-  setColorSelected,
-  isDisabled,
-}: IColorSelected) {
+export function DialogColorSelection({ colorSelected, setColorSelected, isDisabled }: IColorSelected) {
   const colorCircle: ReactNode = (
     <div className="flex items-center justify-center">
       <div
-        className={`w-5 h-5 rounded-full shadow-md shadow-black ${colorSelected} ${
-          isDisabled ? 'opacity-50' : ''
-        }`}
+        className={`w-5 h-5 rounded-full shadow-md shadow-black ${colorSelected} ${isDisabled ? 'opacity-50' : ''}`}
       ></div>
     </div>
   )
@@ -49,9 +43,7 @@ export function DialogColorSelection({
           <DialogContent>
             <DialogHeader>
               <DialogTitle>Selecione uma cor</DialogTitle>
-              <DialogDescription>
-                Escolha uma cor para identificar a responsabilidade
-              </DialogDescription>
+              <DialogDescription>Escolha uma cor para identificar a responsabilidade</DialogDescription>
             </DialogHeader>
             <DialogClose>
               <div className="flex flex-wrap gap-2">

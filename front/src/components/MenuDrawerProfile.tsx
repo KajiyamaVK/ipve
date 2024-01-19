@@ -9,10 +9,7 @@ export function MenuDrawerProfile() {
   return (
     <div className="flex flex-col  p-5 bg-primary-dark items-center">
       <Avatar className="border-4 border-secondary w-20 h-20 bg-white">
-        <AvatarImage
-          src={getPhotoUrl() || '/avatar.png'}
-          alt="Foto do usuário do sistema"
-        />
+        <AvatarImage src={getPhotoUrl() || '/avatar.png'} alt="Foto do usuário do sistema" />
         <AvatarFallback>
           <div className="animate-spin text-primary">
             <ImSpinner9 />

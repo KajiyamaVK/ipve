@@ -11,8 +11,7 @@ export function getEnv(): TEnv {
     NEXT_PUBLIC_API_URL: '',
   } as TEnv
 
-  if (typeof process.env.NEXT_PUBLIC_API_URL !== 'undefined')
-    env.NEXT_PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL // Foi tentado fazer schema.parse, mas o valor está indo como undefined.
+  if (typeof process.env.NEXT_PUBLIC_API_URL !== 'undefined') env.NEXT_PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL // Foi tentado fazer schema.parse, mas o valor está indo como undefined.
 
   return env
 }

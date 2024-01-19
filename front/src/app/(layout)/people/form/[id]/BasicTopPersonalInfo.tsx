@@ -1,18 +1,6 @@
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form'
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function BasicTopPersonalInfo(formControl: any) {
@@ -28,11 +16,7 @@ export function BasicTopPersonalInfo(formControl: any) {
             <FormItem className="text-left flex-1">
               <FormLabel className="required">Nome completo</FormLabel>
               <FormControl>
-                <Input
-                  placeholder="Ex.: Fulano da Silva Mendes"
-                  className="lg:min-w-40 "
-                  {...field}
-                />
+                <Input placeholder="Ex.: Fulano da Silva Mendes" className="lg:min-w-40 " {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -46,12 +30,7 @@ export function BasicTopPersonalInfo(formControl: any) {
             <FormItem className="text-left">
               <FormLabel>Data de nascimento</FormLabel>
               <FormControl>
-                <Input
-                  placeholder="01/01/1900"
-                  type="date"
-                  className="w-full lg:min-w-40 lg:max-w-40"
-                  {...field}
-                />
+                <Input placeholder="01/01/1900" type="date" className="w-full lg:min-w-40 lg:max-w-40" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

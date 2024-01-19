@@ -1,14 +1,7 @@
 'use client'
 
 import { usePathname } from 'next/navigation'
-import {
-  Dispatch,
-  ReactNode,
-  SetStateAction,
-  createContext,
-  useEffect,
-  useState,
-} from 'react'
+import { Dispatch, ReactNode, SetStateAction, createContext, useEffect, useState } from 'react'
 import { getRouteData } from '@/utils/getRouteData'
 import { TMenuDrawerItem } from '@/types/TMenuDrawerItem'
 
@@ -30,9 +23,7 @@ export function GeneralContextProvider({ children }: { children: ReactNode }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isScreenLoading, setIsScreenLoading] = useState(false)
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [currentScreen, setCurrentScreen] = useState<TMenuDrawerItem>(
-    {} as TMenuDrawerItem,
-  )
+  const [currentScreen, setCurrentScreen] = useState<TMenuDrawerItem>({} as TMenuDrawerItem)
 
   const path = usePathname()
 

@@ -25,9 +25,7 @@ export const columns: ColumnDef<TRoles>[] = [
 
       return (
         <div>
-          <div
-            className={'w-5 h-5 rounded-full  shadow-black shadow-sm ' + color}
-          />
+          <div className={'w-5 h-5 rounded-full  shadow-black shadow-sm ' + color} />
         </div>
       )
     },

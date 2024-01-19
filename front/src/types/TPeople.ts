@@ -2,9 +2,7 @@ import { z } from 'zod'
 
 export const ZPeople = z.object({
   id: z.number().optional(),
-  fullName: z
-    .string({ required_error: 'Nome completo é um campo obrigatório' })
-    .min(1),
+  fullName: z.string({ required_error: 'Nome completo é um campo obrigatório' }).min(1),
   memberTitle: z.number({ required_error: 'Cargo é um campo obrigatório' }),
   roles: z.array(z.number()).optional().nullable(),
   dateOfBirth: z.date().optional().nullable(),

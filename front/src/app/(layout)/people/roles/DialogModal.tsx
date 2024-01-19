@@ -1,23 +1,16 @@
 'use client'
-
 import { z } from 'zod'
 import { TRoles } from '@/types/TRoles'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { useForm } from 'react-hook-form'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Dispatch, useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { DialogColorSelection, availableColors } from './DialogColorSelection'
 import { formsContext } from '@/contexts/formsContext'
 import { useToast } from '@/components/ui/use-toast'
-import { usePathname } from 'next/navigation'
+import { getData, saveData } from '@/utils/fetchData'
 
 const DialogFormSchema = z.object({
   roleName: z.string().min(1, 'Campo obrigatório'),
@@ -29,14 +22,8 @@ function obterElementoAleatorio(array: string[]) {
   return array[indiceAleatorio]
 }
 
-interface IDialogModal {
-  setData: Dispatch<React.SetStateAction<TRoles[]>>
-  getData: () => void
-  data: TRoles[]
-}
-
-export function DialogModal({ getData, data }: IDialogModal) {
-  const { handleSubmit, register, formState, setValue, watch } = useForm({
+export function DialogModal() {
+  const { register, formState, setValue, watch } = useForm({
     resolver: zodResolver(DialogFormSchema),
   })
 
@@ -50,90 +37,93 @@ export function DialogModal({ getData, data }: IDialogModal) {
     formMode,
     setFormMode,
     currentSelectedItem,
+    isSkeletonOpen,
+    setIsSkeletonOpen,
   } = useContext(formsContext)
-  const path = usePathname()
 
   useEffect(() => {
-    if (isDialogOpen) {
-      if (formMode === 'view') {
-        const selectedItem = data.find(
-          (item) => item.id === currentSelectedItem,
-        )
-        setValue('roleName', selectedItem?.name)
-        setValue('description', selectedItem?.description)
-        if (selectedItem?.tailwindColor)
-          setColorSelected(selectedItem?.tailwindColor)
-      }
+    if (isDialogOpen && formMode === 'add') {
+      setValue('roleName', '')
+      setValue('description', '')
+      setColorSelected(elementoAleatorio)
+    }
 
-      if (formMode === 'add') {
-        setValue('roleName', '')
-        setValue('description', '')
-        setColorSelected(elementoAleatorio)
-      }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isDialogOpen, formMode])
+
+  useEffect(() => {
+    if (isSkeletonOpen && formMode === 'view') {
+      ;(async () => {
+        await getData<TRoles>({
+          endpoint: 'roles',
+          id: currentSelectedItem,
+        })
+          .then((data) => {
+            setValue('roleName', data?.name)
+            setValue('description', data?.description)
+            if (data?.tailwindColor) setColorSelected(data?.tailwindColor)
+          })
+          .then(() => {
+            setIsDialogOpen(true)
+            setIsSkeletonOpen(false)
+          })
+      })()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentSelectedItem, formMode, isDialogOpen])
+  }, [isSkeletonOpen, formMode, currentSelectedItem])
 
-  async function saveData() {
-    const data: TRoles = {
+  function enableForm() {
+    setFormMode('edit')
+    console.log('enableForm', formMode)
+  }
+
+  async function saveForm() {
+    console.log('saveForm', formMode)
+
+    const body: TRoles = {
       name: watch('roleName'),
       description: watch('description'),
       tailwindColor: colorSelected,
     }
-
-    const endPoint = `${process.env.NEXT_PUBLIC_API_URL}${path}${
-      currentSelectedItem === '' && formMode === 'edit'
-        ? ''
-        : `/${currentSelectedItem}`
-    }`
-
-    fetch(endPoint, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    })
-      .then(() => {
-        toast({
-          title: 'Função registrada com sucesso!',
-          description:
-            'A função foi registrada com sucesso e já pode ser utilizada no cadastro de pessoas.',
-          type: 'background',
-        })
+    const id = formMode === 'edit' ? { id: currentSelectedItem } : {}
+    console.log(id)
+    console.log('body', { body, endpoint: 'roles', ...id })
+    await saveData({ body, endpoint: 'roles', ...id })
+      .then((data) => {
+        if (data) {
+          toast({
+            type: 'background',
+            description: 'Função cadastrada com sucesso!',
+            variant: 'default',
+          })
+        }
       })
       .then(() => {
-        getData()
+        setFormMode('add')
         setIsDialogOpen(false)
-      })
-      .catch((error) => {
-        console.error('Error:', error)
-        throw new Error(error)
       })
   }
 
-  function enableForm(e: React.MouseEvent<HTMLButtonElement>) {
+  function submitForm(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    setFormMode('edit')
+    console.log('submitForm', formMode)
+    if (formMode === 'add' || formMode === 'edit') {
+      saveForm()
+    } else if (formMode === 'view') {
+      enableForm()
+    }
   }
 
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle className="border-b-2 border-gray-500">
-            Cadastro de Funções
-          </DialogTitle>
+          <DialogTitle className="border-b-2 border-gray-500">Cadastro de Funções</DialogTitle>
           <DialogDescription>
-            <i className="text-sm">
-              Cadastro das funções que são atribuidas no cadastro de pessoas.
-            </i>
+            <i className="text-sm">Cadastro das funções que são atribuidas no cadastro de pessoas.</i>
           </DialogDescription>
         </DialogHeader>
-        <form
-          onSubmit={handleSubmit(saveData)}
-          className="mt-3 flex flex-col gap-6"
-        >
+        <form onSubmit={submitForm} className="mt-3 flex flex-col gap-6">
           <div className="flex justify-between">
             <div className="flex flex-col flex-grow pr-5">
               <label htmlFor="roleName" className="font-bold">
@@ -145,13 +135,11 @@ export function DialogModal({ getData, data }: IDialogModal) {
                 disabled={formMode === 'view'}
                 {...register('roleName')}
               />
-              <p className="text-destructive">
-                {formState.errors.roleName?.message?.toString()}
-              </p>
+              <p className="text-destructive">{formState.errors.roleName?.message?.toString()}</p>
             </div>
-            <div className="flex items-center">
-              <b>Cor:</b>
-              <div className="mt-2 ml-2">
+            <b>Cor:</b>
+            <div className="mt-2 ml-2">
+              <div className="flex items-center">
                 <DialogColorSelection
                   colorSelected={colorSelected}
                   setColorSelected={setColorSelected}
@@ -165,25 +153,16 @@ export function DialogModal({ getData, data }: IDialogModal) {
             <label htmlFor="description" className="font-bold">
               Descrição
             </label>
+
             <Input
               placeholder="Ex.: Função administrativa de controle financeiro da igreja"
               disabled={formMode === 'view'}
               {...register('description')}
             />
           </div>
-          {formMode === 'view' ? (
-            <Button
-              type="button"
-              className="mt-5 float-right mr-5"
-              onClick={(e) => enableForm(e)}
-            >
-              Editar
-            </Button>
-          ) : (
-            <Button type="submit" className="mt-5 float-right mr-5">
-              Salvar
-            </Button>
-          )}
+          <Button type="submit" className="mt-5 float-right mr-5">
+            {formMode === 'view' ? 'Editar' : 'Salvar'}
+          </Button>
         </form>
       </DialogContent>
     </Dialog>

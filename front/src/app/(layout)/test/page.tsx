@@ -1,5 +1,5 @@
 import { DataTable } from '@/components/ui/data-table'
-import { columns } from './columns'
+import { columns } from '../people/columns'
 import { getData } from '@/utils/fetchData'
 import { TPeopleGridHeader } from '@/types/TPeopleGridHeader'
 
@@ -19,6 +19,7 @@ export default async function People() {
   console.log(data)
   return (
     <center>
+      <p>test</p>
       <div className="m-10">
         <DataTable columns={columns} data={data} />
       </div>

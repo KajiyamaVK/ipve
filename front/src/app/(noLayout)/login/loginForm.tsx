@@ -9,14 +9,7 @@ import Cookie from 'js-cookie'
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime'
 import { z } from 'zod'
 import { RiLoginCircleLine } from 'react-icons/ri'
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { useState } from 'react'
 
 export default function LoginForm() {
@@ -72,12 +65,7 @@ export default function LoginForm() {
             )}
           />
 
-          <Button
-            className="mt-6 mx-auto w-full flex gap-2"
-            aria-label="login"
-            type="submit"
-            isLoading={isLoading}
-          >
+          <Button className="mt-6 mx-auto w-full flex gap-2" aria-label="login" type="submit" isLoading={isLoading}>
             <RiLoginCircleLine />
             Entrar
           </Button>

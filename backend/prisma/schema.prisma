@@ -44,7 +44,7 @@ model peopleTitles {
   name        String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  persons people[] @relation()
+  people people[] @relation()
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -56,7 +56,7 @@ model peopleRoles {
   description   String?
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
-
+  peopleRolesDataFK       peopleRolesData[]
 }
 /////////////////////////////////////////////////////////////////////
 
@@ -69,9 +69,9 @@ enum genderType {
 model people {
     id Int @id @default(autoincrement())
     fullName String
-    titleId Int
-    memberTitle peopleTitles @relation( fields: [titleId], references: [id])
-    rolesId String?
+    titleIdFK Int
+    peopleTitles peopleTitles @relation( fields: [titleIdFK], references: [id])
+    peopleRolesDataFK peopleRolesData[]
     dateOfBirth DateTime?
     gender genderType
     address String?
@@ -88,6 +88,14 @@ model people {
     isActive Boolean @default(true)  
     }
 
+/////////////////////////////////////////////////////////////////////
+model peopleRolesData {
+  peopleIdFK    Int
+  roleIdFK      Int
+  people      people?       @relation(fields: [peopleIdFK], references: [id])
+  peopleRoles peopleRoles?   @relation(fields: [roleIdFK], references: [id])
+     @@id([peopleIdFK, roleIdFK])
+}
 /////////////////////////////////////////////////////////////////////
 
 model churchBranches {

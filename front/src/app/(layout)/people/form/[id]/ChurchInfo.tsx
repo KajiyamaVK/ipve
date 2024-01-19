@@ -1,19 +1,7 @@
 'use client'
 
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 
 import { ReactNode } from 'react'
 
@@ -45,9 +33,7 @@ export function ChurchInfo(formControl: any) {
                     <SelectValue placeholder="Selecione" />
                   </SelectTrigger>
                 </FormControl>
-                <SelectContent className="bg-white ">
-                  {populatingSociety()}
-                </SelectContent>
+                <SelectContent className="bg-white ">{populatingSociety()}</SelectContent>
               </Select>
               <FormMessage />
             </FormItem>
@@ -65,9 +51,7 @@ export function ChurchInfo(formControl: any) {
                     <SelectValue placeholder="Selecione" />
                   </SelectTrigger>
                 </FormControl>
-                <SelectContent className="bg-white ">
-                  {populatingSociety()}
-                </SelectContent>
+                <SelectContent className="bg-white ">{populatingSociety()}</SelectContent>
               </Select>
               <FormMessage />
             </FormItem>
@@ -85,9 +69,7 @@ export function ChurchInfo(formControl: any) {
                     <SelectValue placeholder="Selecione" />
                   </SelectTrigger>
                 </FormControl>
-                <SelectContent className="bg-white ">
-                  {populatingSociety()}
-                </SelectContent>
+                <SelectContent className="bg-white ">{populatingSociety()}</SelectContent>
               </Select>
               <FormMessage />
             </FormItem>

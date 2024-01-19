@@ -1,7 +1,4 @@
-export function handleCepMask(
-  cep: string,
-  e: React.KeyboardEvent<HTMLInputElement>,
-): string {
+export function handleCepMask(cep: string, e: React.KeyboardEvent<HTMLInputElement>): string {
   const key = e.key
 
   if (

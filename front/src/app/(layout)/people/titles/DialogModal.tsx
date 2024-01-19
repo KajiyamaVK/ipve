@@ -1,34 +1,23 @@
 'use client'
 
-import { z } from 'zod'
+import { set, z } from 'zod'
 
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { useForm } from 'react-hook-form'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Dispatch, useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { formsContext } from '@/contexts/formsContext'
 import { useToast } from '@/components/ui/use-toast'
 import { TMembersTitles } from '@/types/TMembersTitles'
+import { getData, saveData } from '@/utils/fetchData'
 
 const DialogFormSchema = z.object({
-  roleName: z.string().min(1, 'Campo obrigatório'),
+  name: z.string().min(1, 'Campo obrigatório'),
 })
 
-interface IDialogModal {
-  setData: Dispatch<React.SetStateAction<TMembersTitles[]>>
-  getData: () => void
-  data: TMembersTitles[]
-}
-
-export function DialogModal({ getData }: IDialogModal) {
+export function DialogModal() {
   const { handleSubmit, register, formState, setValue, watch } = useForm({
     resolver: zodResolver(DialogFormSchema),
   })
@@ -40,125 +29,106 @@ export function DialogModal({ getData }: IDialogModal) {
     formMode,
     currentSelectedItem,
     setFormMode,
+    isSkeletonOpen,
+    setIsSkeletonOpen,
   } = useContext(formsContext)
   const [buttonIsLoading, setButtonIsLoading] = useState(false)
 
   useEffect(() => {
-    if (
-      formMode === 'view' &&
-      currentSelectedItem &&
-      typeof currentSelectedItem === 'number'
-    ) {
-      getTitle(currentSelectedItem)
-      if (register) {
-        setValue('titleName', register.name)
-      }
-    } else {
-      setValue('titleName', '')
+    if (isDialogOpen && formMode === 'add') {
+      setValue('name', '')
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isDialogOpen, formMode])
+
+  useEffect(() => {
+    if (isSkeletonOpen && formMode === 'view') {
+      ;(async () => {
+        await getData<TMembersTitles>({
+          endpoint: 'roles',
+          id: currentSelectedItem,
+        })
+          .then((data) => {
+            setValue('name', data?.name)
+          })
+          .then(() => {
+            setIsDialogOpen(true)
+            setIsSkeletonOpen(false)
+          })
+      })()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isDialogOpen, currentSelectedItem, formMode, setValue])
+  }, [isSkeletonOpen, formMode, currentSelectedItem])
 
-  async function getTitle(id: number) {
-    const endpointUrl = `${process.env.NEXT_PUBLIC_API_URL}/people/titles/${id}`
-    const response = await fetch(endpointUrl)
-    const data = await response.json()
-
-    setValue('roleName', data.name)
+  function enableForm() {
+    setFormMode('edit')
+    console.log('enableForm', formMode)
   }
 
-  async function saveData() {
+  async function saveForm() {
     setButtonIsLoading(true)
-    const data = {
-      name: watch('roleName'),
+
+    const body: TMembersTitles = {
+      name: watch('name'),
     }
-
-    const endpointUrl = `${process.env.NEXT_PUBLIC_API_URL}/people/titles/${
-      formMode === 'edit' ? '/' + currentSelectedItem : ''
-    }`
-
-    await fetch(endpointUrl, {
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    })
-      .then(() => {
-        toast({
-          title: 'Cargo registrado com sucesso!',
-          description:
-            'O cargo foi registrado com sucesso e já pode ser utilizada no cadastro de pessoas.',
-          type: 'background',
-        })
+    const id = formMode === 'edit' ? { id: currentSelectedItem } : {}
+    await saveData({ body, endpoint: 'titles', ...id })
+      .then((data) => {
+        if (data) {
+          toast({
+            type: 'background',
+            description: 'Título cadastrado com sucesso!',
+            variant: 'default',
+          })
+        }
       })
       .then(() => {
-        getData()
+        setFormMode('add')
         setIsDialogOpen(false)
       })
-      .catch((error) => {
-        console.error('Error:', error)
-        throw new Error(error)
+      .finally(() => {
+        setButtonIsLoading(false)
       })
-
-    setButtonIsLoading(false)
   }
 
-  function enableInput(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+  function submitForm(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    setFormMode('edit')
+    console.log('submitForm', formMode)
+    if (formMode === 'add' || formMode === 'edit') {
+      saveForm()
+    } else if (formMode === 'view') {
+      enableForm()
+    }
   }
 
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle className="border-b-2 border-gray-500">
-            Cadastro de Cargos
-          </DialogTitle>
+          <DialogTitle className="border-b-2 border-gray-500">Cadastro de Cargos</DialogTitle>
           <DialogDescription>
-            <i className="text-sm">
-              Cadastro dos cargos que são atribuidos no cadastro de pessoas.
-            </i>
+            <i className="text-sm">Cadastro dos cargos que são atribuidos no cadastro de pessoas.</i>
           </DialogDescription>
         </DialogHeader>
-        <form
-          onSubmit={handleSubmit(saveData)}
-          className="mt-3 flex flex-col gap-6"
-        >
+        <form onSubmit={submitForm} className="mt-3 flex flex-col gap-6">
           <div className="flex justify-between">
             <div className="flex flex-col flex-grow pr-5">
-              <label htmlFor="roleName" className="font-bold">
+              <label htmlFor="name" className="font-bold">
                 Nome do cargo
               </label>
               <Input
                 type="text"
                 placeholder="Ex: Pastor, presbítero, membro, etc."
                 disabled={formMode === 'view'}
-                {...register('roleName')}
+                {...register('name')}
               />
-              <p className="text-destructive">
-                {formState.errors.roleName?.message?.toString()}
-              </p>
+              <p className="text-destructive">{formState.errors.name?.message?.toString()}</p>
             </div>
           </div>
-          {formMode !== 'view' ? (
-            <Button
-              type="submit"
-              className="mt-5 float-right mr-5"
-              isLoading={buttonIsLoading}
-            >
-              Salvar
-            </Button>
-          ) : (
-            <Button
-              onClick={enableInput}
-              className="mt-5 float-right mr-5"
-              isLoading={buttonIsLoading}
-            >
-              Editar
-            </Button>
-          )}
+          <Button type="submit" className="mt-5 float-right mr-5" isLoading={buttonIsLoading}>
+            {formMode === 'view' ? 'Editar' : 'Salvar'}
+          </Button>
         </form>
       </DialogContent>
     </Dialog>

@@ -1,10 +1,5 @@
 import { PrismaClient } from '@prisma/client'
-import {
-  FastifyError,
-  FastifyInstance,
-  FastifyReply,
-  FastifyRequest,
-} from 'fastify'
+import { FastifyError, FastifyInstance, FastifyReply, FastifyRequest } from 'fastify'
 import { IRoles, TPeople } from '../types/people'
 import { z } from 'zod'
 
@@ -17,6 +12,7 @@ export async function people(app: FastifyInstance) {
 
   // Abstract error handling into a separate function
   function handleError(err: FastifyError, res: FastifyReply) {
+    console.error(err)
     return res.status(500).send({ message: err })
   }
 
@@ -55,14 +51,14 @@ export async function people(app: FastifyInstance) {
   })
 
   app.post('/roles', async (req: FastifyRequest, res: FastifyReply) => {
+    console.log('req.body', req.body)
     if (!req.body) return res.status(400).send({ message: 'No body provided' })
 
-    const { id, name, tailwindColor, description } = req.body as IRoles
+    const { name, tailwindColor, description } = req.body as IRoles
 
-    prisma.peopleRoles
+    await prisma.peopleRoles
       .create({
         data: {
-          id,
           name,
           tailwindColor,
           description,
@@ -71,9 +67,12 @@ export async function people(app: FastifyInstance) {
       .then((data) => {
         sendResponse(data, res, 201)
       })
+      .catch((err: FastifyError) => {
+        handleError(err, res)
+      })
   })
 
-  app.post('/roles/:id', async (req: FastifyRequest, res: FastifyReply) => {
+  app.put('/roles/:id', async (req: FastifyRequest, res: FastifyReply) => {
     const params = paramsSchema.parse(req.params)
     const id = parseInt(params.id)
     if (!req.body) return res.status(400).send({ message: 'No body provided' })
@@ -98,12 +97,18 @@ export async function people(app: FastifyInstance) {
     const params = paramsSchema.parse(req.params)
     const id = parseInt(params.id)
 
-    await prisma.peopleRoles.delete({
-      where: {
-        id,
-      },
-    })
-    sendResponse({ message: 'Deleted' }, res, 200)
+    await prisma.peopleRoles
+      .delete({
+        where: {
+          id,
+        },
+      })
+      .then(() => {
+        sendResponse({ message: 'Deleted' }, res, 200)
+      })
+      .catch((err: FastifyError) => {
+        handleError(err, res)
+      })
   })
 
   app.get('/titles', async (req: FastifyRequest, res: FastifyReply) => {
@@ -120,7 +125,6 @@ export async function people(app: FastifyInstance) {
   app.get('/titles/:id', async (req: FastifyRequest, res: FastifyReply) => {
     const params = paramsSchema.parse(req.params)
     const id = parseInt(params.id)
-
     await prisma.peopleTitles
       .findUnique({
         where: {
@@ -135,15 +139,14 @@ export async function people(app: FastifyInstance) {
       })
   })
 
-  app.post('/titles/', async (req: FastifyRequest, res: FastifyReply) => {
+  app.post('/titles', async (req: FastifyRequest, res: FastifyReply) => {
     if (!req.body) return res.status(400).send({ message: 'No body provided' })
 
-    const { id, name } = req.body as IRoles
+    const { name } = req.body as IRoles
 
     await prisma.peopleTitles
       .create({
         data: {
-          id,
           name,
         },
       })
@@ -188,6 +191,39 @@ export async function people(app: FastifyInstance) {
       })
       .then(() => {
         sendResponse({ message: 'Deleted' }, res, 200)
+      })
+      .catch((err: FastifyError) => {
+        handleError(err, res)
+      })
+  })
+
+  app.get('/peoplegridHeader', async (req: FastifyRequest, res: FastifyReply) => {
+    await prisma.people
+      .findMany({
+        select: {
+          id: true,
+          fullName: true,
+          phone1: true,
+          phone1IsWhatsapp: true,
+          dateOfBirth: true,
+          peopleTitles: {
+            select: {
+              name: true,
+            },
+          },
+          peopleRolesData: {
+            select: {
+              peopleRoles: {
+                select: {
+                  name: true,
+                },
+              },
+            },
+          },
+        },
+      })
+      .then((data) => {
+        sendResponse(data, res)
       })
       .catch((err: FastifyError) => {
         handleError(err, res)
@@ -259,10 +295,8 @@ export async function people(app: FastifyInstance) {
         })
     } else {
       const {
-        id,
         fullName,
-        titleId,
-        rolesId,
+        titleIdFK,
         dateOfBirth,
         gender,
         address,
@@ -281,10 +315,8 @@ export async function people(app: FastifyInstance) {
       await prisma.people
         .create({
           data: {
-            id,
             fullName,
-            titleId,
-            rolesId,
+            titleIdFK,
             dateOfBirth,
             gender,
             address,
@@ -300,18 +332,28 @@ export async function people(app: FastifyInstance) {
             email,
           },
         })
-        .then((data) => {
-          sendResponse(data, res, 201)
+        .then(async (data) => {
+          const { rolesId } = req.body as { rolesId: number[] }
+          rolesId.forEach(async (id) => {
+            await prisma.peopleRolesData.createMany({
+              data: {
+                peopleIdFK: data.id,
+                roleIdFK: id,
+              },
+            })
+          })
+        })
+        .then(() => {
+          sendResponse({ message: 'Created' }, res, 201)
         })
     }
   })
 
-  app.post('/:id', async (req: FastifyRequest, res: FastifyReply) => {
+  app.put('/:id', async (req: FastifyRequest, res: FastifyReply) => {
     const {
       id,
       fullName,
-      titleId,
-      rolesId,
+      titleIdFK,
       dateOfBirth,
       gender,
       address,
@@ -333,8 +375,7 @@ export async function people(app: FastifyInstance) {
       },
       data: {
         fullName,
-        titleId,
-        rolesId,
+        titleIdFK,
         dateOfBirth,
         gender,
         address,

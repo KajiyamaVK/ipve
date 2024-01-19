@@ -1,10 +1,4 @@
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form'
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { handleCepMask } from '@/utils/handleCepMask'
 import { KeyboardEvent } from 'react'
@@ -54,11 +48,7 @@ export function AddressDataInfo(form: any) {
               <FormItem className="text-left">
                 <FormLabel>Endereço (sem o número)</FormLabel>
                 <FormControl>
-                  <Input
-                    placeholder="Ex.: Praça José Gebara"
-                    className="min-w-80 max-w-96"
-                    {...field}
-                  />
+                  <Input placeholder="Ex.: Praça José Gebara" className="min-w-80 max-w-96" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -91,11 +81,7 @@ export function AddressDataInfo(form: any) {
             <FormItem className="text-left flex-1">
               <FormLabel>Complemento</FormLabel>
               <FormControl>
-                <Input
-                  placeholder="Ex.: Apto 123"
-                  className=" w-full"
-                  {...field}
-                />
+                <Input placeholder="Ex.: Apto 123" className=" w-full" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -109,11 +95,7 @@ export function AddressDataInfo(form: any) {
             <FormItem className="text-left flex-1">
               <FormLabel>Bairro</FormLabel>
               <FormControl>
-                <Input
-                  placeholder="Ex.: Vila Euthalia"
-                  className=" w-full"
-                  {...field}
-                />
+                <Input placeholder="Ex.: Vila Euthalia" className=" w-full" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -132,11 +114,7 @@ export function AddressDataInfo(form: any) {
             <FormItem className="text-left flex-1">
               <FormLabel>Cidade</FormLabel>
               <FormControl>
-                <Input
-                  placeholder="Ex.: São Paulo"
-                  className="w-full"
-                  {...field}
-                />
+                <Input placeholder="Ex.: São Paulo" className="w-full" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

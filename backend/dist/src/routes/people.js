@@ -10,6 +10,7 @@ async function people(app) {
     const prisma = new client_1.PrismaClient();
     // Abstract error handling into a separate function
     function handleError(err, res) {
+        console.error(err);
         return res.status(500).send({ message: err });
     }
     // Abstract response sending into a separate function
@@ -43,13 +44,13 @@ async function people(app) {
         });
     });
     app.post('/roles', async (req, res) => {
+        console.log('req.body', req.body);
         if (!req.body)
             return res.status(400).send({ message: 'No body provided' });
-        const { id, name, tailwindColor, description } = req.body;
-        prisma.peopleRoles
+        const { name, tailwindColor, description } = req.body;
+        await prisma.peopleRoles
             .create({
             data: {
-                id,
                 name,
                 tailwindColor,
                 description,
@@ -57,6 +58,9 @@ async function people(app) {
         })
             .then((data) => {
             sendResponse(data, res, 201);
+        })
+            .catch((err) => {
+            handleError(err, res);
         });
     });
     app.post('/roles/:id', async (req, res) => {
@@ -80,12 +84,18 @@ async function people(app) {
     app.delete('/roles/:id', async (req, res) => {
         const params = paramsSchema.parse(req.params);
         const id = parseInt(params.id);
-        await prisma.peopleRoles.delete({
+        await prisma.peopleRoles
+            .delete({
             where: {
                 id,
             },
+        })
+            .then(() => {
+            sendResponse({ message: 'Deleted' }, res, 200);
+        })
+            .catch((err) => {
+            handleError(err, res);
         });
-        sendResponse({ message: 'Deleted' }, res, 200);
     });
     app.get('/titles', async (req, res) => {
         await prisma.peopleTitles
@@ -166,6 +176,38 @@ async function people(app) {
             handleError(err, res);
         });
     });
+    app.get('/peoplegridHeader', async (req, res) => {
+        await prisma.people
+            .findMany({
+            select: {
+                id: true,
+                fullName: true,
+                phone1: true,
+                phone1IsWhatsapp: true,
+                dateOfBirth: true,
+                peopleTitles: {
+                    select: {
+                        name: true,
+                    },
+                },
+                peopleRolesData: {
+                    select: {
+                        peopleRoles: {
+                            select: {
+                                name: true,
+                            },
+                        },
+                    },
+                },
+            },
+        })
+            .then((data) => {
+            sendResponse(data, res);
+        })
+            .catch((err) => {
+            handleError(err, res);
+        });
+    });
     app.get('/', async (req, res) => {
         await prisma.people
             .findMany()
@@ -222,14 +264,12 @@ async function people(app) {
             });
         }
         else {
-            const { id, fullName, titleId, rolesId, dateOfBirth, gender, address, complement, city, suburb, uf, cep, phone1, phone1IsWhatsapp, phone2, photoUrl, email, } = req.body;
+            const { fullName, titleIdFK, dateOfBirth, gender, address, complement, city, suburb, uf, cep, phone1, phone1IsWhatsapp, phone2, photoUrl, email, } = req.body;
             await prisma.people
                 .create({
                 data: {
-                    id,
                     fullName,
-                    titleId,
-                    rolesId,
+                    titleIdFK,
                     dateOfBirth,
                     gender,
                     address,
@@ -245,21 +285,31 @@ async function people(app) {
                     email,
                 },
             })
-                .then((data) => {
-                sendResponse(data, res, 201);
+                .then(async (data) => {
+                const { rolesId } = req.body;
+                rolesId.forEach(async (id) => {
+                    await prisma.peopleRolesData.createMany({
+                        data: {
+                            peopleIdFK: data.id,
+                            roleIdFK: id,
+                        },
+                    });
+                });
+            })
+                .then(() => {
+                sendResponse({ message: 'Created' }, res, 201);
             });
         }
     });
-    app.post('/:id', async (req, res) => {
-        const { id, fullName, titleId, rolesId, dateOfBirth, gender, address, complement, city, suburb, uf, cep, phone1, phone1IsWhatsapp, phone2, photoUrl, email, } = req.body;
+    app.put('/:id', async (req, res) => {
+        const { id, fullName, titleIdFK, dateOfBirth, gender, address, complement, city, suburb, uf, cep, phone1, phone1IsWhatsapp, phone2, photoUrl, email, } = req.body;
         const data = await prisma.people.update({
             where: {
                 id,
             },
             data: {
                 fullName,
-                titleId,
-                rolesId,
+                titleIdFK,
                 dateOfBirth,
                 gender,
                 address,

@@ -2,14 +2,7 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { ZPeople } from '@/types/TPeople'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Textarea } from '@/components/ui/textarea'
@@ -46,11 +39,9 @@ export default function PeopleForm() {
   }, [form.watch('cep')])
 
   useEffect(() => {
-    console.log(form.watch('memberTitle'))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form.watch('memberTitle')])
   useEffect(() => {
-    console.log(form.watch('churchId'))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form.watch('churchId')])
 
@@ -79,9 +70,7 @@ export default function PeopleForm() {
 
   async function handleCepSearch(cep: string) {
     const cepWithoutMask = cep.replace('-', '')
-    const response = await fetch(
-      `https://viacep.com.br/ws/${cepWithoutMask}/json/`,
-    )
+    const response = await fetch(`https://viacep.com.br/ws/${cepWithoutMask}/json/`)
     const data = await response.json()
 
     form.setValue('address', data.logradouro)
@@ -92,10 +81,7 @@ export default function PeopleForm() {
 
   return (
     <Form {...form}>
-      <form
-        className="mx-auto mt-10 max-w-[1500px] text-center "
-        onSubmit={form.handleSubmit(saveData)}
-      >
+      <form className="mx-auto mt-10 max-w-[1500px] text-center " onSubmit={form.handleSubmit(saveData)}>
         <div>
           <Toolbar />
           <div className="flex gap-5 items-center ml-20 ">
@@ -140,10 +126,7 @@ export default function PeopleForm() {
               render={({ field }) => (
                 <FormItem className="flex flex-row items-center space-x-3 space-y-0 ">
                   <FormControl>
-                    <Checkbox
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                    />
+                    <Checkbox checked={field.value} onCheckedChange={field.onChange} />
                   </FormControl>
                   <div className="space-y-1 leading-none">
                     <FormLabel>Usuário da plataforma?</FormLabel>
@@ -152,10 +135,7 @@ export default function PeopleForm() {
               )}
             />
 
-            <AccessControl
-              form={form}
-              className="border-l-8 border-primary-dark pl-10"
-            />
+            <AccessControl form={form} className="border-l-8 border-primary-dark pl-10" />
           </div>
           <FormField
             control={form.control}
@@ -163,10 +143,7 @@ export default function PeopleForm() {
             render={({ field }) => (
               <FormItem className="flex flex-row items-center space-x-3 space-y-0 ">
                 <FormControl>
-                  <Checkbox
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                  />
+                  <Checkbox checked={field.value} onCheckedChange={field.onChange} />
                 </FormControl>
                 <div className="space-y-1 leading-none">
                   <FormLabel>Possui família na igreja?</FormLabel>

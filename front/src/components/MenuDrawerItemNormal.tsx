@@ -13,22 +13,14 @@ export function MenuItemNormal(id: string) {
     <div
       onClick={(e) => {
         e.stopPropagation()
-        console.log('path', path)
-        console.log('currentPath', currentPath)
-        if (
-          path === currentPath ||
-          (path === '/' && currentPath === '/dashboard')
-        ) {
+
+        if (path === currentPath || (path === '/' && currentPath === '/dashboard')) {
           return
         }
         setIsScreenLoading(true)
       }}
     >
-      <Link
-        href={`${path}`}
-        key={id}
-        className="px-5 py-2 flex gap-2 items-center hover:underline cursor-pointer"
-      >
+      <Link href={`${path}`} key={id} className="px-5 py-2 flex gap-2 items-center hover:underline cursor-pointer">
         {icon}
         {menuLabel}
       </Link>

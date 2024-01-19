@@ -1,3 +1,5 @@
+'use client'
+
 import { ColumnDef } from '@tanstack/react-table'
 import { SortedGridHeader } from '@/components/ui/sortedGridHeader'
 import { TPeopleGridHeader } from '@/types/TPeopleGridHeader'
@@ -29,8 +31,6 @@ export const columns: ColumnDef<TPeopleGridHeader>[] = [
   },
   {
     accessorKey: 'isPhone1WhatsApp',
-    header: ({ column }) => (
-      <SortedGridHeader column={column} label="Whatsapp?" />
-    ),
+    header: ({ column }) => <SortedGridHeader column={column} label="Whatsapp?" />,
   },
 ]

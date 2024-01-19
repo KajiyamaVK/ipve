@@ -11,24 +11,12 @@ import {
   Cell,
 } from '@tanstack/react-table'
 
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from './accordion'
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from './accordion'
 
 import { Trash } from '@phosphor-icons/react'
-import { Dispatch, ReactNode, useContext, useEffect, useState } from 'react'
+import { ReactNode, useContext, useEffect, useState } from 'react'
 import { Input } from './input'
 import { Button } from './button'
 import { usePathname, useRouter } from 'next/navigation'
@@ -36,43 +24,40 @@ import { useForm } from 'react-hook-form'
 import { formsContext } from '@/contexts/formsContext'
 import { generalContext } from '@/contexts/generalContext'
 import { toast } from './use-toast'
+import { ImSpinner9 } from 'react-icons/im'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
-  dataValues: TData[]
   dialogForm?: ReactNode
-  setData?: Dispatch<React.SetStateAction<TData[]>>
-  getData: () => void
+  dialogSkeleton?: ReactNode
+  data: TData[]
 }
 
 export function DataTable<TData, TValue>({
   columns,
-  dataValues,
   dialogForm = <></>,
-  setData,
-  getData,
+  dialogSkeleton = <></>,
+  data,
 }: DataTableProps<TData, TValue>) {
-  const { table } = useTable(columns, dataValues)
   const [searchColumn, setSearchColumn] = useState('id')
   const [buttonIsLoading, setButtonIsLoading] = useState(false)
+  const [tableHeaderRow, setTableHetHeaderRow] = useState<ReactNode[]>([])
+  const [SearchColumnsSelectOptions, setSearchColumnsSelectOptions] = useState<ReactNode[]>([])
+
+  const { table } = useTable(columns, data)
 
   const router = useRouter()
 
-  const [tableHeaderRow, setTableHetHeaderRow] = useState<ReactNode[]>([])
-  const [SearchColumnsSelectOptions, setSearchColumnsSelectOptions] = useState<
-    ReactNode[]
-  >([])
-
   const { register, watch } = useForm()
 
-  const { setFormMode, setIsDialogOpen, setCurrentSelectedItem, isDialogOpen } =
+  const { setFormMode, setIsDialogOpen, currentSelectedItem, setCurrentSelectedItem, isDialogOpen, setIsSkeletonOpen } =
     useContext(formsContext)
-  const { currentScreen, setIsScreenLoading } = useContext(generalContext)
+  const { currentScreen } = useContext(generalContext)
   const { formType } = currentScreen
   const path = usePathname()
 
   useEffect(() => {
-    setIsDialogOpen(false)
+    setFormMode('add')
 
     const TableHeaderRowArray: ReactNode[] = []
     const TableHeaderRowArrayHeaders: ReactNode[] = []
@@ -100,15 +85,12 @@ export function DataTable<TData, TValue>({
   }, [])
 
   useEffect(() => {
-    if (isDialogOpen) {
+    if (!isDialogOpen) {
+      router.refresh()
       setButtonIsLoading(false)
     }
-  }, [isDialogOpen])
-
-  useEffect(() => {
-    setIsScreenLoading(false)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dataValues])
+  }, [isDialogOpen])
 
   function pushToProperRoute() {
     setFormMode('add')
@@ -117,22 +99,21 @@ export function DataTable<TData, TValue>({
       const registerRoute = `/${currentScreen.id}/form/0`
       router.push(registerRoute)
     } else {
+      console.log('isDialogOpen', isDialogOpen)
       setIsDialogOpen(true)
     }
   }
 
-  function handleViewState(id: string) {
+  function handleViewState(id: number) {
+    setCurrentSelectedItem(id)
+    console.log('id', id)
+    setFormMode('view')
     if (currentScreen.formType === 'dialog') {
-      setCurrentSelectedItem(id)
-      setFormMode('view')
-      setIsDialogOpen(true)
+      setIsSkeletonOpen(true)
     } else router.push(`/${currentScreen.id}/form/${id}`)
   }
 
-  function useTable<TData, TValue>(
-    columns: ColumnDef<TData, TValue>[],
-    data: TData[],
-  ) {
+  function useTable<TData, TValue>(columns: ColumnDef<TData, TValue>[], data: TData[]) {
     const [sorting, setSorting] = useState<SortingState>([])
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
 
@@ -153,21 +134,12 @@ export function DataTable<TData, TValue>({
     return { table, sorting, setSorting, columnFilters, setColumnFilters }
   }
 
-  function refreshData() {
-    getData()
-  }
-
-  async function handleDelete(id: string) {
+  async function handleDelete(id: number) {
     await fetch(`${process.env.NEXT_PUBLIC_API_URL}${path}/${id}`, {
       method: 'DELETE',
     })
       .then((response) => {
         if (response.status === 200) {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          // const newTableData = dataValues.filter((item: any) => item.id !== id)
-          refreshData()
-          if (typeof setData === 'undefined')
-            throw new Error('setData is undefined')
           toast({
             title: `Registro ${id} apagado com sucesso!`,
             description: 'A função foi apagada com sucesso',
@@ -181,6 +153,9 @@ export function DataTable<TData, TValue>({
           })
         }
       })
+      .then(() => {
+        router.refresh()
+      })
       .catch((err) => {
         throw new Error(err)
       })
@@ -188,11 +163,7 @@ export function DataTable<TData, TValue>({
 
   function renderTableCell<TData>(cell: Cell<TData, unknown>) {
     if (cell.id !== '') {
-      return (
-        <TableCell key={cell.id}>
-          {flexRender(cell.column.columnDef.cell, cell.getContext())}
-        </TableCell>
-      )
+      return <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
     } else {
       return <TableCell key="default">Default Value</TableCell>
     }
@@ -214,16 +185,9 @@ export function DataTable<TData, TValue>({
   }
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function renderHeaders(header: any) {
-    const label = flexRender(
-      header.column.columnDef.header,
-      header.getContext(),
-    )
+    const label = flexRender(header.column.columnDef.header, header.getContext())
 
-    return (
-      <TableHead key={`${header.id}-TH`}>
-        {header.isPlaceholder ? null : label}
-      </TableHead>
-    )
+    return <TableHead key={`${header.id}-TH`}>{header.isPlaceholder ? null : label}</TableHead>
   }
 
   return (
@@ -239,27 +203,17 @@ export function DataTable<TData, TValue>({
               </AccordionTrigger>
               <AccordionContent>
                 <p className="italic mb-5 text-left">
-                  Escolha uma das colunas no seletor e digite o texto que deseja
-                  procurar.
+                  Escolha uma das colunas no seletor e digite o texto que deseja procurar.
                 </p>
                 <div className="flex gap-5">
-                  <select
-                    value={searchColumn}
-                    onChange={(e) => setSearchColumn(e.target.value)}
-                  >
+                  <select value={searchColumn} onChange={(e) => setSearchColumn(e.target.value)}>
                     {SearchColumnsSelectOptions}
                   </select>
                   <Input
                     placeholder="Escolha a coluna que deseja filtrar..."
-                    value={
-                      (table
-                        .getColumn(searchColumn)
-                        ?.getFilterValue() as string) ?? ''
-                    }
+                    value={(table.getColumn(searchColumn)?.getFilterValue() as string) ?? ''}
                     onKeyUp={() => {
-                      table
-                        .getColumn(searchColumn)
-                        ?.setFilterValue(watch('search'))
+                      table.getColumn(searchColumn)?.setFilterValue(watch('search'))
                     }}
                     className="min-w-2xl w-[700px]"
                     type="text"
@@ -271,26 +225,20 @@ export function DataTable<TData, TValue>({
           </Accordion>
         </div>
         <div className="text-right mb-10">
-          <Button
-            className="w-20"
-            variant={'default'}
-            onClick={pushToProperRoute}
-            isLoading={buttonIsLoading}
-          >
+          <Button className="w-20" variant={'default'} onClick={pushToProperRoute}>
             Novo
           </Button>
         </div>
+        {dialogSkeleton}
         {dialogForm}
       </div>
       <div className="shadow-md shadow-black">
         <Table className="bg-white ">
-          <TableHeader className="text-white bg-[#68b3c6] ">
-            {tableHeaderRow}
-          </TableHeader>
+          <TableHeader className="text-white bg-[#68b3c6] ">{tableHeaderRow}</TableHeader>
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => {
-                const idValue = row.getValue('id') as string
+                const idValue = row.getValue('id') as number
                 return (
                   <TableRow
                     key={row.id}
@@ -305,9 +253,17 @@ export function DataTable<TData, TValue>({
                         onClick={(e) => {
                           e.stopPropagation()
                           handleDelete(idValue)
+                          setButtonIsLoading(true)
+                          setCurrentSelectedItem(idValue)
                         }}
                       >
-                        <Trash size={24} />
+                        {buttonIsLoading && currentSelectedItem === idValue ? (
+                          <div className="animate-spin">
+                            <ImSpinner9 />
+                          </div>
+                        ) : (
+                          <Trash size={24} />
+                        )}
                       </button>
                     </TableCell>
                   </TableRow>
@@ -315,14 +271,9 @@ export function DataTable<TData, TValue>({
               })
             ) : (
               <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
+                <TableCell colSpan={columns.length} className="h-24 text-center">
                   Nenhum resultado encontrado
-                  <p className="text-destructive font-bold">
-                    A coluna selecionada na busca é a correta?
-                  </p>
+                  <p className="text-destructive font-bold">A coluna selecionada na busca é a correta?</p>
                 </TableCell>
               </TableRow>
             )}

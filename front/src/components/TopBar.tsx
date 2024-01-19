@@ -1,22 +1,18 @@
 'use client'
 
 import Image from 'next/image'
-import { useContext, useEffect } from 'react'
 import { menuItems } from '@/data/menuItems'
 import { usePathname } from 'next/navigation'
-import { generalContext } from '@/contexts/generalContext'
+import { useEffect } from 'react'
 
 export default function TopBar() {
   const pathname = usePathname()
-  const { isMenuOpen } = useContext(generalContext)
   function getDisplayName() {
     let displayName
 
     const pathParts = pathname.split('/')
     const isForm = pathParts[pathParts.length - 2] === 'form'
-    const currentScreen = isForm
-      ? pathParts[pathParts.length - 3]
-      : pathParts[pathParts.length - 1]
+    const currentScreen = isForm ? pathParts[pathParts.length - 3] : pathParts[pathParts.length - 1]
 
     menuItems.forEach((item) => {
       if (item.id === currentScreen) {
@@ -52,18 +48,9 @@ export default function TopBar() {
 
   return (
     <div
-      className={`text-black flex border-b-2 border-gray-200 w-full p-2 z-10 text-center justify-center items-center gap-2 transition-all ${
-        isMenuOpen
-          ? 'bg-white'
-          : 'bg-primary absolute right-2 text-primary-foreground'
-      }`}
+      className={`text-black flex border-b-2 border-gray-200 w-full p-2 z-10 text-center justify-center items-center gap-2 transition-all `}
     >
-      <Image
-        src="/logo.png"
-        width={30}
-        height={30}
-        alt="Logo da igreja presbiteriana da Vila Eutália"
-      />
+      <Image src="/logo.png" width={30} height={30} alt="Logo da igreja presbiteriana da Vila Eutália" />
       <span>{getDisplayName()} </span>
     </div>
   )

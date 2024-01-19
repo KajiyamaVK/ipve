@@ -1,30 +1,26 @@
 'use client'
 
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from './ui/accordion'
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from './ui/accordion'
 import Link from 'next/link'
 import { getRouteData } from '@/utils/getRouteData'
 import { useContext } from 'react'
-import { generalContext } from '@/contexts/generalContext'
 import { usePathname } from 'next/navigation'
+import { formsContext } from '@/contexts/formsContext'
 
 export function MenuItemParent(id: string) {
   const { menuLabel, icon, children, path } = getRouteData(id)
-  const { setIsScreenLoading } = useContext(generalContext)
+  const { setIsDialogOpen, setIsSkeletonOpen } = useContext(formsContext)
   const currentPath = usePathname()
 
   function handleLinkClick(e: React.MouseEvent<HTMLDivElement>) {
     e.stopPropagation()
-    console.log('path', path)
-    console.log('currentPath', currentPath)
+
+    setIsDialogOpen(false)
+    setIsSkeletonOpen(false)
+
     if (path === currentPath) {
-      return
+      return false
     }
-    setIsScreenLoading(true)
   }
   return (
     <div key={menuLabel}>
@@ -49,10 +45,7 @@ export function MenuItemParent(id: string) {
                       }}
                       key={child.menuLabel}
                     >
-                      <Link
-                        href={`${child.path}`}
-                        className="hover:underline cursor-pointer px-5  pt-1"
-                      >
+                      <Link href={`${child.path}`} className="hover:underline cursor-pointer px-5  pt-1">
                         {child.menuLabel}
                       </Link>
                     </div>

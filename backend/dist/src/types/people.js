@@ -13,11 +13,9 @@ const GenderTypeValues = ['m', 'f'];
 const ZGenderType = zod_1.z.enum(GenderTypeValues);
 exports.ZPeople = zod_1.z.object({
     id: zod_1.z.number().optional(),
-    fullName: zod_1.z
-        .string({ required_error: 'Nome completo é um campo obrigatório' })
-        .min(1),
-    titleId: zod_1.z.number({ required_error: 'Cargo é um campo obrigatório' }),
-    rolesId: zod_1.z.string().optional().nullable(),
+    fullName: zod_1.z.string({ required_error: 'Nome completo é um campo obrigatório' }).min(1),
+    titleIdFK: zod_1.z.number({ required_error: 'Cargo é um campo obrigatório' }).min(1),
+    peopleRolesDataFK: zod_1.z.array((0, zod_1.number)()).optional().nullable(),
     dateOfBirth: zod_1.z.date().optional().nullable(),
     gender: ZGenderType,
     address: zod_1.z.string().optional().nullable(),
