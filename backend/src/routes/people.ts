@@ -51,16 +51,14 @@ export async function people(app: FastifyInstance) {
   })
 
   app.post('/roles', async (req: FastifyRequest, res: FastifyReply) => {
-    console.log('req.body', req.body)
     if (!req.body) return res.status(400).send({ message: 'No body provided' })
 
-    const { name, tailwindColor, description } = req.body as IRoles
+    const { name, description } = req.body as IRoles
 
     await prisma.peopleRoles
       .create({
         data: {
           name,
-          tailwindColor,
           description,
         },
       })
@@ -77,7 +75,7 @@ export async function people(app: FastifyInstance) {
     const id = parseInt(params.id)
     if (!req.body) return res.status(400).send({ message: 'No body provided' })
 
-    const { name, tailwindColor, description } = req.body as IRoles
+    const { name, description } = req.body as IRoles
 
     const data = await prisma.peopleRoles.update({
       where: {
@@ -85,7 +83,6 @@ export async function people(app: FastifyInstance) {
       },
       data: {
         name,
-        tailwindColor,
         description,
       },
     })
@@ -197,7 +194,7 @@ export async function people(app: FastifyInstance) {
       })
   })
 
-  app.get('/peoplegridHeader', async (req: FastifyRequest, res: FastifyReply) => {
+  app.get('/', async (req: FastifyRequest, res: FastifyReply) => {
     await prisma.people
       .findMany({
         select: {
@@ -211,7 +208,7 @@ export async function people(app: FastifyInstance) {
               name: true,
             },
           },
-          peopleRolesData: {
+          peopleRolesDataFK: {
             select: {
               peopleRoles: {
                 select: {
@@ -223,18 +220,13 @@ export async function people(app: FastifyInstance) {
         },
       })
       .then((data) => {
-        sendResponse(data, res)
-      })
-      .catch((err: FastifyError) => {
-        handleError(err, res)
-      })
-  })
+        const newData = data.map((item) => ({
+          ...item,
+          dateOfBirth: item.dateOfBirth ? item.dateOfBirth.toLocaleDateString('pt-BR') : null,
+          peopleTitles: item.peopleTitles.name,
+        }))
 
-  app.get('/', async (req: FastifyRequest, res: FastifyReply) => {
-    await prisma.people
-      .findMany()
-      .then((data) => {
-        sendResponse(data, res)
+        sendResponse(newData, res)
       })
       .catch((err: FastifyError) => {
         handleError(err, res)

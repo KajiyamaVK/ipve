@@ -4,8 +4,7 @@ const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 // script to select all screens
 async function main() {
-    const screens = await prisma.screens.findMany();
-    console.log(screens);
+    return true;
 }
 main()
     .catch((e) => {

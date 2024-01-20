@@ -1,16 +1,13 @@
+'use client'
+
 import { Checkbox } from '@/components/ui/checkbox'
 import { FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
 import { menuItems } from '@/data/menuItems'
 import { TMenuDrawerItem } from '@/types/TMenuDrawerItem'
+import { UseFormReturn } from 'react-hook-form'
 
-interface IAcessControl {
-  className?: string
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  form: any
-}
-
-export function AccessControl({ className, form }: IAcessControl) {
+// eslint-disable-next-line
+export function AccessControl(form: UseFormReturn<any>) {
   function screensAccessControl() {
     return menuItems.map((item: TMenuDrawerItem) => (
       <div key={item.id}>
@@ -54,9 +51,27 @@ export function AccessControl({ className, form }: IAcessControl) {
   }
 
   return (
-    <div className={className}>
-      <h1>Controle de Acessos</h1>
-      <div className="flex flex-col  mt-5">{screensAccessControl()}</div>
+    <div className="flex gap-10 items-start">
+      <FormField
+        control={form.control}
+        name="isUser"
+        render={({ field }) => (
+          <FormItem className="flex flex-row items-center space-x-3 space-y-0 ">
+            <FormControl>
+              <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+            </FormControl>
+            <div className="space-y-1 leading-none">
+              <FormLabel>Usuário da plataforma?</FormLabel>
+            </div>
+          </FormItem>
+        )}
+      />
+      {form.watch('isUser') && (
+        <div className="border-l-8 border-primary-dark pl-10">
+          <h1>Controle de Acessos</h1>
+          <div className="flex flex-col  mt-5">{screensAccessControl()}</div>
+        </div>
+      )}
     </div>
   )
 }

@@ -11,7 +11,7 @@ export function MenuDrawer() {
   }
 
   return (
-    <div className="w-64 bg-primary h-full shadow-lg shadow-black text-primary-foreground z-50 flex flex-col">
+    <div className="w-64 bg-primary shadow-lg shadow-black text-primary-foreground z-50 flex flex-col flex-1 ">
       <div className="flex-1">
         <MenuDrawerProfile />
         <MenuDrawerItems />

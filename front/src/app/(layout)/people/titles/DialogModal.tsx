@@ -1,6 +1,6 @@
 'use client'
 
-import { set, z } from 'zod'
+import { z } from 'zod'
 
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { useForm } from 'react-hook-form'
@@ -18,7 +18,7 @@ const DialogFormSchema = z.object({
 })
 
 export function DialogModal() {
-  const { handleSubmit, register, formState, setValue, watch } = useForm({
+  const { register, formState, setValue, watch } = useForm({
     resolver: zodResolver(DialogFormSchema),
   })
 

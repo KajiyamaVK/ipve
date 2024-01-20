@@ -5,7 +5,6 @@ const zod_1 = require("zod");
 exports.ZRoles = zod_1.z.object({
     id: zod_1.z.number(),
     name: zod_1.z.string(),
-    tailwindColor: zod_1.z.string(),
     description: zod_1.z.string().optional(),
 });
 const GenderTypeValues = ['m', 'f'];

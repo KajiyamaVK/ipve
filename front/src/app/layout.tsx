@@ -10,7 +10,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="pt-BR">
       <GeneralContextProvider>
-        <body>
+        <body className="overflow-y-hidden">
           <Toaster />
           {children}
         </body>

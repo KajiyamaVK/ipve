@@ -10,9 +10,12 @@ export function SortedGridHeader({
   column: Column<any, unknown>
   label: string
 }) {
-  console.log('column', column)
   return (
-    <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+    <Button
+      variant="ghost"
+      className="text-left overflow-hidden flex justify-between p-0 gap-2"
+      onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+    >
       <span className="">{label}</span>
       {column.getIsSorted() === 'asc' ? (
         <CaretUp size={10} />

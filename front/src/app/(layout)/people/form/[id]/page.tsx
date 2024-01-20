@@ -4,20 +4,20 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { ZPeople } from '@/types/TPeople'
-import { Checkbox } from '@/components/ui/checkbox'
 import { Textarea } from '@/components/ui/textarea'
 import { useEffect } from 'react'
 import { useToast } from '@/components/ui/use-toast'
 import { useRouter } from 'next/navigation'
 import { Toolbar } from './toolbar'
 import { ProfileAvatar } from './profileAvatar'
-import { ActiveControl } from './activeControl'
+import { ActiveControl } from './ActiveControl'
 import { BasicTopPersonalInfo } from './BasicTopPersonalInfo'
 import { AddressDataInfo } from './AddressDataInfo'
 import { ContactInfo } from './ContactInfo'
 import { ChurchInfo } from './ChurchInfo'
 import { AccessControl } from './AccessControl'
 import { getEnv } from '@/envSchema'
+import FamilyInfo from './FamilyInfo'
 
 export default function PeopleForm() {
   const form = useForm<z.infer<typeof ZPeople>>({
@@ -81,7 +81,7 @@ export default function PeopleForm() {
 
   return (
     <Form {...form}>
-      <form className="mx-auto mt-10 max-w-[1500px] text-center " onSubmit={form.handleSubmit(saveData)}>
+      <form className="mx-auto mt-10 max-w-[1500px] text-center sm:mx-10" onSubmit={form.handleSubmit(saveData)}>
         <div>
           <Toolbar />
           <div className="flex gap-5 items-center ml-20 ">
@@ -119,38 +119,14 @@ export default function PeopleForm() {
               )}
             />
           </div>
-          <div className="flex mt-5 gap-10 ">
-            <FormField
-              control={form.control}
-              name="isUser"
-              render={({ field }) => (
-                <FormItem className="flex flex-row items-center space-x-3 space-y-0 ">
-                  <FormControl>
-                    <Checkbox checked={field.value} onCheckedChange={field.onChange} />
-                  </FormControl>
-                  <div className="space-y-1 leading-none">
-                    <FormLabel>Usuário da plataforma?</FormLabel>
-                  </div>
-                </FormItem>
-              )}
-            />
-
-            <AccessControl form={form} className="border-l-8 border-primary-dark pl-10" />
+          <div className="flex flex-col gap-10">
+            <div className="flex mt-5 gap-10 ">
+              <AccessControl {...form} />
+            </div>
+            <div>
+              <FamilyInfo {...form} />
+            </div>
           </div>
-          <FormField
-            control={form.control}
-            name="hasFamilyInChurch"
-            render={({ field }) => (
-              <FormItem className="flex flex-row items-center space-x-3 space-y-0 ">
-                <FormControl>
-                  <Checkbox checked={field.value} onCheckedChange={field.onChange} />
-                </FormControl>
-                <div className="space-y-1 leading-none">
-                  <FormLabel>Possui família na igreja?</FormLabel>
-                </div>
-              </FormItem>
-            )}
-          />
         </div>
       </form>
     </Form>

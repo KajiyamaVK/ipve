@@ -44,15 +44,13 @@ async function people(app) {
         });
     });
     app.post('/roles', async (req, res) => {
-        console.log('req.body', req.body);
         if (!req.body)
             return res.status(400).send({ message: 'No body provided' });
-        const { name, tailwindColor, description } = req.body;
+        const { name, description } = req.body;
         await prisma.peopleRoles
             .create({
             data: {
                 name,
-                tailwindColor,
                 description,
             },
         })
@@ -63,19 +61,18 @@ async function people(app) {
             handleError(err, res);
         });
     });
-    app.post('/roles/:id', async (req, res) => {
+    app.put('/roles/:id', async (req, res) => {
         const params = paramsSchema.parse(req.params);
         const id = parseInt(params.id);
         if (!req.body)
             return res.status(400).send({ message: 'No body provided' });
-        const { name, tailwindColor, description } = req.body;
+        const { name, description } = req.body;
         const data = await prisma.peopleRoles.update({
             where: {
                 id,
             },
             data: {
                 name,
-                tailwindColor,
                 description,
             },
         });
@@ -123,14 +120,13 @@ async function people(app) {
             handleError(err, res);
         });
     });
-    app.post('/titles/', async (req, res) => {
+    app.post('/titles', async (req, res) => {
         if (!req.body)
             return res.status(400).send({ message: 'No body provided' });
-        const { id, name } = req.body;
+        const { name } = req.body;
         await prisma.peopleTitles
             .create({
             data: {
-                id,
                 name,
             },
         })
@@ -176,7 +172,7 @@ async function people(app) {
             handleError(err, res);
         });
     });
-    app.get('/peoplegridHeader', async (req, res) => {
+    app.get('/', async (req, res) => {
         await prisma.people
             .findMany({
             select: {
@@ -190,7 +186,7 @@ async function people(app) {
                         name: true,
                     },
                 },
-                peopleRolesData: {
+                peopleRolesDataFK: {
                     select: {
                         peopleRoles: {
                             select: {
@@ -202,17 +198,12 @@ async function people(app) {
             },
         })
             .then((data) => {
-            sendResponse(data, res);
-        })
-            .catch((err) => {
-            handleError(err, res);
-        });
-    });
-    app.get('/', async (req, res) => {
-        await prisma.people
-            .findMany()
-            .then((data) => {
-            sendResponse(data, res);
+            const newData = data.map((item) => ({
+                ...item,
+                dateOfBirth: item.dateOfBirth ? item.dateOfBirth.toLocaleDateString('pt-BR') : null,
+                peopleTitles: item.peopleTitles.name,
+            }));
+            sendResponse(newData, res);
         })
             .catch((err) => {
             handleError(err, res);

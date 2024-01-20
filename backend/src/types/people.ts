@@ -3,7 +3,6 @@ import { number, z } from 'zod'
 export const ZRoles = z.object({
   id: z.number(),
   name: z.string(),
-  tailwindColor: z.string(),
   description: z.string().optional(),
 })
 
