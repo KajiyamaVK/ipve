@@ -105,7 +105,7 @@ export default function PeopleForm() {
               name="obs"
               render={({ field }) => (
                 <FormItem className="text-left flex-1 mt-5">
-                  <FormLabel className="">Observação</FormLabel>
+                  <FormLabel>Observação</FormLabel>
                   <FormControl>
                     <Textarea
                       placeholder="Caso necessário algum detalhe adicional, informe aqui."
