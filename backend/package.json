@@ -27,7 +27,7 @@
 		"dev": "nodemon ./src/server.ts",
 		"lint": "eslint . --ext .ts",
 		"build": "eslint . --ext .ts && tsc ",
-		"vercel-build": "pnpm run build && pnpm dlx prisma migrate deploy"
+		"vercel-build": "pnpm run build && pnpm dlx prisma migrate deploy && pnpm dlx prisma generate"
 	},
 	"dependencies": {
 		"@fastify/cookie": "^9.2.0",
