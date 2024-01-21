@@ -16,7 +16,7 @@ export function BasicTopPersonalInfo(formControl: any) {
             <FormItem className="text-left flex-1">
               <FormLabel className="required">Nome completo</FormLabel>
               <FormControl>
-                <Input placeholder="Ex.: Fulano da Silva Mendes" className="lg:min-w-40 " {...field} />
+                <Input placeholder="Ex.: Fulano da Silva Mendes" className="min-w-52 " {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

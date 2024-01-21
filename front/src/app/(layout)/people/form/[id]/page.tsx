@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import { ZPeople } from '@/types/TPeople'
+import { TPeople, ZPeople } from '@/types/TPeople'
 import { Textarea } from '@/components/ui/textarea'
 import { useEffect } from 'react'
 import { useToast } from '@/components/ui/use-toast'
@@ -18,8 +18,9 @@ import { ChurchInfo } from './ChurchInfo'
 import { AccessControl } from './AccessControl'
 import { getEnv } from '@/envSchema'
 import FamilyInfo from './FamilyInfo'
+import { getData } from '@/utils/fetchData'
 
-export default function PeopleForm() {
+export default function PeopleForm({ params }: { params: { id: number } }) {
   const form = useForm<z.infer<typeof ZPeople>>({
     resolver: zodResolver(ZPeople),
     defaultValues: {
@@ -31,19 +32,35 @@ export default function PeopleForm() {
   const router = useRouter()
 
   useEffect(() => {
+    if (params.id) {
+      const { id } = params
+
+      ;(async () => {
+        await getData<TPeople>({
+          endpoint: 'people',
+          id,
+        }).then((data) => {
+          console.log('data', data)
+          Object.keys(data).forEach((key) => {
+            if (Object.keys(data).includes(key)) {
+              const keyOfTPeople = key as keyof TPeople
+              if (keyOfTPeople in data) {
+                form.setValue(keyOfTPeople, data[keyOfTPeople])
+              }
+            }
+          })
+        })
+      })()
+    }
+  }, [])
+
+  useEffect(() => {
     const cep = form.watch('cep')
     if (cep && cep.length === 9) {
       handleCepSearch(cep)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form.watch('cep')])
-
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [form.watch('memberTitle')])
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [form.watch('churchId')])
 
   async function saveData() {
     const values = form.getValues()
@@ -81,54 +98,56 @@ export default function PeopleForm() {
 
   return (
     <Form {...form}>
-      <form className="mx-auto mt-10 max-w-[1500px] text-center sm:mx-10" onSubmit={form.handleSubmit(saveData)}>
-        <div>
-          <Toolbar />
-          <div className="flex gap-5 items-center ml-20 ">
-            <ProfileAvatar {...form.control} />
-            <div className="flex flex-col gap-5">
-              <ActiveControl {...form.control} />
-              <div className="flex  flex-wrap gap-5 w-min-5">
-                <BasicTopPersonalInfo {...form.control} />
-                <ChurchInfo {...form.control} />
+      <div className="flex justify-center">
+        <form className="mt-10 max-w-[1500px] sm:mx-10" onSubmit={form.handleSubmit(saveData)}>
+          <div>
+            <Toolbar />
+            <div className="flex gap-5 items-center ml-20 ">
+              <ProfileAvatar {...form.control} />
+              <div className="flex flex-col gap-5">
+                <ActiveControl {...form.control} />
+                <div className="flex  flex-wrap gap-5 w-min-5">
+                  <BasicTopPersonalInfo {...form.control} />
+                  <ChurchInfo {...form.control} />
+                </div>
+              </div>
+            </div>
+
+            <AddressDataInfo {...form} />
+
+            <div className="flex flex-1 gap-5 ">
+              <ContactInfo {...form} />
+
+              <FormField
+                control={form.control}
+                name="obs"
+                render={({ field }) => (
+                  <FormItem className="text-left flex-1 mt-5">
+                    <FormLabel>Observação</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Caso necessário algum detalhe adicional, informe aqui."
+                        className="resize-none h-48 "
+                        {...field}
+                        value={field.value || ''}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="flex flex-col gap-10">
+              <div className="flex mt-5 gap-10 ">
+                <AccessControl {...form} />
+              </div>
+              <div>
+                <FamilyInfo {...form} />
               </div>
             </div>
           </div>
-
-          <AddressDataInfo {...form} />
-
-          <div className="flex flex-1 gap-5 ">
-            <ContactInfo {...form} />
-
-            <FormField
-              control={form.control}
-              name="obs"
-              render={({ field }) => (
-                <FormItem className="text-left flex-1 mt-5">
-                  <FormLabel>Observação</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      placeholder="Caso necessário algum detalhe adicional, informe aqui."
-                      className="resize-none h-48 "
-                      {...field}
-                      value={field.value || ''}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className="flex flex-col gap-10">
-            <div className="flex mt-5 gap-10 ">
-              <AccessControl {...form} />
-            </div>
-            <div>
-              <FamilyInfo {...form} />
-            </div>
-          </div>
-        </div>
-      </form>
+        </form>
+      </div>
     </Form>
   )
 }

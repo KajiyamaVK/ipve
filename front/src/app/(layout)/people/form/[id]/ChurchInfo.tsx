@@ -59,18 +59,19 @@ export function ChurchInfo(formControl: any) {
         />
         <FormField
           control={formControl}
-          name="title"
+          name="ebdClassroom"
           render={({ field }) => (
             <FormItem className="w-full">
               <FormLabel>Sala EBD</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <b>{field.value}</b>
+              {/* <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
                   <SelectTrigger className="w-full lg:min-w-40 ">
                     <SelectValue placeholder="Selecione" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent className="bg-white ">{populatingSociety()}</SelectContent>
-              </Select>
+              </Select> */}
               <FormMessage />
             </FormItem>
           )}
