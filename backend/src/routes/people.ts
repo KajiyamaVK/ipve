@@ -2,6 +2,7 @@ import { PrismaClient } from '@prisma/client'
 import { FastifyError, FastifyInstance, FastifyReply, FastifyRequest } from 'fastify'
 import { IRoles, TPeople } from '../types/people'
 import { z } from 'zod'
+import { sendResponse } from '../utils/routesUtils'
 
 const paramsSchema = z.object({
   id: z.string(),
@@ -11,21 +12,14 @@ export async function people(app: FastifyInstance) {
   const prisma = new PrismaClient()
 
   // Abstract error handling into a separate function
-  function handleError(err: FastifyError, res: FastifyReply) {
-    console.error(err)
-    return res.status(500).send({ message: err })
-  }
 
   // Abstract response sending into a separate function
-  function sendResponse<T>(data: T, res: FastifyReply, statusCode = 200) {
-    return res.status(statusCode).send(data)
-  }
 
   app.get('/roles', async (req: FastifyRequest, res: FastifyReply) => {
     await prisma.peopleRoles
       .findMany()
       .then((data) => {
-        sendResponse(data, res)
+        sendResponse({ data, res, statusCode: 200, idPeople:  })
       })
       .catch((err: FastifyError) => {
         handleError(err, res)
@@ -43,7 +37,7 @@ export async function people(app: FastifyInstance) {
         },
       })
       .then((data) => {
-        sendResponse(data, res)
+        sendResponse({ data, res })
       })
       .catch((err: FastifyError) => {
         handleError(err, res)
@@ -63,7 +57,7 @@ export async function people(app: FastifyInstance) {
         },
       })
       .then((data) => {
-        sendResponse(data, res, 201)
+        sendResponse({ data, res, statusCode: 201 })
       })
       .catch((err: FastifyError) => {
         handleError(err, res)
@@ -87,7 +81,7 @@ export async function people(app: FastifyInstance) {
       },
     })
 
-    sendResponse(data, res, 200)
+    sendResponse({ data, res, statusCode: 200 })
   })
 
   app.delete('/roles/:id', async (req: FastifyRequest, res: FastifyReply) => {
@@ -101,7 +95,7 @@ export async function people(app: FastifyInstance) {
         },
       })
       .then(() => {
-        sendResponse({ message: 'Deleted' }, res, 200)
+        sendResponse({ data: { message: 'Deleted' }, res })
       })
       .catch((err: FastifyError) => {
         handleError(err, res)
@@ -112,7 +106,7 @@ export async function people(app: FastifyInstance) {
     await prisma.peopleTitles
       .findMany()
       .then((data) => {
-        sendResponse(data, res)
+        sendResponse({ data, res })
       })
       .catch((err: FastifyError) => {
         handleError(err, res)
@@ -129,7 +123,7 @@ export async function people(app: FastifyInstance) {
         },
       })
       .then((data) => {
-        sendResponse(data, res)
+        sendResponse({ data, res })
       })
       .catch((err: FastifyError) => {
         handleError(err, res)
@@ -148,7 +142,7 @@ export async function people(app: FastifyInstance) {
         },
       })
       .then((data) => {
-        sendResponse(data, res, 201)
+        sendResponse({ data, res, statusCode: 201 })
       })
   })
 
@@ -169,7 +163,7 @@ export async function people(app: FastifyInstance) {
         },
       })
       .then((data) => {
-        sendResponse(data, res, 200)
+        sendResponse({ data, res, statusCode: 200 })
       })
       .catch((err: FastifyError) => {
         handleError(err, res)
@@ -187,7 +181,7 @@ export async function people(app: FastifyInstance) {
         },
       })
       .then(() => {
-        sendResponse({ message: 'Deleted' }, res, 200)
+        sendResponse({ data: { message: 'Deleted' }, res })
       })
       .catch((err: FastifyError) => {
         handleError(err, res)
@@ -226,7 +220,7 @@ export async function people(app: FastifyInstance) {
           peopleTitles: item.peopleTitles.name,
         }))
 
-        sendResponse(newData, res)
+        sendResponse({ data, res })
       })
       .catch((err: FastifyError) => {
         handleError(err, res)
@@ -244,7 +238,7 @@ export async function people(app: FastifyInstance) {
         },
       })
       .then((data) => {
-        sendResponse(data, res)
+        sendResponse({ data, res })
       })
       .catch((err: FastifyError) => {
         handleError(err, res)
@@ -258,7 +252,7 @@ export async function people(app: FastifyInstance) {
 
     type TBody = z.infer<typeof bodySchema>
 
-    if (!req.body) sendResponse({ message: 'No body provided' }, res, 400)
+    if (!req.body) sendResponse({ data: { message: 'No body provided' }, res, statusCode: 400 })
 
     const validatedBody = bodySchema.parse(req.body)
 
@@ -280,7 +274,7 @@ export async function people(app: FastifyInstance) {
       await prisma.people
         .findMany(selectFields)
         .then((data) => {
-          sendResponse(data, res)
+          sendResponse({ data, res })
         })
         .catch((err: FastifyError) => {
           handleError(err, res)
@@ -322,6 +316,7 @@ export async function people(app: FastifyInstance) {
             phone2,
             photoUrl,
             email,
+            createdAt: new Date(),
           },
         })
         .then(async (data) => {
@@ -336,7 +331,7 @@ export async function people(app: FastifyInstance) {
           })
         })
         .then(() => {
-          sendResponse({ message: 'Created' }, res, 201)
+          sendResponse({ data: { message: 'Created' }, res, statusCode: 201 })
         })
     }
   })
@@ -384,7 +379,7 @@ export async function people(app: FastifyInstance) {
       },
     })
 
-    sendResponse(data, res, 200)
+    sendResponse({ data, res, statusCode: 200 })
   })
 
   app.delete('/:id', async (req: FastifyRequest, res: FastifyReply) => {
@@ -396,6 +391,6 @@ export async function people(app: FastifyInstance) {
         id,
       },
     })
-    sendResponse({ message: 'Deleted' }, res, 200)
+    sendResponse({ data: { message: 'Deleted' }, res })
   })
 }

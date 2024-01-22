@@ -69,7 +69,6 @@ model people {
     id Int @id @default(autoincrement())
     fullName String
     titleIdFK Int
-    peopleTitles peopleTitles @relation( fields: [titleIdFK], references: [id])
     peopleRolesDataFK peopleRolesData[]
     hasFamily Boolean @default(false)
     dateOfBirth DateTime?
@@ -89,15 +88,22 @@ model people {
     ebdClassroom String?
     isActiveEBD Boolean @default(false)
     isActive Boolean @default(true)  
+    createdAt   DateTime @default(now())
+    updatedAt     DateTime @updatedAt
+    peopleTitles peopleTitles @relation( fields: [titleIdFK], references: [id])
+    peopleInfraLogs infraLogs[]
     }
 
 /////////////////////////////////////////////////////////////////////
 model peopleRolesData {
   peopleIdFK    Int
   roleIdFK      Int
+  createdAt   DateTime @default(now())
+  updatedAt     DateTime @updatedAt
   people      people?       @relation(fields: [peopleIdFK], references: [id])
   peopleRoles peopleRoles?   @relation(fields: [roleIdFK], references: [id])
      @@id([peopleIdFK, roleIdFK])
+  
 }
 /////////////////////////////////////////////////////////////////////
 
@@ -105,8 +111,17 @@ model churchBranches {
   id          Int      @id @default(autoincrement())
   name        String
   createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  updatedAt     DateTime @updatedAt
 }
 
 /////////////////////////////////////////////////////////////////////
+
+model infraLogs {
+  id          Int      @id @default(autoincrement())
+  message String
+  peopleIdFK  Int
+  createdAt   DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  infraLogsPeople people @relation(fields: [peopleIdFK], references: [id])
+}
 
