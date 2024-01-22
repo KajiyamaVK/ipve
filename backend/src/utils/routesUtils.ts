@@ -1,18 +1,21 @@
 import { FastifyReply } from 'fastify'
-import { saveInfraLog } from './infraUtils'
 
 interface IResponse<T> {
   data: T
   res: FastifyReply
   statusCode: number
   message?: string
-  idPeople: number
 }
 
-export function sendResponse<T>({ data, res, statusCode, idPeople, message }: IResponse<T>) {
-  if (statusCode >= 400) {
-    res.status(500).send({ message })
-    if (message) saveInfraLog({ message, idPeople })
-  }
-  return res.status(statusCode).send(data)
+interface IHandleError {
+  err: Error
+  res: FastifyReply
+}
+
+export function handleError({ err, res }: IHandleError) {
+  return res.status(500).send({ message: err.message })
+}
+
+export function sendResponse<T>({ data, res, statusCode, message }: IResponse<T>) {
+  return res.status(statusCode).send({ data, message })
 }
