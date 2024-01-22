@@ -81,7 +81,7 @@ export async function people(app: FastifyInstance) {
           description,
         },
       })
-      .then((data) => {
+      .then(() => {
         sendResponse({ data, res, statusCode: 200 })
       })
       .catch((err: FastifyError) => {
@@ -228,7 +228,7 @@ export async function people(app: FastifyInstance) {
           peopleTitles: item.peopleTitles.name,
         }))
 
-        sendResponse({ data, res, statusCode: 200 })
+        sendResponse({ data: newData, res, statusCode: 200 })
       })
       .catch((err: FastifyError) => {
         handleError({ err, res })
