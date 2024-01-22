@@ -3,28 +3,22 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.people = void 0;
 const client_1 = require("@prisma/client");
 const zod_1 = require("zod");
+const routesUtils_1 = require("../utils/routesUtils");
 const paramsSchema = zod_1.z.object({
     id: zod_1.z.string(),
 });
 async function people(app) {
     const prisma = new client_1.PrismaClient();
     // Abstract error handling into a separate function
-    function handleError(err, res) {
-        console.error(err);
-        return res.status(500).send({ message: err });
-    }
     // Abstract response sending into a separate function
-    function sendResponse(data, res, statusCode = 200) {
-        return res.status(statusCode).send(data);
-    }
     app.get('/roles', async (req, res) => {
         await prisma.peopleRoles
             .findMany()
             .then((data) => {
-            sendResponse(data, res);
+            (0, routesUtils_1.sendResponse)({ data, res, statusCode: 200 });
         })
             .catch((err) => {
-            handleError(err, res);
+            (0, routesUtils_1.handleError)({ err, res });
         });
     });
     app.get('/roles/:id', async (req, res) => {
@@ -37,10 +31,10 @@ async function people(app) {
             },
         })
             .then((data) => {
-            sendResponse(data, res);
+            (0, routesUtils_1.sendResponse)({ data, res, statusCode: 200 });
         })
             .catch((err) => {
-            handleError(err, res);
+            (0, routesUtils_1.handleError)({ err, res });
         });
     });
     app.post('/roles', async (req, res) => {
@@ -55,10 +49,10 @@ async function people(app) {
             },
         })
             .then((data) => {
-            sendResponse(data, res, 201);
+            (0, routesUtils_1.sendResponse)({ data, res, statusCode: 201 });
         })
             .catch((err) => {
-            handleError(err, res);
+            (0, routesUtils_1.handleError)({ err, res });
         });
     });
     app.put('/roles/:id', async (req, res) => {
@@ -67,7 +61,8 @@ async function people(app) {
         if (!req.body)
             return res.status(400).send({ message: 'No body provided' });
         const { name, description } = req.body;
-        const data = await prisma.peopleRoles.update({
+        const data = await prisma.peopleRoles
+            .update({
             where: {
                 id,
             },
@@ -75,8 +70,13 @@ async function people(app) {
                 name,
                 description,
             },
+        })
+            .then(() => {
+            (0, routesUtils_1.sendResponse)({ data, res, statusCode: 200 });
+        })
+            .catch((err) => {
+            (0, routesUtils_1.handleError)({ err, res });
         });
-        sendResponse(data, res, 200);
     });
     app.delete('/roles/:id', async (req, res) => {
         const params = paramsSchema.parse(req.params);
@@ -88,20 +88,20 @@ async function people(app) {
             },
         })
             .then(() => {
-            sendResponse({ message: 'Deleted' }, res, 200);
+            (0, routesUtils_1.sendResponse)({ data: { message: 'Deleted' }, res, statusCode: 200 });
         })
             .catch((err) => {
-            handleError(err, res);
+            (0, routesUtils_1.handleError)({ err, res });
         });
     });
     app.get('/titles', async (req, res) => {
         await prisma.peopleTitles
             .findMany()
             .then((data) => {
-            sendResponse(data, res);
+            (0, routesUtils_1.sendResponse)({ data, res, statusCode: 200 });
         })
             .catch((err) => {
-            handleError(err, res);
+            (0, routesUtils_1.handleError)({ err, res });
         });
     });
     app.get('/titles/:id', async (req, res) => {
@@ -114,10 +114,10 @@ async function people(app) {
             },
         })
             .then((data) => {
-            sendResponse(data, res);
+            (0, routesUtils_1.sendResponse)({ data, res, statusCode: 200 });
         })
             .catch((err) => {
-            handleError(err, res);
+            (0, routesUtils_1.handleError)({ err, res });
         });
     });
     app.post('/titles', async (req, res) => {
@@ -131,7 +131,10 @@ async function people(app) {
             },
         })
             .then((data) => {
-            sendResponse(data, res, 201);
+            (0, routesUtils_1.sendResponse)({ data, res, statusCode: 201 });
+        })
+            .catch((err) => {
+            (0, routesUtils_1.handleError)({ err, res });
         });
     });
     app.post('/titles/:id', async (req, res) => {
@@ -150,10 +153,10 @@ async function people(app) {
             },
         })
             .then((data) => {
-            sendResponse(data, res, 200);
+            (0, routesUtils_1.sendResponse)({ data, res, statusCode: 200 });
         })
             .catch((err) => {
-            handleError(err, res);
+            (0, routesUtils_1.handleError)({ err, res });
         });
     });
     app.delete('/titles/:id', async (req, res) => {
@@ -166,10 +169,10 @@ async function people(app) {
             },
         })
             .then(() => {
-            sendResponse({ message: 'Deleted' }, res, 200);
+            (0, routesUtils_1.sendResponse)({ data: { message: 'Deleted' }, res, statusCode: 200 });
         })
             .catch((err) => {
-            handleError(err, res);
+            (0, routesUtils_1.handleError)({ err, res });
         });
     });
     app.get('/', async (req, res) => {
@@ -203,10 +206,10 @@ async function people(app) {
                 dateOfBirth: item.dateOfBirth ? item.dateOfBirth.toLocaleDateString('pt-BR') : null,
                 peopleTitles: item.peopleTitles.name,
             }));
-            sendResponse(newData, res);
+            (0, routesUtils_1.sendResponse)({ data: newData, res, statusCode: 200 });
         })
             .catch((err) => {
-            handleError(err, res);
+            (0, routesUtils_1.handleError)({ err, res });
         });
     });
     app.get('/:id', async (req, res) => {
@@ -219,10 +222,10 @@ async function people(app) {
             },
         })
             .then((data) => {
-            sendResponse(data, res);
+            (0, routesUtils_1.sendResponse)({ data, res, statusCode: 200 });
         })
             .catch((err) => {
-            handleError(err, res);
+            (0, routesUtils_1.handleError)({ err, res });
         });
     });
     app.post('/', async (req, res) => {
@@ -230,7 +233,7 @@ async function people(app) {
             dataType: zod_1.z.string(),
         });
         if (!req.body)
-            sendResponse({ message: 'No body provided' }, res, 400);
+            (0, routesUtils_1.sendResponse)({ data: { message: 'No body provided' }, res, statusCode: 400 });
         const validatedBody = bodySchema.parse(req.body);
         const { dataType } = validatedBody;
         if (dataType === 'getGrid') {
@@ -248,10 +251,10 @@ async function people(app) {
             await prisma.people
                 .findMany(selectFields)
                 .then((data) => {
-                sendResponse(data, res);
+                (0, routesUtils_1.sendResponse)({ data, res, statusCode: 200 });
             })
                 .catch((err) => {
-                handleError(err, res);
+                (0, routesUtils_1.handleError)({ err, res });
             });
         }
         else {
@@ -274,6 +277,7 @@ async function people(app) {
                     phone2,
                     photoUrl,
                     email,
+                    createdAt: new Date(),
                 },
             })
                 .then(async (data) => {
@@ -288,7 +292,10 @@ async function people(app) {
                 });
             })
                 .then(() => {
-                sendResponse({ message: 'Created' }, res, 201);
+                (0, routesUtils_1.sendResponse)({ data: { message: 'Created' }, res, statusCode: 201 });
+            })
+                .catch((err) => {
+                (0, routesUtils_1.handleError)({ err, res });
             });
         }
     });
@@ -316,7 +323,7 @@ async function people(app) {
                 email,
             },
         });
-        sendResponse(data, res, 200);
+        (0, routesUtils_1.sendResponse)({ data, res, statusCode: 200 });
     });
     app.delete('/:id', async (req, res) => {
         const params = paramsSchema.parse(req.params);
@@ -326,7 +333,7 @@ async function people(app) {
                 id,
             },
         });
-        sendResponse({ message: 'Deleted' }, res, 200);
+        (0, routesUtils_1.sendResponse)({ data: { message: 'Deleted' }, res, statusCode: 200 });
     });
 }
 exports.people = people;

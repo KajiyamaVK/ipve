@@ -1,7 +1,6 @@
 import { PrismaClient } from '@prisma/client'
 import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
-import { saveInfraLog } from '../utils/infraUtils'
 
 const getBaseData = z.object({
   typeOfData: z.enum(['screens', 'churchBranches']),
@@ -37,7 +36,6 @@ export async function generalRoutes(app: FastifyInstance) {
       } catch (err) {
         const message = `Erro ao rodar o Prisma: ${err}`
         res.status(500).send({ message })
-        saveInfraLog({ message, idPeople: body.idPeople })
       }
     }
   })

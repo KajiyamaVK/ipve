@@ -3,8 +3,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.generalRoutes = void 0;
 const client_1 = require("@prisma/client");
 const zod_1 = require("zod");
+const infraUtils_1 = require("../utils/infraUtils");
 const getBaseData = zod_1.z.object({
     typeOfData: zod_1.z.enum(['screens', 'churchBranches']),
+    idPeople: zod_1.z.number(),
 });
 async function generalRoutes(app) {
     const prisma = new client_1.PrismaClient();
@@ -33,7 +35,9 @@ async function generalRoutes(app) {
                 res.status(200).send({ data });
             }
             catch (err) {
-                res.status(500).send({ message: `Erro ao rodar o Prisma: ${err}` });
+                const message = `Erro ao rodar o Prisma: ${err}`;
+                res.status(500).send({ message });
+                (0, infraUtils_1.saveInfraLog)({ message, idPeople: body.idPeople });
             }
         }
     });
