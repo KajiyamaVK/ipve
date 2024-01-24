@@ -1,0 +1,142 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: #fafafa;
+    --foreground: #000;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    --primary: #5b9dad;
+    --primary-foreground: #fff;
+
+    --primary-light: #79d3e9;
+    --primary-dark: #406f7a;
+
+    --secondary: #78bfa0;
+    --secondary-foreground: #fff;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: #8b8b8b;
+
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --success: #409243;
+    --success-foreground: #fff;
+
+    --destructive: #ef4343;
+    --destructive-foreground: #fff;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: #707070;
+    --ring: 222.2 84% 4.9%;
+
+    --radius: 5px;
+  }
+
+  .dark {
+    --background: #555;
+    --foreground: #fff;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border text-base;
+  }
+
+  body,
+  html {
+    @apply bg-background h-full;
+  }
+
+  body,
+  label {
+    @apply text-foreground;
+  }
+
+  
+  h1 {
+    @apply text-2xl font-bold;
+  }
+
+  label {
+    @apply font-bold;
+    
+    &.required::after {
+      @apply text-red-500;
+      content: " *";
+    }
+  }
+
+  
+
+  
+.screenLoader {
+  width: 200px;
+  height: 200px;
+  position: relative;
+}
+.screenLoader:before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  //background: pink;    
+  background-image: url("/logo.png");
+  background-size: contain;
+  background-position: center;
+  animation: l9 1s infinite;
+  height: 200px;
+  width: 200px;
+  padding: 40px;
+}
+
+@keyframes l9 {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.4;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+
+  
+}
