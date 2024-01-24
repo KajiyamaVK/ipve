@@ -52,7 +52,7 @@ export default function PeopleForm({ params }: { params: { id: number } }) {
         })
       })()
     }
-  }, [])
+  }, [form, params])
 
   useEffect(() => {
     const cep = form.watch('cep')
