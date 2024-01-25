@@ -40,11 +40,11 @@ type Action =
     }
   | {
       type: ActionType['DISMISS_TOAST']
-      toastId: string
+      toastId?: ToasterToast['id']
     }
   | {
       type: ActionType['REMOVE_TOAST']
-      toastId: string
+      toastId?: ToasterToast['id']
     }
 
 interface State {
@@ -62,7 +62,7 @@ const addToRemoveQueue = (toastId: string) => {
     toastTimeouts.delete(toastId)
     dispatch({
       type: 'REMOVE_TOAST',
-      toastId,
+      toastId: toastId,
     })
   }, TOAST_REMOVE_DELAY)
 
@@ -141,7 +141,7 @@ function toast({ ...props }: Toast) {
   const update = (props: ToasterToast) =>
     dispatch({
       type: 'UPDATE_TOAST',
-      toast: { ...props },
+      toast: { ...props, id },
     })
   const dismiss = () => dispatch({ type: 'DISMISS_TOAST', toastId: id })
 
@@ -149,7 +149,7 @@ function toast({ ...props }: Toast) {
     type: 'ADD_TOAST',
     toast: {
       ...props,
-      id: id as never,
+      id,
       open: true,
       onOpenChange: (open) => {
         if (!open) dismiss()
@@ -158,7 +158,7 @@ function toast({ ...props }: Toast) {
   })
 
   return {
-    id,
+    id: id,
     dismiss,
     update,
   }
@@ -180,7 +180,7 @@ function useToast() {
   return {
     ...state,
     toast,
-    dismiss: (toastId: string) => dispatch({ type: 'DISMISS_TOAST', toastId }),
+    dismiss: (toastId?: string) => dispatch({ type: 'DISMISS_TOAST', toastId }),
   }
 }
 

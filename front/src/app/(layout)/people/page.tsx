@@ -2,25 +2,33 @@ import { DataTable } from '@/components/ui/data-table'
 import { columns } from './columns'
 import { getData } from '@/utils/fetchData'
 import { TPeopleGridHeader } from '@/types/TPeopleGridHeader'
+//import { Toast } from '@/components/ui/toast'
 
 export default async function People() {
-  let data: TPeopleGridHeader[] = []
+  let dataValues: TPeopleGridHeader[] = []
   async function retrieveData() {
     console.log('retrieving data')
-    data = await getData<TPeopleGridHeader[]>({
+    await getData<TPeopleGridHeader[]>({
       endpoint: 'people',
-    }).then((data) => {
-      return data
     })
+      .then((data) => {
+        if (data) dataValues = data
+      })
+      .catch((error) => {
+        console.log('error', error)
+        // Toast({
+        //   content: 'Tivemos uma situação inesperada. Contate o time de suporte, por favor.',
+        //   variant: 'destructive',
+        // })
+      })
   }
 
   await retrieveData()
 
-  console.log(data)
   return (
     <center>
       <div className="m-10">
-        <DataTable columns={columns} data={data} />
+        <DataTable columns={columns} data={dataValues} />
       </div>
     </center>
   )

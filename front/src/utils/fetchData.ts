@@ -47,6 +47,7 @@ export function getData<T>({ endpoint, body, headers, id, isCaching = false }: T
   const data = fetch(`${getEndPointsUrl(endpoint)}${id ? '/' + id : ''}`, fetchParams)
     .then((res) => res.json() as T)
     .catch((err) => {
+      console.log('teste')
       console.error(err)
       throw new Error(err)
     })
