@@ -16,6 +16,7 @@ export function handleError({ err, res }: IHandleError) {
   return res.status(500).send({ message: err.message })
 }
 
-export function sendResponse<T>({ data, res, statusCode, message }: IResponse<T>) {
-  return res.status(statusCode).send({ data, message })
+export function sendResponse<T>({ data, res }: IResponse<T>) {
+  console.log('data', data)
+  return res.status(201).send(data)
 }
