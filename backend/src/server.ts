@@ -3,7 +3,7 @@ import { generalRoutes } from './routes/general'
 import cookie from '@fastify/cookie'
 import { people } from './routes/people'
 import cors from '@fastify/cors'
-const app = fastify()
+export const app = fastify()
 
 app.register(cookie) // Tem que ser o primeiro register dessa lista
 app.register(cors)
