@@ -74,20 +74,16 @@ export function DialogModal() {
 
   function enableForm() {
     setFormMode('edit')
-    console.log('enableForm', formMode)
   }
 
   async function saveForm() {
-    console.log('saveForm', formMode)
-
     const body: TRoles = {
       name: watch('roleName'),
       description: watch('description'),
       tailwindColor: colorSelected,
     }
     const id = formMode === 'edit' ? { id: currentSelectedItem } : {}
-    console.log(id)
-    console.log('body', { body, endpoint: 'roles', ...id })
+
     await saveData({ body, endpoint: 'roles', ...id })
       .then((data) => {
         if (data) {
@@ -106,7 +102,7 @@ export function DialogModal() {
 
   function submitForm(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    console.log('submitForm', formMode)
+
     if (formMode === 'add' || formMode === 'edit') {
       saveForm()
     } else if (formMode === 'view') {

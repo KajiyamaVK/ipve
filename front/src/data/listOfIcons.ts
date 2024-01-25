@@ -16,7 +16,6 @@ fs.readdir(iconsPath, (err, files) => {
     // join the name of the icon in icons variable delimited by comma
     icons = icons + "'" + name + "'" + ','
   })
-  console.log(`const iconName=[${icons}]`)
 })
 
 export const iconName: string[] = [

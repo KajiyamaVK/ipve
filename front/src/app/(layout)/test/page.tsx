@@ -6,7 +6,6 @@ import { TPeopleGridHeader } from '@/types/TPeopleGridHeader'
 export default async function People() {
   let data: TPeopleGridHeader[] = []
   async function retrieveData() {
-    console.log('retrieving data')
     data = await getData<TPeopleGridHeader[]>({
       endpoint: 'people',
     }).then((data) => {
@@ -16,7 +15,6 @@ export default async function People() {
 
   await retrieveData()
 
-  console.log(data)
   return (
     <center>
       <p>test</p>

@@ -63,7 +63,6 @@ export function DialogModal() {
 
   function enableForm() {
     setFormMode('edit')
-    console.log('enableForm', formMode)
   }
 
   async function saveForm() {
@@ -94,7 +93,7 @@ export function DialogModal() {
 
   function submitForm(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    console.log('submitForm', formMode)
+
     if (formMode === 'add' || formMode === 'edit') {
       saveForm()
     } else if (formMode === 'view') {

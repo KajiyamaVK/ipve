@@ -7,20 +7,11 @@ import { TPeopleGridHeader } from '@/types/TPeopleGridHeader'
 export default async function People() {
   let dataValues: TPeopleGridHeader[] = []
   async function retrieveData() {
-    console.log('retrieving data')
     await getData<TPeopleGridHeader[]>({
       endpoint: 'people',
+    }).then((data) => {
+      if (data) dataValues = data
     })
-      .then((data) => {
-        if (data) dataValues = data
-      })
-      .catch((error) => {
-        console.log('error', error)
-        // Toast({
-        //   content: 'Tivemos uma situação inesperada. Contate o time de suporte, por favor.',
-        //   variant: 'destructive',
-        // })
-      })
   }
 
   await retrieveData()

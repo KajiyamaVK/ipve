@@ -20,7 +20,7 @@ import { ReactNode, useContext, useEffect, useState } from 'react'
 import { Input } from './input'
 import { Button } from './button'
 import { usePathname, useRouter } from 'next/navigation'
-import { useForm } from 'react-hook-form'
+import { useForm, useWatch } from 'react-hook-form'
 import { formsContext } from '@/contexts/formsContext'
 import { generalContext } from '@/contexts/generalContext'
 import { toast } from './use-toast'
@@ -48,13 +48,17 @@ export function DataTable<TData, TValue>({
 
   const router = useRouter()
 
-  const { register, watch } = useForm()
+  const { register, control } = useForm()
 
   const { setFormMode, setIsDialogOpen, currentSelectedItem, setCurrentSelectedItem, isDialogOpen, setIsSkeletonOpen } =
     useContext(formsContext)
   const { currentScreen } = useContext(generalContext)
   const { formType } = currentScreen
   const path = usePathname()
+  const searchValue = useWatch({
+    control,
+    name: 'search',
+  })
 
   useEffect(() => {
     setFormMode('add')
@@ -91,6 +95,13 @@ export function DataTable<TData, TValue>({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isDialogOpen])
+
+  useEffect(() => {
+    table.getColumn(searchColumn)?.setFilterValue(searchValue)
+    console.log(searchColumn)
+    console.log(searchValue)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchValue])
 
   function pushToProperRoute() {
     setFormMode('add')
@@ -212,9 +223,6 @@ export function DataTable<TData, TValue>({
                   <Input
                     placeholder="Escolha a coluna que deseja filtrar..."
                     value={(table.getColumn(searchColumn)?.getFilterValue() as string) ?? ''}
-                    onKeyUp={() => {
-                      table.getColumn(searchColumn)?.setFilterValue(watch('search'))
-                    }}
                     className="min-w-2xl w-[700px]"
                     type="text"
                     {...register('search')}

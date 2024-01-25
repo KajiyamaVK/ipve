@@ -91,7 +91,8 @@ model people {
     createdAt   DateTime @default(now())
     updatedAt     DateTime @updatedAt
     peopleTitles peopleTitles @relation( fields: [titleIdFK], references: [id])
-    //peopleInfraLogs infraLogs[]
+    kinsRelationsA kinsRelations[] @relation("peopleA")
+    kinsRelationsB kinsRelations[] @relation("peopleB")
     }
 
 /////////////////////////////////////////////////////////////////////
@@ -114,6 +115,23 @@ model churchBranches {
   updatedAt     DateTime @updatedAt
 }
 
+/////////////////////////////////////////////////////////////////////
+
+model kinsRelations {
+  id          Int      @id @default(autoincrement())
+  idKinA      Int
+  idKinB      Int
+  relation    String
+  peopleA      people      @relation(name: "peopleA",fields: [idKinA], references: [id])
+  peopleB      people      @relation(name: "peopleB",fields: [idKinB], references: [id])
+}
+
+/////////////////////////////////////////////////////////////////////
+
+model kinsLabels {
+  id Int @id @default(autoincrement())
+  name String
+}
 /////////////////////////////////////////////////////////////////////
 
 // model infraLogs {

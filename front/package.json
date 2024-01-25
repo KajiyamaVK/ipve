@@ -21,6 +21,7 @@
     "@radix-ui/react-select": "^2.0.0",
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-toast": "^1.1.5",
+    "@tanstack/match-sorter-utils": "^8.11.7",
     "@tanstack/react-table": "^8.11.6",
     "@types/js-cookie": "^3.0.6",
     "class-variance-authority": "^0.7.0",

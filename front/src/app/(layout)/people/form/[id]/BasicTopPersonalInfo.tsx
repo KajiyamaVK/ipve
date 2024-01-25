@@ -50,10 +50,10 @@ export function BasicTopPersonalInfo(formControl: any) {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent className="bg-white w-full">
-                  <SelectItem value="Masculino" className="cursor-pointer ">
+                  <SelectItem value="m" className="cursor-pointer ">
                     Masculino
                   </SelectItem>
-                  <SelectItem value="Feminino" className="cursor-pointer ">
+                  <SelectItem value="f" className="cursor-pointer ">
                     Feminino
                   </SelectItem>
                 </SelectContent>

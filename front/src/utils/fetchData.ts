@@ -17,7 +17,6 @@ export type TGetPatchDeleteDataSchema = z.infer<typeof ZGetPatchDeleteDataSchema
 function getEndPointsUrl(endpoint: string): string | URL | Request {
   switch (endpoint) {
     case 'people':
-      console.log('getEndPointsUrl', endpointsPaths.people)
       return endpointsPaths.people
     case 'roles':
       return endpointsPaths.roles
@@ -47,7 +46,6 @@ export function getData<T>({ endpoint, body, headers, id, isCaching = false }: T
   const data = fetch(`${getEndPointsUrl(endpoint)}${id ? '/' + id : ''}`, fetchParams)
     .then((res) => res.json() as T)
     .catch((err) => {
-      console.log('teste')
       console.error(err)
       throw new Error(err)
     })
@@ -56,7 +54,6 @@ export function getData<T>({ endpoint, body, headers, id, isCaching = false }: T
 }
 
 export function saveData({ endpoint, body, headers, id }: TGetPatchDeleteDataSchema): Promise<boolean> {
-  console.log('saveData', { endpoint, body, headers, id })
   return fetch(`${getEndPointsUrl(endpoint)}${id ? '/' + id : ''}`, {
     method: `${id ? 'PUT' : 'POST'}`,
     body: JSON.stringify(body),
