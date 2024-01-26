@@ -31,7 +31,7 @@
 		"lint": "eslint . --ext .ts",
 		"build": "eslint . --ext .ts && tsc ",
 		"start": "node dist/src/server.js",
-		"vercel-build": "pnpm run build && pnpm dlx prisma migrate deploy && pnpm dlx prisma generate "
+		"vercel-build": "npm install && npm run build && npx prisma migrate deploy && npx prisma generate "
 	},
 	"dependencies": {
 		"@fastify/cookie": "^9.2.0",
