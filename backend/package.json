@@ -1,4 +1,7 @@
 {
+	"engines": {
+		"node": "18"
+	},
 	"devDependencies": {
 		"@prisma/client": "^5.8.0",
 		"@types/node": "^20.11.0",
