@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE `people` ADD COLUMN `isMember` BOOLEAN NOT NULL DEFAULT false,
+    ADD COLUMN `isUser` BOOLEAN NOT NULL DEFAULT false;

@@ -88,6 +88,8 @@ model people {
     ebdClassroom String?
     isActiveEBD Boolean @default(false)
     isActive Boolean @default(true)  
+    isMember Boolean @default(false)
+    isUser Boolean @default(false)
     createdAt   DateTime @default(now())
     updatedAt     DateTime @updatedAt
     peopleTitles peopleTitles @relation( fields: [titleIdFK], references: [id])
@@ -130,7 +132,8 @@ model kinsRelations {
 
 model kinsLabels {
   id Int @id @default(autoincrement())
-  name String
+  nameA String
+  nameB String
 }
 /////////////////////////////////////////////////////////////////////
 

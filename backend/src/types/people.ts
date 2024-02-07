@@ -16,9 +16,9 @@ const ZGenderType = z.enum(GenderTypeValues)
 export const ZPeople = z.object({
   id: z.number().optional(),
   fullName: z.string({ required_error: 'Nome completo é um campo obrigatório' }).min(1),
-  titleIdFK: z.number({ required_error: 'Cargo é um campo obrigatório' }).min(1),
+  titleIdFK: z.string({ required_error: 'Cargo é um campo obrigatório' }).min(1), //VK: O form do client tem que trabalhar com id como string, senão não está aparecendo no <select>
   peopleRolesDataFK: z.array(number()).optional().nullable(),
-  dateOfBirth: z.date().optional().nullable(),
+  dateOfBirth: z.string().optional().nullable(), // TODO: Estamos trazendo como string por causa do format no frontend, mas creio que conseguimos trazer como date direto.
   gender: ZGenderType,
   address: z.string().optional().nullable(),
   complement: z.string().optional().nullable(),
@@ -31,6 +31,9 @@ export const ZPeople = z.object({
   phone2: z.string().optional().nullable(),
   photoUrl: z.string().optional().nullable(),
   email: z.string().email().optional().nullable(),
+  isUser: z.boolean().default(false),
+  isMember: z.boolean().default(true),
+  isActive: z.boolean().default(true),
 })
 
 export type TPeople = z.infer<typeof ZPeople>

@@ -5,10 +5,9 @@ import { z } from 'zod'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { TPeople, ZPeople } from '@/types/TPeople'
 import { Textarea } from '@/components/ui/textarea'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { useToast } from '@/components/ui/use-toast'
 import { useRouter } from 'next/navigation'
-import { Toolbar } from './toolbar'
 import { ProfileAvatar } from './profileAvatar'
 import { ActiveControl } from './ActiveControl'
 import { BasicTopPersonalInfo } from './BasicTopPersonalInfo'
@@ -21,16 +20,36 @@ import FamilyInfo from './FamilyInfo'
 import { getData } from '@/utils/fetchData'
 import { format } from 'date-fns'
 import PageSkeleton from './pageSkeleton'
+import { Button } from '@/components/ui/button'
+import { formsContext } from '@/contexts/formsContext'
 
 export default function PeopleForm({ params }: { params: { id: number } }) {
+  function getAllInputsNames(): string[] {
+    const inputs = document.querySelectorAll('input[type="text"]') //Todos inputs do type text
+    const inputsNames = Array.from(inputs).map((input) => (input as HTMLInputElement).name)
+    return inputsNames
+  }
+
+  function inputsDefaultValues() {
+    interface InputsValues {
+      [key: string]: string
+    }
+
+    const inputs = getAllInputsNames()
+    const inputsValues = {} as InputsValues
+    inputs.forEach((input) => {
+      inputsValues[input] = ''
+    })
+    return inputsValues
+  }
+
   const form = useForm<z.infer<typeof ZPeople>>({
     resolver: zodResolver(ZPeople),
-    defaultValues: {
-      isActive: true,
-    },
   })
 
   const { control } = form
+
+  const { formMode, setFormMode } = useContext(formsContext)
 
   const hasFamilyValue: boolean = useWatch({
     control,
@@ -38,15 +57,15 @@ export default function PeopleForm({ params }: { params: { id: number } }) {
   })
 
   const [isLoading, setIsLoading] = useState(false)
+  const [isButtonLoading, setIsButtonLoading] = useState(false)
 
   const toast = useToast()
   const router = useRouter()
 
   useEffect(() => {
-    console.log(params.id)
     if (params.id > 0) {
-      console.log('entrei')
       setIsLoading(true)
+      setFormMode('edit')
       const { id } = params
       ;(async () => {
         await getData<TPeople>({
@@ -60,6 +79,10 @@ export default function PeopleForm({ params }: { params: { id: number } }) {
             setIsLoading(false)
           })
       })()
+    }
+
+    if (params.id === 0) {
+      setFormMode('add')
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -77,47 +100,131 @@ export default function PeopleForm({ params }: { params: { id: number } }) {
     form.setValue('dateOfBirth', format(date, 'yyyy-MM-dd'))
   }
 
+  function handleBack() {
+    setIsButtonLoading(true)
+    router.push('/people')
+  }
+
   //eslint-disable-next-line
   function setInputValue(key: keyof TPeople, value: any) {
     if (key === 'dateOfBirth' && typeof value === 'string') {
       setDateInput(value)
-    } else {
+    } else if (['false', 'true'].includes(value)) {
+      const valueInBool = value === 'true' ? true : false
+
+      form.setValue(key, valueInBool)
+    } else if (value !== null) {
       form.setValue(key, value)
     }
   }
 
-  function populatingFields(data: TPeople) {
-    console.log('data', data)
+  async function populatingFields(data: TPeople) {
     Object.keys(data).forEach((key) => {
       const keyOfTPeople = key as keyof TPeople
       if (keyOfTPeople in data) {
-        setInputValue(keyOfTPeople, data[keyOfTPeople]?.toString())
-        console.log('keyOfTPeople', keyOfTPeople, 'data[keyOfTPeople]', typeof data[keyOfTPeople]?.toString())
+        if (keyOfTPeople === 'titleIdFK') {
+          data['titleIdFK'] = data['titleIdFK']?.toString()
+        } else if (keyOfTPeople === 'dateOfBirth' && data['dateOfBirth']) {
+          data['dateOfBirth'] = format(new Date(data['dateOfBirth']), 'yyyy-MM-dd')
+        }
+
+        setInputValue(keyOfTPeople, data[keyOfTPeople])
       }
     })
   }
 
-  async function saveData() {
-    const values = form.getValues()
-    await fetch(`${getEnv().NEXT_PUBLIC_API_URL}/people`, {
-      method: 'POST',
-      body: JSON.stringify(values),
-    })
-      .then(() => {
-        toast.toast({
-          title: 'Sucesso!',
-          description: 'Dados salvos com sucesso!',
-        })
+  // function teste() {
+  //   const values = form.getValues()
+  //   const zValues = ZPeople.safeParse(values)
+  //   if (!zValues.success) {
+  //     toast.toast({
+  //       title: 'Erro!',
+  //       description: `Ocorreu um erro ao salvar os dados! Erro: ${zValues.error.message}`,
+  //       variant: 'destructive',
+  //     })
+  //     return
+  //   }
+  // }
 
-        router.push('/people')
+  async function saveData(values: z.infer<typeof ZPeople>) {
+    const zValues = ZPeople.safeParse(values)
+    if (!zValues.success) {
+      toast.toast({
+        title: 'Erro!',
+        description: `Ocorreu um erro ao salvar os dados! Erro: ${zValues.error.message}`,
+        variant: 'destructive',
       })
-      .catch((err) => {
-        toast.toast({
-          title: 'Erro!',
-          description: `Ocorreu um erro ao salvar os dados! Erro: ${err.message}`,
-          variant: 'destructive',
+      return
+    }
+
+    //const values = form.getValues()
+    if (formMode === 'add') {
+      await fetch(`${getEnv().NEXT_PUBLIC_API_URL}/people`, {
+        method: 'POST',
+        body: JSON.stringify(values),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(response.statusText)
+          }
+          return response.json()
         })
+        .then(() => {
+          toast.toast({
+            title: 'Sucesso!',
+            variant: 'default',
+            description: 'Dados salvos com sucesso!',
+          })
+
+          router.push('/people')
+        })
+        .catch((err) => {
+          const message = err.message
+          toast.toast({
+            title: 'Erro!',
+            description: `Ocorreu um erro ao criar os dados! Erro: ${message}`,
+            variant: 'destructive',
+          })
+        })
+    } else if (formMode === 'edit') {
+      await fetch(`${getEnv().NEXT_PUBLIC_API_URL}/people/${params.id}`, {
+        method: 'PUT',
+        body: JSON.stringify(values),
+        headers: {
+          'Content-Type': 'application/json',
+        },
       })
+        .then((response) => {
+          if (!response.ok) {
+            return response.json().then((err) => {
+              throw err
+            })
+          }
+          return response.json()
+        })
+        .then(() => {
+          toast.toast({
+            title: 'Sucesso!',
+            variant: 'default',
+            description: 'Dados salvos com sucesso!',
+          })
+
+          router.push('/people')
+        })
+        .catch((err) => {
+          const message = err.message
+          toast.toast({
+            title: 'Erro!',
+            description: `Ocorreu um erro ao editar os dados! Erro: ${message}`,
+            variant: 'destructive',
+          })
+
+          console.error(message)
+        })
+    }
   }
 
   async function handleCepSearch(cep: string) {
@@ -138,7 +245,13 @@ export default function PeopleForm({ params }: { params: { id: number } }) {
         <div className="flex justify-center">
           <form className="my-10 max-w-[1500px] px-36 xl:px-10" onSubmit={form.handleSubmit(saveData)}>
             <div>
-              <Toolbar />
+              <div className="flex gap-5 justify-end">
+                <Button isLoading={isButtonLoading} onClick={handleBack}>
+                  Voltar
+                </Button>
+
+                <Button type="submit">Salvar</Button>
+              </div>
               <div className="flex gap-5 items-center ml-20 ">
                 <ProfileAvatar {...form.control} />
                 <div className="flex flex-col gap-5">

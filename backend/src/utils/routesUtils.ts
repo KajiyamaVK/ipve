@@ -3,7 +3,7 @@ import { FastifyReply } from 'fastify'
 interface IResponse<T> {
   data: T
   res: FastifyReply
-  statusCode: number
+  statusCode?: number
   message?: string
 }
 
@@ -16,7 +16,6 @@ export function handleError({ err, res }: IHandleError) {
   return res.status(500).send({ message: err.message })
 }
 
-export function sendResponse<T>({ data, res }: IResponse<T>) {
-  console.log('data', data)
-  return res.status(201).send(data)
+export function sendResponse<T>({ data, res, statusCode = 200 }: IResponse<T>) {
+  return res.status(statusCode).send(data)
 }

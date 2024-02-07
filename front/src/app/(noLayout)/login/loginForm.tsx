@@ -10,7 +10,7 @@ import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.share
 import { z } from 'zod'
 import { RiLoginCircleLine } from 'react-icons/ri'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export default function LoginForm() {
   const router = useRouter()
@@ -18,13 +18,21 @@ export default function LoginForm() {
 
   const form = useForm<z.infer<typeof loginFormValidationSchema>>({
     resolver: zodResolver(loginFormValidationSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+    },
   })
 
   function markAsLogged(router: AppRouterInstance) {
     setIsLoading(true)
-    router.push('/dashboard')
     Cookie.set('ipve_auth_token', 'ajahdgfkajsdhgkh', { expires: 7 })
+    router.push('/dashboard')
   }
+
+  useEffect(() => {
+    console.log('form', form.watch())
+  }, [])
 
   return (
     <div className="max-w-96 min-w-96">

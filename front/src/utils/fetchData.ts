@@ -22,6 +22,8 @@ function getEndPointsUrl(endpoint: string): string | URL | Request {
       return endpointsPaths.roles
     case 'titles':
       return endpointsPaths.titles
+    case 'generalRoutes':
+      return endpointsPaths.generalRoutes
     default:
       throw new Error('Endpoint not found')
   }

@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client'
 import { FastifyError, FastifyInstance, FastifyReply, FastifyRequest } from 'fastify'
-import { IRoles, TPeople } from '../types/people'
+import { IRoles, TPeople, ZPeople } from '../types/people'
 import { z } from 'zod'
 import { handleError, sendResponse } from '../utils/routesUtils'
 
@@ -310,8 +310,8 @@ export async function people(app: FastifyInstance) {
         .create({
           data: {
             fullName,
-            titleIdFK,
-            dateOfBirth,
+            titleIdFK: parseInt(titleIdFK),
+            dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : null,
             gender,
             address,
             complement,
@@ -348,8 +348,16 @@ export async function people(app: FastifyInstance) {
   })
 
   app.put('/:id', async (req: FastifyRequest, res: FastifyReply) => {
+    const params = paramsSchema.parse(req.params)
+
+    try {
+      ZPeople.parse(req.body)
+    } catch (err) {
+      return res.status(400).send({ message: err })
+    }
+
+    const id = parseInt(params.id)
     const {
-      id,
       fullName,
       titleIdFK,
       dateOfBirth,
@@ -365,32 +373,45 @@ export async function people(app: FastifyInstance) {
       phone2,
       photoUrl,
       email,
+      isUser,
+      isMember,
+      isActive,
     } = req.body as TPeople
 
-    const data = await prisma.people.update({
-      where: {
-        id,
-      },
-      data: {
-        fullName,
-        titleIdFK,
-        dateOfBirth,
-        gender,
-        address,
-        complement,
-        city,
-        suburb,
-        uf,
-        cep,
-        phone1,
-        phone1IsWhatsapp,
-        phone2,
-        photoUrl,
-        email,
-      },
-    })
+    console.log(req.body)
 
-    sendResponse({ data, res, statusCode: 200 })
+    await prisma.people
+      .update({
+        where: {
+          id,
+        },
+        data: {
+          fullName,
+          titleIdFK: parseInt(titleIdFK),
+          dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : null,
+          gender,
+          address,
+          complement,
+          city,
+          suburb,
+          uf,
+          cep,
+          phone1,
+          phone1IsWhatsapp,
+          phone2,
+          photoUrl,
+          email,
+          isUser,
+          isMember,
+          isActive,
+        },
+      })
+      .then((data) => {
+        sendResponse({ data, res, statusCode: 200 })
+      })
+      .catch((err: FastifyError) => {
+        handleError({ err, res })
+      })
   })
 
   app.delete('/:id', async (req: FastifyRequest, res: FastifyReply) => {

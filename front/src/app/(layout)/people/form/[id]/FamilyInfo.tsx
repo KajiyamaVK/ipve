@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { TPeopleGridHeader } from '@/types/TPeopleGridHeader'
 import { getData } from '@/utils/fetchData'
 import { ReactNode, useEffect, useState } from 'react'
@@ -14,25 +15,27 @@ export default function FamilyInfo({ hasFamilyValue }: { hasFamilyValue: boolean
     fullName: string
   }
 
-  // interface iKin {
-  //   kinName: string
-  //   kinRelation: string
-  // }
+  interface iKin {
+    kinName: string
+    kinRelation: string
+  }
   const [options, setOptions] = useState<IMemberSearchValue[]>([])
   const [searchMemberInputValue, setSearchMemberInputValue] = useState('')
-  //const [kinsListValue, setKinsListValue] = useState<iKin>({} as iKin)
+  const [kinsListValue, setKinsListValue] = useState<iKin>({} as iKin)
 
   useEffect(() => {
+    if (!hasFamilyValue) return
     ;(async () => {
-      const data: TPeopleGridHeader[] = await getData({
+      await getData<TPeopleGridHeader[]>({
         endpoint: 'people',
+      }).then((data) => {
+        const people: IMemberSearchValue[] = []
+        data.forEach((p: TPeopleGridHeader) => {
+          const { id, fullName } = p
+          people.push({ id, fullName })
+        })
+        setOptions(people)
       })
-      const people: IMemberSearchValue[] = data.map((p: TPeopleGridHeader) => {
-        const { id, fullName } = p
-        return { id, fullName }
-      })
-
-      setOptions(people)
     })()
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -79,14 +82,24 @@ export default function FamilyInfo({ hasFamilyValue }: { hasFamilyValue: boolean
 
             <Button>Adicionar</Button>
           </div>
-          <div className="border border-gray-300 rounded-lg min-h-10 mt-5 flex">
-            <div className="flex-1">
-              <h1 className="bg-primary font-normal text-lg text-primary-foreground  py-2 px-2 ">Nome</h1>
-            </div>
-            <div>
-              <h1 className="bg-primary font-normal text-lg text-primary-foreground py-2 px-2">Parentesco</h1>
-            </div>
-          </div>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Nome</TableHead>
+                <TableHead>Parentesco</TableHead>
+                <TableHead>Remover</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              <TableRow>
+                <TableCell>Nome do parente</TableCell>
+                <TableCell>Parentesco</TableCell>
+                <TableCell>
+                  <Button variant="destructive">Remover</Button>
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
         </div>
       )}
     </div>

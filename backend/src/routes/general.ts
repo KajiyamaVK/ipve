@@ -3,7 +3,7 @@ import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
 const getBaseData = z.object({
-  typeOfData: z.enum(['screens', 'churchBranches']),
+  typeOfData: z.enum(['screens', 'churchBranches', 'kinsLabels']),
   idPeople: z.number(),
 })
 
@@ -27,6 +27,9 @@ export async function generalRoutes(app: FastifyInstance) {
             break
           case 'churchBranches':
             data = await prisma.churchBranches.findMany()
+            break
+          case 'kinsLabels':
+            data = await prisma.kinsLabels.findMany()
             break
           default:
             res.status(500).send({ message: 'Invalid typeOfData' })

@@ -98,8 +98,8 @@ export function DataTable<TData, TValue>({
 
   useEffect(() => {
     table.getColumn(searchColumn)?.setFilterValue(searchValue)
-    console.log(searchColumn)
-    console.log(searchValue)
+    
+    
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchValue])
 
@@ -110,14 +110,14 @@ export function DataTable<TData, TValue>({
       const registerRoute = `/${currentScreen.id}/form/0`
       router.push(registerRoute)
     } else {
-      console.log('isDialogOpen', isDialogOpen)
+      
       setIsDialogOpen(true)
     }
   }
 
   function handleViewState(id: number) {
     setCurrentSelectedItem(id)
-    console.log('id', id)
+    
     setFormMode('view')
     if (currentScreen.formType === 'dialog') {
       setIsSkeletonOpen(true)

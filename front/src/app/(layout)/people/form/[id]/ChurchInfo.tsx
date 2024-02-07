@@ -25,29 +25,21 @@ export function ChurchInfo(formControl: any) {
     ;(async () => {
       await getData<TMembersTitles[]>({
         endpoint: 'titles',
+      }).then((data) => {
+        setTitleSelectValues(
+          data.map((title) => {
+            if (title.id) {
+              return (
+                <SelectItem key={title.id} value={title.id.toString()} className="cursor-pointer ">
+                  {title.name}
+                </SelectItem>
+              )
+            } else {
+              throw new Error('Erro ao carregar os cargos')
+            }
+          }),
+        )
       })
-        .then((data) => {
-          setTitleSelectValues(
-            data.map((title) => {
-              if (title.id) {
-                return (
-                  <SelectItem key={title.id} value={title.id.toString()} className="cursor-pointer ">
-                    {title.name}
-                  </SelectItem>
-                )
-              } else {
-                throw new Error('Erro ao carregar os cargos')
-              }
-            }),
-          )
-        })
-        .catch(() => {
-          Toast({
-            variant: 'destructive',
-            title: 'Erro ao carregar os cargos',
-            content: 'Ocorreu um evento inesperado. Contate o time de suporte',
-          })
-        })
     })()
   }, [])
 
@@ -81,7 +73,7 @@ export function ChurchInfo(formControl: any) {
               <FormLabel>Sociedade</FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value} value={field.value}>
                 <FormControl>
-                  <SelectTrigger className="w-full lg:min-w-40">
+                  <SelectTrigger className="w-full lg:min-w-20">
                     <SelectValue placeholder="Selecione" />
                   </SelectTrigger>
                 </FormControl>
