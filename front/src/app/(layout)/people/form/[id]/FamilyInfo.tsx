@@ -15,13 +15,8 @@ export default function FamilyInfo({ hasFamilyValue }: { hasFamilyValue: boolean
     fullName: string
   }
 
-  interface iKin {
-    kinName: string
-    kinRelation: string
-  }
   const [options, setOptions] = useState<IMemberSearchValue[]>([])
   const [searchMemberInputValue, setSearchMemberInputValue] = useState('')
-  const [kinsListValue, setKinsListValue] = useState<iKin>({} as iKin)
 
   useEffect(() => {
     if (!hasFamilyValue) return

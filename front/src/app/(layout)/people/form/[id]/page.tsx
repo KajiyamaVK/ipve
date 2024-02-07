@@ -24,25 +24,6 @@ import { Button } from '@/components/ui/button'
 import { formsContext } from '@/contexts/formsContext'
 
 export default function PeopleForm({ params }: { params: { id: number } }) {
-  function getAllInputsNames(): string[] {
-    const inputs = document.querySelectorAll('input[type="text"]') //Todos inputs do type text
-    const inputsNames = Array.from(inputs).map((input) => (input as HTMLInputElement).name)
-    return inputsNames
-  }
-
-  function inputsDefaultValues() {
-    interface InputsValues {
-      [key: string]: string
-    }
-
-    const inputs = getAllInputsNames()
-    const inputsValues = {} as InputsValues
-    inputs.forEach((input) => {
-      inputsValues[input] = ''
-    })
-    return inputsValues
-  }
-
   const form = useForm<z.infer<typeof ZPeople>>({
     resolver: zodResolver(ZPeople),
   })
