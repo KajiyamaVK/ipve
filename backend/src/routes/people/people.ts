@@ -281,8 +281,15 @@ export async function people(app: FastifyInstance) {
             VALUES (?, ?, ?)
           `
 
+          const kinHasFamilyUpdateQuery = `
+            UPDATE people
+            SET hasFamilyInChurch = 1
+            WHERE id = ?
+          `
+
           await runQuery(query, mySql, [id, kin.idKinB, kin.relation])
           await runQuery(query, mySql, [kin.idKinB, id, idCounter[0].idCounter])
+          await runQuery(kinHasFamilyUpdateQuery, mySql, [kin.idKinB])
         } else {
           const query = `
             UPDATE kinsRelations
