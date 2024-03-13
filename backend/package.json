@@ -27,7 +27,7 @@
 		"dev": "nodemon ./src/server.ts",
 		"lint": "eslint . --ext .ts",
 		"build": "eslint . --ext .ts && tsc ",
-		"start": "node dist/src/server.js",
+		"start": "node dist/server.js",
 		"vercel-build": "npm install && npm run build "
 	},
 	"dependencies": {
