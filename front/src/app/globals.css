@@ -28,10 +28,10 @@
     --accent: 210 40% 96.1%;
     --accent-foreground: 222.2 47.4% 11.2%;
 
-    --success: #409243;
+    --success: #2f6e31;
     --success-foreground: #fff;
 
-    --destructive: #ef4343;
+    --destructive: #c03838;
     --destructive-foreground: #fff;
 
     --border: 214.3 31.8% 91.4%;
@@ -114,7 +114,7 @@
   position: absolute;
   inset: 0;
   //background: pink;    
-  background-image: url("/logo.png");
+  background-image: url("/images/system/logo.png");
   background-size: contain;
   background-position: center;
   animation: l9 1s infinite;

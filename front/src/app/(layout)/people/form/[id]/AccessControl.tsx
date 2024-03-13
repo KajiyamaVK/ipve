@@ -55,13 +55,17 @@ export function AccessControl(form: UseFormReturn<any>) {
       <FormField
         control={form.control}
         name="isUser"
+        // Estaremos implementando os perfis posteriormente. Por enquanto, desabilitamos o checkbox e o lint da linha abaixo
+        // eslint-disable-next-line
         render={({ field }) => (
           <FormItem className="flex flex-row items-center space-x-3 space-y-0 ">
             <FormControl>
-              <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+              {/* Debilitando para ser implementado os perfis posteriormente */}
+              <Checkbox checked={false} className="cursor-default" />
+              {/* <Checkbox checked={field.value} onCheckedChange={field.onChange} /> */}
             </FormControl>
-            <div className="space-y-1 leading-none">
-              <FormLabel>Usuário da plataforma?</FormLabel>
+            <div className="space-y-1 leading-none ">
+              <FormLabel className="text-gray-400">Usuário da plataforma?</FormLabel>
             </div>
           </FormItem>
         )}

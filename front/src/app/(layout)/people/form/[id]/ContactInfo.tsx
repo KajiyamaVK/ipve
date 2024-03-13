@@ -26,7 +26,7 @@ export function ContactInfo(form: any) {
           <div className="flex flex-col justify-center">
             <FormField
               control={form.control}
-              name="email"
+              name="phone1"
               render={({ field }) => (
                 <FormItem className="text-left">
                   <FormLabel>Celular</FormLabel>
@@ -39,14 +39,14 @@ export function ContactInfo(form: any) {
             />
             <FormField
               control={form.control}
-              name="mobileIsWhatsapp"
+              name="phone1IsWhatsapp"
               render={({ field }) => (
                 <FormItem className="flex flex-row items-center space-x-3 space-y-0 mt-1 self-end">
                   <FormControl>
                     <Checkbox
                       checked={field.value}
                       onCheckedChange={field.onChange}
-                      disabled={form.watch('mobileNumber')?.length !== 15}
+                      disabled={form.watch('phone1')?.length !== 15}
                     />
                   </FormControl>
                   <div className="space-y-1 leading-none">
@@ -59,7 +59,7 @@ export function ContactInfo(form: any) {
 
           <FormField
             control={form.control}
-            name="email"
+            name="phone2"
             render={({ field }) => (
               <FormItem className="text-left">
                 <FormLabel>Outro Telefone</FormLabel>

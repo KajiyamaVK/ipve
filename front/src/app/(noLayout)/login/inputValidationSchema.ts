@@ -3,7 +3,7 @@ import { z } from 'zod'
 export const loginFormValidationSchema = z.object({
   email: z
     .string({ required_error: 'O campo email é obrigatório.' })
-    .min(1)
+    .min(1, 'O campo email é obrigatório.')
     .email('O formato do email está incorreto, por favor verifique.'),
   password: z
     .string({

@@ -9,43 +9,176 @@ import { TPeopleGridHeader } from '@/types/TPeopleGridHeader'
 import { getData } from '@/utils/fetchData'
 import { ReactNode, useEffect, useState } from 'react'
 
-export default function FamilyInfo({ hasFamilyValue }: { hasFamilyValue: boolean }) {
+import { Trash } from '@phosphor-icons/react'
+
+export default function FamilyInfo({
+  hasFamilyValue,
+  setRelatives,
+  relatives,
+  personId,
+}: {
+  hasFamilyValue: boolean
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  setRelatives: (value: any) => void
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  relatives: { idKinB: number; relation: string }[] | undefined
+  personId: number
+}) {
   interface IMemberSearchValue {
     id: number
     fullName: string
   }
 
-  const [options, setOptions] = useState<IMemberSearchValue[]>([])
-  const [searchMemberInputValue, setSearchMemberInputValue] = useState('')
+  const [personList, setPersonList] = useState<IMemberSearchValue[]>([])
+  const [relativesTitles, setRelativesTitles] = useState<{ id: number; relationName: string }[]>([])
+  const [relativeSelectValue, setRelativeSelectValue] = useState<string>('')
+  const [relativeTitleSelectValue, setRelativeTitleSelectValue] = useState('')
+  const [relativesTable, setRelativesTable] = useState<ReactNode>(<></>)
+
+  useEffect(() => {
+    if (!relativesTitles || relativesTitles.length === 0) return
+    renderRelativesTitles()
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [relativesTitles])
+
+  useEffect(() => {
+    if (!relatives) {
+      setRelatives([])
+    }
+    getKinsRelationsTitles()
+    getKinsRelations(personId)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   useEffect(() => {
     if (!hasFamilyValue) return
-    ;(async () => {
-      await getData<TPeopleGridHeader[]>({
-        endpoint: 'people',
-      }).then((data) => {
-        const people: IMemberSearchValue[] = []
-        data.forEach((p: TPeopleGridHeader) => {
-          const { id, fullName } = p
-          people.push({ id, fullName })
-        })
-        setOptions(people)
-      })
-    })()
+    getSelectOptions()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hasFamilyValue])
+
+  async function getKinsRelationsTitles() {
+    await getData({
+      endpoint: 'kinsRelations',
+    }).then((data) => {
+      setRelativesTitles(data as { id: number; relationName: string }[])
+    })
+  }
+
+  useEffect(() => {
+    if (!relatives) return
+    if (personList.length === 0) return
+    setRelativesTable(renderRelatives())
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-  // }, [form.watch('hasFamilyInChurch')])
+  }, [relatives, personList])
+
+  interface KinsRelationData {
+    idKinB: string
+    relation: string
+  }
+  async function getKinsRelations(id: number) {
+    if (!id) return
+    await getData({
+      endpoint: 'kinsRelations',
+      id,
+    }).then((data) => {
+      const kinsData = data as KinsRelationData
+
+      setRelatives(kinsData)
+    })
+  }
+
+  async function getSelectOptions() {
+    await getData<TPeopleGridHeader[]>({
+      endpoint: 'people',
+    }).then((data) => {
+      const people: IMemberSearchValue[] = []
+      data.forEach((p: TPeopleGridHeader) => {
+        const { id, fullName } = p
+        people.push({ id, fullName })
+      })
+      setPersonList(people)
+    })
+  }
+
+  function handleAddRelative(): void {
+    if (!relatives) relatives = []
+
+    setRelatives([
+      ...relatives,
+      {
+        idKinB: Number(relativeSelectValue),
+        relation: relativeTitleSelectValue,
+      },
+    ])
+  }
+
+  function handleRemoveRelative(id: number): void {
+    if (!relatives) return
+    const newRelatives = relatives.filter((relative) => relative.idKinB !== id)
+    setRelatives(newRelatives)
+  }
 
   function renderSelectOptions(): ReactNode {
-    return options.map((data) => (
+    return personList.map((data) => (
       <SelectItem key={data.id} value={data.id.toString()} className="cursor-pointer ">
         {data.fullName}
       </SelectItem>
     ))
   }
 
-  //function addKin(): void {}
+  function renderRelatives(): ReactNode {
+    const cells: ReactNode[] = []
+
+    if (!relatives) return null
+
+    relatives.map((relative) => {
+      const relativeData = personList.find((person) => person.id === Number(relative.idKinB))
+
+      if (!relativeData) return
+      const relativeTitle = relativesTitles.find((title) => title.id.toString() === relative.relation)
+      if (!relativeTitle) return
+      if (relativeData.id && relativeData.fullName && relativeTitle.relationName)
+        cells.push(
+          <TableRow key={relativeData.id}>
+            <TableCell>{relativeData.fullName}</TableCell>
+            <TableCell>{relativeTitle.relationName}</TableCell>
+            <TableCell>
+              <Trash
+                className="cursor-pointer text-destructive"
+                size={24}
+                onClick={() => handleRemoveRelative(relative.idKinB)}
+              />
+            </TableCell>
+          </TableRow>,
+        )
+    })
+    return cells
+  }
+
+  function renderRelativesTitles(): ReactNode {
+    return relativesTitles.map((title) => (
+      <SelectItem key={title.id} value={title.id.toString()} className="cursor-pointer ">
+        {title.relationName}
+      </SelectItem>
+    ))
+  }
+
+  function renderRelativeTitlesSelect(): ReactNode {
+    return (
+      <FormItem className="w-fit">
+        <FormLabel className="font-normal">Parentesco:</FormLabel>
+        <Select value={relativeTitleSelectValue} onValueChange={setRelativeTitleSelectValue} name="membeTitleNames">
+          <SelectTrigger>
+            <SelectValue placeholder="Selecione" />
+          </SelectTrigger>
+          <SelectContent className="bg-white ">{renderRelativesTitles()}</SelectContent>
+        </Select>
+      </FormItem>
+    )
+  }
+
   return (
     <div className="flex gap-10">
       <FormField
@@ -67,33 +200,31 @@ export default function FamilyInfo({ hasFamilyValue }: { hasFamilyValue: boolean
           <div className="flex gap-5 items-end">
             <FormItem className="w-fit">
               <FormLabel className="font-normal">Procure um parente do cadastro de membros:</FormLabel>
-              <Select value={searchMemberInputValue} onValueChange={setSearchMemberInputValue} name="membersNames">
-                <SelectTrigger className="w-full lg:min-w-40 ">
+              <Select value={relativeSelectValue} onValueChange={setRelativeSelectValue} name="membersNames">
+                <SelectTrigger>
                   <SelectValue placeholder="Selecione" />
                 </SelectTrigger>
                 <SelectContent className="bg-white ">{renderSelectOptions()}</SelectContent>
               </Select>
             </FormItem>
-
-            <Button>Adicionar</Button>
+            {renderRelativeTitlesSelect()}
+            <Button
+              type="button"
+              disabled={!relativeSelectValue || !relativeTitleSelectValue}
+              onClick={handleAddRelative}
+            >
+              Adicionar
+            </Button>
           </div>
-          <Table>
+          <Table className="mt-5">
             <TableHeader>
               <TableRow>
                 <TableHead>Nome</TableHead>
                 <TableHead>Parentesco</TableHead>
-                <TableHead>Remover</TableHead>
+                <TableHead></TableHead>
               </TableRow>
             </TableHeader>
-            <TableBody>
-              <TableRow>
-                <TableCell>Nome do parente</TableCell>
-                <TableCell>Parentesco</TableCell>
-                <TableCell>
-                  <Button variant="destructive">Remover</Button>
-                </TableCell>
-              </TableRow>
-            </TableBody>
+            <TableBody>{relativesTable}</TableBody>
           </Table>
         </div>
       )}

@@ -50,7 +50,7 @@ export default function TopBar() {
     <div
       className={`text-black flex border-b-2 border-gray-200 w-full p-2 z-10 text-center justify-center items-center gap-2 transition-all `}
     >
-      <Image src="/logo.png" width={30} height={30} alt="Logo da igreja presbiteriana da Vila Eutália" />
+      <Image src="/images/system/logo.png" width={30} height={30} alt="Logo da igreja presbiteriana da Vila Eutália" />
       <span>{getDisplayName()} </span>
     </div>
   )

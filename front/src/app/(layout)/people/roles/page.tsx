@@ -11,6 +11,7 @@ export default async function RolesGrid() {
     data = await getData<TRoles[]>({
       endpoint: 'roles',
     }).then((data) => {
+      if (!data) return []
       return data
     })
   }

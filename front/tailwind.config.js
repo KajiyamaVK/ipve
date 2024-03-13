@@ -1,12 +1,7 @@
 /** @type {import("tailwindcss").Config} */
 module.exports = {
   darkMode: ['class'],
-  content: [
-    './pages/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
-    './app/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}',
-  ],
+  content: ['./pages/**/*.{ts,tsx}', './components/**/*.{ts,tsx}', './app/**/*.{ts,tsx}', './src/**/*.{ts,tsx}'],
   theme: {
     container: {
       center: true,
@@ -17,7 +12,7 @@ module.exports = {
     },
     extend: {
       backgroundImage: {
-        loginBG: 'url("/loginImg1.png")',
+        loginBG: 'url("/images/system/loginImg1.jpeg")',
       },
       colors: {
         border: 'var(--border)',

@@ -2,7 +2,6 @@ import { DataTable } from '@/components/ui/data-table'
 import { columns } from './columns'
 import { getData } from '@/utils/fetchData'
 import { TPeopleGridHeader } from '@/types/TPeopleGridHeader'
-//import { Toast } from '@/components/ui/toast'
 
 export default async function People() {
   let dataValues: TPeopleGridHeader[] = []
@@ -10,7 +9,8 @@ export default async function People() {
     dataValues = await getData<TPeopleGridHeader[]>({
       endpoint: 'people',
     }).then((data) => {
-      return data
+      if (data) return data
+      else return []
     })
   }
 

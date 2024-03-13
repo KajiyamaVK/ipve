@@ -14,11 +14,15 @@ import { TMembersTitles } from '@/types/TMembersTitles'
 import { getData, saveData } from '@/utils/fetchData'
 
 const DialogFormSchema = z.object({
-  name: z.string().min(1, 'Campo obrigatório'),
+  name: z
+    .string({
+      required_error: 'Campo obrigatório',
+    })
+    .min(1, 'Campo obrigatório'),
 })
 
 export function DialogModal() {
-  const { register, formState, setValue, watch } = useForm({
+  const { register, formState, setValue, watch, handleSubmit } = useForm({
     resolver: zodResolver(DialogFormSchema),
   })
 
@@ -73,7 +77,8 @@ export function DialogModal() {
     }
     const id = formMode === 'edit' ? { id: currentSelectedItem } : {}
     await saveData({ body, endpoint: 'titles', ...id })
-      .then((data) => {
+      //eslint-disable-next-line
+      .then((data: any) => {
         if (data) {
           toast({
             type: 'background',
@@ -86,14 +91,19 @@ export function DialogModal() {
         setFormMode('add')
         setIsDialogOpen(false)
       })
+      .catch((error) => {
+        toast({
+          type: 'background',
+          description: error.toString(),
+          variant: 'destructive',
+        })
+      })
       .finally(() => {
         setButtonIsLoading(false)
       })
   }
 
-  function submitForm(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault()
-
+  function submitForm() {
     if (formMode === 'add' || formMode === 'edit') {
       saveForm()
     } else if (formMode === 'view') {
@@ -110,7 +120,7 @@ export function DialogModal() {
             <i className="text-sm">Cadastro dos cargos que são atribuidos no cadastro de pessoas.</i>
           </DialogDescription>
         </DialogHeader>
-        <form onSubmit={submitForm} className="mt-3 flex flex-col gap-6">
+        <form onSubmit={handleSubmit(submitForm)} className="mt-3 flex flex-col gap-6">
           <div className="flex justify-between">
             <div className="flex flex-col flex-grow pr-5">
               <label htmlFor="name" className="font-bold">

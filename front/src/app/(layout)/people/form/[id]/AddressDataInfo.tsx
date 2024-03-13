@@ -57,7 +57,7 @@ export function AddressDataInfo(form: any) {
 
           <FormField
             control={form.control}
-            name="number"
+            name="addressNumber"
             render={({ field }) => (
               <FormItem className="text-left">
                 <FormLabel>Número</FormLabel>
@@ -123,7 +123,7 @@ export function AddressDataInfo(form: any) {
 
         <FormField
           control={form.control}
-          name="state"
+          name="uf"
           render={({ field }) => (
             <FormItem className="text-left flex-1">
               <FormLabel>Estado</FormLabel>

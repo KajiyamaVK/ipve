@@ -1,14 +1,12 @@
 'use client'
-import { useForm, useWatch } from 'react-hook-form'
+import { Controller, useForm, useWatch } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import { TPeople, ZPeople } from '@/types/TPeople'
 import { Textarea } from '@/components/ui/textarea'
 import { useContext, useEffect, useState } from 'react'
 import { useToast } from '@/components/ui/use-toast'
 import { useRouter } from 'next/navigation'
-import { ProfileAvatar } from './profileAvatar'
 import { ActiveControl } from './ActiveControl'
 import { BasicTopPersonalInfo } from './BasicTopPersonalInfo'
 import { AddressDataInfo } from './AddressDataInfo'
@@ -22,26 +20,51 @@ import { format } from 'date-fns'
 import PageSkeleton from './pageSkeleton'
 import { Button } from '@/components/ui/button'
 import { formsContext } from '@/contexts/formsContext'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { ImSpinner9 } from 'react-icons/im'
+import { Input } from '@/components/ui/input'
+import { generateRandomNumberWithDigits } from '@/utils/generateRandomNumber'
+import { TPeople, ZPeople } from './formSchema'
 
 export default function PeopleForm({ params }: { params: { id: number } }) {
-  const form = useForm<z.infer<typeof ZPeople>>({
-    resolver: zodResolver(ZPeople),
-  })
+  // Inside your component
 
-  const { control } = form
+  const toast = useToast()
+  const router = useRouter()
 
   const { formMode, setFormMode } = useContext(formsContext)
 
+  const form = useForm<z.infer<typeof ZPeople>>({
+    resolver: zodResolver(ZPeople),
+    defaultValues: {
+      fullName: '',
+      photoUrl: '',
+      isActive: true,
+      isMember: false,
+      isUser: false,
+      hasFamilyInChurch: false,
+      relatives: [],
+    },
+  })
+  const { control } = form
   const hasFamilyValue: boolean = useWatch({
     control,
     name: 'hasFamilyInChurch',
   })
 
+  const photoUrlValue = useWatch({
+    control,
+    name: 'photoUrl',
+  })
   const [isLoading, setIsLoading] = useState(false)
   const [isButtonLoading, setIsButtonLoading] = useState(false)
 
-  const toast = useToast()
-  const router = useRouter()
+  // interface IRelative {
+  //   id: number
+  //   fullName: string
+  //   kinshipId: string
+  //   relativeTitle: string
+  // }
 
   useEffect(() => {
     if (params.id > 0) {
@@ -53,8 +76,11 @@ export default function PeopleForm({ params }: { params: { id: number } }) {
           endpoint: 'people',
           id,
         })
-          .then((data) => {
-            populatingFields(data)
+          .then((response) => {
+            const data = response
+            if (data) {
+              populatingFields(data)
+            }
           })
           .then(() => {
             setIsLoading(false)
@@ -77,8 +103,52 @@ export default function PeopleForm({ params }: { params: { id: number } }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form.watch('cep')])
 
-  function setDateInput(date: string) {
-    form.setValue('dateOfBirth', format(date, 'yyyy-MM-dd'))
+  useEffect(() => {
+    const phone1 = form.watch('phone1')
+    if (phone1) {
+      form.setValue('phone1', handlePhoneMask(phone1))
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form.watch('phone1')])
+
+  useEffect(() => {
+    const phone2 = form.watch('phone2')
+    if (phone2) {
+      form.setValue('phone2', handlePhoneMask(phone2))
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form.watch('phone2')])
+
+  function handlePhoneMask(value: string | undefined) {
+    if (!value) return ''
+    if (value.length === 15) return value
+
+    //Remove todas as letras e caracteres especiais que não sejam parenteses, espaços e traços
+    value = value.replace(/[^0-9()-\s]/g, '')
+
+    if (value.length < 15) {
+      return value
+        .replace(/[\D]/g, '')
+        .replace(/(\d{2})(\d)/, '($1) $2')
+        .replace(/(\d{4})(\d)/, '$1-$2')
+        .replace(/(-\d{4})(\d+?)/, '$1')
+    }
+    // Deixa no formato (99) 99999-9999
+    if (value.length === 15) {
+      return value
+        .replace(/[\D]/g, '')
+        .replace(/(\d{2})(\d)/, '($1) $2')
+        .replace(/(\d{5})(\d)/, '$1-$2')
+    }
+  }
+
+  function setRelatives(
+    value: {
+      idKinB: number
+      relation: string
+    }[],
+  ) {
+    form.setValue('relatives', value)
   }
 
   function handleBack() {
@@ -86,59 +156,99 @@ export default function PeopleForm({ params }: { params: { id: number } }) {
     router.push('/people')
   }
 
-  //eslint-disable-next-line
-  function setInputValue(key: keyof TPeople, value: any) {
-    if (key === 'dateOfBirth' && typeof value === 'string') {
-      setDateInput(value)
-    } else if (['false', 'true'].includes(value)) {
-      const valueInBool = value === 'true' ? true : false
-
-      form.setValue(key, valueInBool)
-    } else if (value !== null) {
-      form.setValue(key, value)
-    }
-  }
-
   async function populatingFields(data: TPeople) {
-    Object.keys(data).forEach((key) => {
-      const keyOfTPeople = key as keyof TPeople
-      if (keyOfTPeople in data) {
-        if (keyOfTPeople === 'titleIdFK') {
-          data['titleIdFK'] = data['titleIdFK']?.toString()
-        } else if (keyOfTPeople === 'dateOfBirth' && data['dateOfBirth']) {
-          data['dateOfBirth'] = format(new Date(data['dateOfBirth']), 'yyyy-MM-dd')
-        }
-
-        setInputValue(keyOfTPeople, data[keyOfTPeople])
-      }
-    })
+    form.setValue('id', data.id)
+    form.setValue('photoUrl', data.photoUrl ?? '')
+    form.setValue('fullName', data.fullName ?? '')
+    form.setValue('titleIdFK', (data.titleIdFK ?? '').toString())
+    form.setValue('dateOfBirth', data.dateOfBirth ? format(new Date(data.dateOfBirth), 'yyyy-MM-dd') : '')
+    form.setValue('roles', data.roles ?? '')
+    form.setValue('ebdClassroom', data.ebdClassroom ?? '')
+    form.setValue('society', data.society ?? '')
+    form.setValue('address', data.address ?? '')
+    form.setValue('addressNumber', data.addressNumber ?? '')
+    form.setValue('complement', data.complement ?? '')
+    form.setValue('city', data.city ?? '')
+    form.setValue('suburb', data.suburb ?? '')
+    form.setValue('uf', data.uf ?? '')
+    form.setValue('cep', data.cep ?? '')
+    form.setValue('phone1', data.phone1 ?? '')
+    form.setValue('phone1IsWhatsapp', !!data.phone1IsWhatsapp)
+    form.setValue('phone2', data.phone2 ?? '')
+    form.setValue('email', data.email ?? '')
+    form.setValue('isActive', !!data.isActive)
+    form.setValue('isMember', !!data.isMember)
+    form.setValue('isUser', !!data.isUser)
+    form.setValue('hasFamilyInChurch', !!data.hasFamilyInChurch)
+    form.setValue('obs', data.obs ?? '')
+    form.setValue('relatives', data.relatives)
+    form.setValue('gender', data.gender ?? '')
   }
 
-  // function teste() {
-  //   const values = form.getValues()
-  //   const zValues = ZPeople.safeParse(values)
-  //   if (!zValues.success) {
-  //     toast.toast({
-  //       title: 'Erro!',
-  //       description: `Ocorreu um erro ao salvar os dados! Erro: ${zValues.error.message}`,
-  //       variant: 'destructive',
-  //     })
-  //     return
-  //   }
-  // }
+  function storePersonPhoto(e: React.ChangeEvent<HTMLInputElement>): void {
+    let photo: File
+    if (e.target.files) {
+      photo = e.target.files[0]
+    } else {
+      throw new Error('Erro ao carregar a foto')
+    }
+
+    const fileName = `TMP${generateRandomNumberWithDigits(7)}_${new Date().getTime()}.png`
+
+    const formData = new FormData()
+
+    formData.append('photo', photo, fileName)
+
+    fetch(`/api/uploadFile`, {
+      method: 'POST',
+      body: formData,
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(response.statusText)
+        }
+        return response.json()
+      })
+      .then((data) => {
+        if (data.success) {
+          toast.toast({
+            title: 'Sucesso!',
+            description: 'Foto salva com sucesso!',
+          })
+          form.setValue('photoUrl', fileName)
+        } else {
+          throw new Error(data.message)
+        }
+      })
+      .catch((err) => {
+        const message = err.message
+        toast.toast({
+          title: 'Erro!',
+          description: `Ocorreu um erro ao salvar a foto! Erro: ${message}`,
+          variant: 'destructive',
+        })
+      })
+  }
+
+  const {
+    formState: { errors },
+  } = form
+
+  function handleFormErrors() {
+    console.error('errors', errors)
+  }
 
   async function saveData(values: z.infer<typeof ZPeople>) {
-    const zValues = ZPeople.safeParse(values)
-    if (!zValues.success) {
+    const relatives = form.watch('relatives') ?? []
+    if (hasFamilyValue && relatives.length === 0) {
       toast.toast({
         title: 'Erro!',
-        description: `Ocorreu um erro ao salvar os dados! Erro: ${zValues.error.message}`,
+        description:
+          'É necessário informar ao menos um familiar caso a opção "Possui família na igreja" esteja marcada.',
         variant: 'destructive',
       })
       return
     }
-
-    //const values = form.getValues()
     if (formMode === 'add') {
       await fetch(`${getEnv().NEXT_PUBLIC_API_URL}/people`, {
         method: 'POST',
@@ -151,7 +261,6 @@ export default function PeopleForm({ params }: { params: { id: number } }) {
           if (!response.ok) {
             throw new Error(response.statusText)
           }
-          return response.json()
         })
         .then(() => {
           toast.toast({
@@ -163,10 +272,9 @@ export default function PeopleForm({ params }: { params: { id: number } }) {
           router.push('/people')
         })
         .catch((err) => {
-          const message = err.message
           toast.toast({
             title: 'Erro!',
-            description: `Ocorreu um erro ao criar os dados! Erro: ${message}`,
+            description: `Ocorreu um erro ao criar os dados! Erro: ${err.message}`,
             variant: 'destructive',
           })
         })
@@ -184,7 +292,6 @@ export default function PeopleForm({ params }: { params: { id: number } }) {
               throw err
             })
           }
-          return response.json()
         })
         .then(() => {
           toast.toast({
@@ -224,7 +331,10 @@ export default function PeopleForm({ params }: { params: { id: number } }) {
     return (
       <Form {...form}>
         <div className="flex justify-center">
-          <form className="my-10 max-w-[1500px] px-36 xl:px-10" onSubmit={form.handleSubmit(saveData)}>
+          <form
+            className="my-10 max-w-[1500px] px-36 xl:px-10"
+            onSubmit={form.handleSubmit(saveData, handleFormErrors)}
+          >
             <div>
               <div className="flex gap-5 justify-end">
                 <Button isLoading={isButtonLoading} onClick={handleBack}>
@@ -233,16 +343,64 @@ export default function PeopleForm({ params }: { params: { id: number } }) {
 
                 <Button type="submit">Salvar</Button>
               </div>
-              <div className="flex gap-5 items-center ml-20 ">
-                <ProfileAvatar {...form.control} />
+              <div className="flex gap-5 items-center ml-20 mb-5">
+                {/* <ProfileAvatar file={selectedFile} control={form.control} /> */}
+                <FormField
+                  control={form.control}
+                  name="photoUrl"
+                  render={() => (
+                    <FormItem className="text-left min-w-36 md:min-w-52">
+                      <FormLabel htmlFor="photoUrl">
+                        <div className="flex flex-col items-center my-auto mr-10">
+                          <Avatar className="border-4 border-secondary w-48 h-48 bg-white cursor-pointer">
+                            <AvatarImage
+                              src={photoUrlValue ? `/images/users/${photoUrlValue}` : '/images/system/avatar.png'}
+                              alt="Foto do usuário do sistema"
+                              id="photo"
+                              className="object-cover"
+                            />
+                            <AvatarFallback>
+                              <div className="animate-spin text-primary">
+                                <ImSpinner9 />
+                              </div>
+                            </AvatarFallback>
+                          </Avatar>
+                          <center>
+                            <p className="mx-auto">Clique para editar</p>
+                          </center>
+                        </div>
+                      </FormLabel>
+                      <FormControl>
+                        <Controller
+                          control={form.control}
+                          name="photoUrl"
+                          render={({ field: { onChange } }) => (
+                            <Input
+                              type="file"
+                              accept="image/*"
+                              id="photoUrl"
+                              className="hidden"
+                              {...form.register('photoUrl')}
+                              onChange={(e) => {
+                                onChange(e)
+                                storePersonPhoto(e)
+                              }}
+                            />
+                          )}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
                 <div className="flex flex-col gap-5">
                   <ActiveControl {...form.control} />
                   <div className="flex  flex-wrap gap-5 w-min-5">
                     <BasicTopPersonalInfo {...form.control} />
-                    <ChurchInfo {...form.control} />
                   </div>
                 </div>
               </div>
+              <ChurchInfo {...form} />
 
               <AddressDataInfo {...form} />
 
@@ -253,7 +411,7 @@ export default function PeopleForm({ params }: { params: { id: number } }) {
                   control={form.control}
                   name="obs"
                   render={({ field }) => (
-                    <FormItem className="text-left flex-1 mt-5">
+                    <FormItem className="text-left flex-1 mt-5 bg-white">
                       <FormLabel>Observação</FormLabel>
                       <FormControl>
                         <Textarea
@@ -273,7 +431,12 @@ export default function PeopleForm({ params }: { params: { id: number } }) {
                   <AccessControl {...form} />
                 </div>
                 <div>
-                  <FamilyInfo hasFamilyValue={hasFamilyValue as boolean} />
+                  <FamilyInfo
+                    hasFamilyValue={hasFamilyValue as boolean}
+                    setRelatives={setRelatives}
+                    relatives={form.watch('relatives')}
+                    personId={form.watch('id') || 0}
+                  />
                 </div>
               </div>
             </div>

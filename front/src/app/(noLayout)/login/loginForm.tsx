@@ -25,9 +25,13 @@ export default function LoginForm() {
   })
 
   function markAsLogged(router: AppRouterInstance) {
-    setIsLoading(true)
-    Cookie.set('ipve_auth_token', 'ajahdgfkajsdhgkh', { expires: 7 })
-    router.push('/dashboard')
+    if (form.watch('email') === 'admin@ipve.com.br' && form.watch('password') === 'admin') {
+      setIsLoading(true)
+      Cookie.set('ipve_auth_token', 'ajahdgfkajsdhgkh', { expires: 7 })
+      router.push('/dashboard')
+    } else {
+      alert('Usuário ou senha inválidos')
+    }
   }
 
   return (

@@ -8,7 +8,7 @@ export default function Loading() {
       <div className="screenLoader">
         <Image
           alt="Tela está carregando com o logo da IPVE pulsando"
-          src={'/logo.png'}
+          src={'/images/system/logo.png'}
           width={200}
           height={200}
         ></Image>

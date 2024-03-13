@@ -9,7 +9,7 @@ export default function login() {
         <div className="mt-32 flex flex-col text-left min-w-[300px] mx-auto">
           <center className="mb-10">
             <Image
-              src="/logo.png"
+              src="/images/system/logo.png"
               alt="IPVE Logo - cruz branca com um fundo em uma mistura não uniforme entre verde e azul"
               width={150}
               height={150}

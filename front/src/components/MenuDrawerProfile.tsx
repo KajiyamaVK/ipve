@@ -3,8 +3,8 @@ import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
 
 export function MenuDrawerProfile() {
   function getPhotoUrl(): string | null {
-    return 'https://github.com/kajiyamavk.png'
-    return ''
+    //return 'https://github.com/kajiyamavk.png'
+    return '/images/system/logo.png'
   }
   return (
     <div className="flex flex-col  p-5 bg-primary-dark items-center">
@@ -18,10 +18,10 @@ export function MenuDrawerProfile() {
       </Avatar>
       <div className="flex flex-col justify-center  w-full items-center">
         <p className="text-lg font-bold overflow-ellipsis whitespace-nowrap block w-48 overflow-hidden text-center">
-          Victor Kajiyama
+          Administrador
         </p>
         <p className="overflow-ellipsis whitespace-nowrap block w-48 overflow-hidden text-sm text-center">
-          victor.kajiyama@gmail.com
+          admin@ipve.com.br
         </p>
       </div>
     </div>

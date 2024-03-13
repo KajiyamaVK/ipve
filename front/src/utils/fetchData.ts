@@ -24,6 +24,8 @@ function getEndPointsUrl(endpoint: string): string | URL | Request {
       return endpointsPaths.titles
     case 'generalRoutes':
       return endpointsPaths.generalRoutes
+    case 'kinsRelations':
+      return endpointsPaths.kinsRelations
     default:
       throw new Error('Endpoint not found')
   }
@@ -48,14 +50,14 @@ export function getData<T>({ endpoint, body, headers, id, isCaching = false }: T
   const data = fetch(`${getEndPointsUrl(endpoint)}${id ? '/' + id : ''}`, fetchParams)
     .then((res) => res.json() as T)
     .catch((err) => {
-      console.error(err)
-      throw new Error(err)
+      console.error(err.message)
+      throw new Error(err.message)
     })
 
   return data
 }
 
-export function saveData({ endpoint, body, headers, id }: TGetPatchDeleteDataSchema): Promise<boolean> {
+export function saveData<T>({ endpoint, body, headers, id }: TGetPatchDeleteDataSchema): Promise<T | void> {
   return fetch(`${getEndPointsUrl(endpoint)}${id ? '/' + id : ''}`, {
     method: `${id ? 'PUT' : 'POST'}`,
     body: JSON.stringify(body),
@@ -64,12 +66,17 @@ export function saveData({ endpoint, body, headers, id }: TGetPatchDeleteDataSch
       ...headers,
     },
   })
-    .then(() => {
-      return true
+    .then((response) => {
+      if (response.ok) {
+        return response.json() as T
+      }
+      if ([400, 500].includes(response.status)) {
+        throw new Error(response.statusText)
+      }
     })
     .catch((err) => {
       console.error(err)
-      throw new Error(err)
+      alert(`Entre em contato com o suporte: Check the console for more details.`)
     })
 }
 

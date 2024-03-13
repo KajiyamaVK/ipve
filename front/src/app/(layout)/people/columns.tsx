@@ -17,7 +17,7 @@ export const columns: ColumnDef<TPeopleGridHeader>[] = [
     size: 1,
   },
   {
-    accessorKey: 'peopleTitles',
+    accessorKey: 'title',
     header: ({ column }) => <SortedGridHeader column={column} label="Cargo" />,
   },
   {
