@@ -25,7 +25,7 @@ export default function LoginForm() {
   })
 
   function markAsLogged(router: AppRouterInstance) {
-    if (form.watch('email') === 'admin@ipve.com.br' && form.watch('password') === 'admin') {
+    if (form.watch('email') === 'admin@ipve.com.br' && form.watch('password') === 'admin123') {
       setIsLoading(true)
       Cookie.set('ipve_auth_token', 'ajahdgfkajsdhgkh', { expires: 7 })
       router.push('/dashboard')
