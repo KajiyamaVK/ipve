@@ -25,6 +25,29 @@ export async function titles(app: FastifyInstance) {
     sendResponse({ data, res, statusCode: 200 })
   })
 
+  app.get('/:id', async (req: FastifyRequest<{ Params: { id: number } }>, res: FastifyReply) => {
+    const mySql = app.mysql
+    const { id } = req.params
+
+    const query = `
+      SELECT
+        id,
+        name
+      FROM peopleTitles
+      WHERE id = ?`
+
+    let data: ITitles[] = []
+
+    try {
+      data = await runQuery<ITitles>(query, mySql, [id])
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      handleError({ err, res })
+    }
+
+    sendResponse({ data: data[0], res, statusCode: 200 })
+  })
+
   app.post('/', async (req: FastifyRequest, res: FastifyReply) => {
     const mySql = app.mysql
     const body = req.body as ITitles

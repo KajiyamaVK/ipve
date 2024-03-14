@@ -50,7 +50,7 @@ export function DialogModal() {
     if (isSkeletonOpen && formMode === 'view') {
       ;(async () => {
         await getData<TMembersTitles>({
-          endpoint: 'roles',
+          endpoint: 'titles',
           id: currentSelectedItem,
         })
           .then((data) => {

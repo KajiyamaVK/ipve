@@ -29,6 +29,33 @@ export async function roles(app: FastifyInstance) {
     sendResponse({ data, res, statusCode: 200 })
   })
 
+  app.get('/:id', async (req: FastifyRequest<{ Params: { id: number } }>, res: FastifyReply) => {
+    const mySql = app.mysql
+    const { id } = req.params
+
+    const query = `
+      SELECT
+        id,
+        name,
+        description,
+        createdAt,
+        updatedAt,
+        tailwindColor
+      FROM peopleRoles
+      WHERE id = ?`
+
+    let data: IRoles[] = []
+
+    try {
+      data = await runQuery<IRoles>(query, mySql, [id])
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      handleError({ err, res })
+    }
+
+    sendResponse({ data: data[0], res, statusCode: 200 })
+  })
+
   app.post('/', async (req: FastifyRequest, res: FastifyReply) => {
     const mySql = app.mysql
     const body = req.body as IRoles
