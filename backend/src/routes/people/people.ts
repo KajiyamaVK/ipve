@@ -251,8 +251,9 @@ export async function people(app: FastifyInstance) {
       Number(body.titleIdFK),
       id,
     ])
-
+    console.log('1')
     if (body.relatives && body.relatives?.length > 0) {
+      console.log('2')
       for (const kin of body.relatives) {
         const query = `
           SELECT 1
@@ -263,6 +264,7 @@ export async function people(app: FastifyInstance) {
         `
 
         const data = await runQuery(query, mySql, [id, kin.idKinB, kin.relation])
+        console.log('data', data)
 
         const findIdCounterQuery = `
           SELECT idCounter
@@ -273,21 +275,23 @@ export async function people(app: FastifyInstance) {
 
         if (!idCounter[0].idCounter) throw new Error('Invalid kinship id - counter not found')
 
+        const kinHasFamilyUpdateQuery = `
+          UPDATE people
+          SET hasFamilyInChurch = 1
+          WHERE id = ?
+          `
+        await runQuery(kinHasFamilyUpdateQuery, mySql, [kin.idKinB])
+
         if (data.length === 0) {
           const query = `
             INSERT INTO kinsRelations (idKinA, idKinB, relation)
             VALUES (?, ?, ?)
           `
 
-          const kinHasFamilyUpdateQuery = `
-            UPDATE people
-            SET hasFamilyInChurch = 1
-            WHERE id = ?
-          `
+          console.log('kinhasFmaily', kinHasFamilyUpdateQuery)
 
           await runQuery(query, mySql, [id, kin.idKinB, kin.relation])
           await runQuery(query, mySql, [kin.idKinB, id, idCounter[0].idCounter])
-          await runQuery(kinHasFamilyUpdateQuery, mySql, [kin.idKinB])
         } else {
           const query = `
             UPDATE kinsRelations
