@@ -321,6 +321,7 @@ export async function people(app: FastifyInstance) {
   })
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function deleteRoles(mySql: any, id: number) {
   const queryDeleteRoles = `
     DELETE FROM peopleRolesData
@@ -329,6 +330,7 @@ function deleteRoles(mySql: any, id: number) {
   return runQuery(queryDeleteRoles, mySql, [id])
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function deleteKins(mySql: any, id: number) {
   const queryDeleteKins = `
     DELETE FROM kinsRelations
