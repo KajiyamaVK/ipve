@@ -306,8 +306,9 @@ export async function people(app: FastifyInstance) {
       deleteKins(mySql, Number(id))
     }
 
-    if (body.roles && body.roles?.length > 0) {
-      for (const role of body.roles) {
+    if (body.roles) {
+      const roles: string[] = body.roles.split(';')
+      for (const role of roles) {
         const query = `
         INSERT INTO peopleRolesData (peopleIdFK, roleIdFK)
         VALUES (?, ?)

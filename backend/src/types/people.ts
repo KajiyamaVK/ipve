@@ -48,7 +48,7 @@ export const ZPeople = z.object({
   email: z.string().email().optional().nullable(),
   isUser: z.boolean().default(false),
   isMember: z.boolean().default(true),
-  roles: z.array(number()).optional().nullable(),
+  roles: z.string().optional().nullable(),
   isActive: z.boolean().default(true),
   isActiveEBD: z.boolean().default(false),
   ebdClassroom: z.string().optional().nullable(),
