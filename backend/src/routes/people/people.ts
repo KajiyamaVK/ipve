@@ -306,8 +306,6 @@ export async function people(app: FastifyInstance) {
       deleteKins(mySql, Number(id))
     }
 
-    deleteRoles(mySql, Number(id))
-
     if (body.roles && body.roles?.length > 0) {
       for (const role of body.roles) {
         const query = `
@@ -317,6 +315,8 @@ export async function people(app: FastifyInstance) {
 
         await runQuery(query, mySql, [id, role])
       }
+    } else {
+      deleteRoles(mySql, Number(id))
     }
   })
 }
