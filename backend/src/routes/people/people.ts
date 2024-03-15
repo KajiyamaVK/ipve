@@ -251,9 +251,7 @@ export async function people(app: FastifyInstance) {
       Number(body.titleIdFK),
       id,
     ])
-    console.log('1')
     if (body.relatives && body.relatives?.length > 0) {
-      console.log('2')
       for (const kin of body.relatives) {
         const query = `
           SELECT 1
@@ -302,6 +300,23 @@ export async function people(app: FastifyInstance) {
           await runQuery(query, mySql, [kin.relation, id, kin.idKinB])
           await runQuery(query, mySql, [idCounter[0].idCounter, kin.idKinB, id])
         }
+      }
+    }
+
+    if (body.roles && body.roles?.length > 0) {
+      const query = `
+      DELETE FROM peopleRolesData
+      WHERE peopleIdFK = ?
+    `
+      await runQuery(query, mySql, [id])
+
+      for (const role of body.roles) {
+        const query = `
+        INSERT INTO peopleRolesData (peopleIdFK, roleIdFK)
+        VALUES (?, ?)
+      `
+
+        await runQuery(query, mySql, [id, role])
       }
     }
   })
