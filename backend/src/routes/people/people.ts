@@ -251,6 +251,7 @@ export async function people(app: FastifyInstance) {
       Number(body.titleIdFK),
       id,
     ])
+
     if (body.relatives && body.relatives?.length > 0) {
       for (const kin of body.relatives) {
         const query = `
@@ -301,15 +302,13 @@ export async function people(app: FastifyInstance) {
           await runQuery(query, mySql, [idCounter[0].idCounter, kin.idKinB, id])
         }
       }
+    } else {
+      deleteKins(mySql, Number(id))
     }
 
-    if (body.roles && body.roles?.length > 0) {
-      const query = `
-      DELETE FROM peopleRolesData
-      WHERE peopleIdFK = ?
-    `
-      await runQuery(query, mySql, [id])
+    deleteRoles(mySql, Number(id))
 
+    if (body.roles && body.roles?.length > 0) {
       for (const role of body.roles) {
         const query = `
         INSERT INTO peopleRolesData (peopleIdFK, roleIdFK)
@@ -320,4 +319,21 @@ export async function people(app: FastifyInstance) {
       }
     }
   })
+}
+
+function deleteRoles(mySql: any, id: number) {
+  const queryDeleteRoles = `
+    DELETE FROM peopleRolesData
+    WHERE peopleIdFK = ?
+  `
+  return runQuery(queryDeleteRoles, mySql, [id])
+}
+
+function deleteKins(mySql: any, id: number) {
+  const queryDeleteKins = `
+    DELETE FROM kinsRelations
+    WHERE idKinA = ?
+    OR idKinB = ?
+  `
+  return runQuery(queryDeleteKins, mySql, [id, id])
 }
