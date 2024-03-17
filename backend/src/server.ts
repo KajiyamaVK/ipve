@@ -1,5 +1,5 @@
 import fastify from 'fastify'
-import 'dotenv/config'
+//import 'dotenv/config'
 //import { generalRoutes } from './routes/general'
 import cookie from '@fastify/cookie'
 import { roles } from './routes/people/roles'
@@ -10,6 +10,7 @@ import { MySQLPool } from '@fastify/mysql'
 import { titles } from './routes/people/titles'
 import { people } from './routes/people/people'
 import { kinsRelations } from './routes/people/kinsRelations'
+import { env } from './env'
 
 // if you only pass connectionString
 declare module 'fastify' {
@@ -38,13 +39,13 @@ app.register(kinsRelations, {
   prefix: '/people/kinsRelations',
 })
 app.register(mySql, {
-  connectionString: process.env.DATABASE_URL,
+  connectionString: env.DATABASE_URL,
 })
 
 app
   .listen({
     host: '0.0.0.0',
-    port: process.env.PORT ? Number(process.env.PORT) : 3001,
+    port: env.PORT ? Number(env.PORT) : 3001,
   })
   .then(() => {
     console.info('Server running')
