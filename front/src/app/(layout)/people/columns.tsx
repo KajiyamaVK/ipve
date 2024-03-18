@@ -23,17 +23,11 @@ export const columns: ColumnDef<TPeopleGridHeader>[] = [
   {
     accessorKey: 'roles',
     header: 'Funções',
+    cell: ({ renderValue }) => {
+      let value: string = ''
+      value = renderValue() as string
+      if (!value) return <div className="text-sm">-</div>
+      return <div className="text-sm">{value.replace(';', ', ')}</div>
+    },
   },
-  // {
-  //   accessorKey: 'dateOfBirth',
-  //   header: 'Data de Nascimento',
-  // },
-  // {
-  //   accessorKey: 'phone1',
-  //   header: 'Telefone 1',
-  // },
-  // {
-  //   accessorKey: 'isPhone1WhatsApp',
-  //   header: ({ column }) => <SortedGridHeader column={column} label="Whatsapp?" />,
-  // },
 ]

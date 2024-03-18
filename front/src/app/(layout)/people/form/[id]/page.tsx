@@ -211,6 +211,8 @@ export default function PeopleForm({ params }: { params: { id: number } }) {
       })
       .then((data) => {
         if (data.success) {
+          form.setValue('photoUrl', `${process.env.NEXT_PUBLIC_APP_URL}/images/users/${fileName}`)
+
           toast.toast({
             title: 'Sucesso!',
             description: 'Foto salva com sucesso!',

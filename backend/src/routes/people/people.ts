@@ -254,17 +254,6 @@ export async function people(app: FastifyInstance) {
 
     if (body.relatives && body.relatives?.length > 0) {
       for (const kin of body.relatives) {
-        const query = `
-          SELECT 1
-          FROM kinsRelations
-          WHERE idKinA = ? 
-          AND idKinB = ?
-          AND relation = ?
-        `
-
-        const data = await runQuery(query, mySql, [id, kin.idKinB, kin.relation])
-        console.log('data', data)
-
         const findIdCounterQuery = `
           SELECT idCounter
           FROM stdKinsRelations
@@ -281,7 +270,7 @@ export async function people(app: FastifyInstance) {
           `
         await runQuery(kinHasFamilyUpdateQuery, mySql, [kin.idKinB])
 
-        if (data.length === 0) {
+        if (!(await checkIfKinRelationExists(Number(id), kin.idKinB, mySql))) {
           const query = `
             INSERT INTO kinsRelations (idKinA, idKinB, relation)
             VALUES (?, ?, ?)
@@ -307,36 +296,89 @@ export async function people(app: FastifyInstance) {
     }
 
     if (body.roles) {
-      const roles: string[] = body.roles.split(';')
-      for (const role of roles) {
-        const query = `
-        INSERT INTO peopleRolesData (peopleIdFK, roleIdFK)
-        VALUES (?, ?)
+      const roles = body.roles.split(';')
+
+      const rolesToDelete: { roleIdFK: string }[] = await checkRolesToDelete(roles, mySql, Number(id))
+      const rolesToDeleteInArray: string[] = rolesToDelete.map((role: { roleIdFK: string }) => role.roleIdFK)
+
+      if (rolesToDelete.length > 0) {
+        const deleteQUery = `
+        DELETE FROM peopleRolesData
+        WHERE peopleIdFK = ?
+        AND roleIdFK in (?)
       `
 
-        await runQuery(query, mySql, [id, role])
+        await runQuery(deleteQUery, mySql, [id, rolesToDeleteInArray])
+      }
+
+      for (const role of roles) {
+        if (!(await checkIfRoleExists(role, mySql, Number(id)))) {
+          const query = `
+              INSERT INTO peopleRolesData (peopleIdFK, roleIdFK)
+              VALUES (?, ?)
+            `
+
+          await runQuery(query, mySql, [id, role])
+        }
       }
     } else {
       deleteRoles(mySql, Number(id))
     }
   })
-}
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function deleteRoles(mySql: any, id: number) {
-  const queryDeleteRoles = `
+  //eslint-disable-next-line @typescript-eslint/no-explicit-any
+  async function checkIfKinRelationExists(idKinA: number, idKinB: number, mySql: any) {
+    const query = `
+      SELECT 1
+      FROM kinsRelations
+      WHERE idKinA = ?
+      AND idKinB = ?
+    `
+    const result = await runQuery(query, mySql, [idKinA, idKinB])
+    return result.length > 0
+  }
+
+  async function checkIfRoleExists(role: string, mySql: any, id: number) {
+    const query = `
+      SELECT 1
+      FROM peopleRolesData
+      WHERE roleIdFK = ?
+      AND peopleIdFK IN (?)
+    `
+    const result = await runQuery(query, mySql, [role, id])
+    return result.length > 0
+  }
+
+  async function checkRolesToDelete(roles: string[], mySql: any, id: number) {
+    const query = `
+      SELECT roleIdFK
+      FROM peopleRolesData
+      WHERE peopleIdFK = ?
+    `
+
+    const rolesInDB: { roleIdFK: string }[] = await runQuery(query, mySql, [id])
+
+    const rolesToDelete = rolesInDB.filter((role: { roleIdFK: string }) => !roles.includes(role.roleIdFK))
+
+    return rolesToDelete
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  function deleteRoles(mySql: any, id: number) {
+    const queryDeleteRoles = `
     DELETE FROM peopleRolesData
     WHERE peopleIdFK = ?
   `
-  return runQuery(queryDeleteRoles, mySql, [id])
-}
+    return runQuery(queryDeleteRoles, mySql, [id])
+  }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function deleteKins(mySql: any, id: number) {
-  const queryDeleteKins = `
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  function deleteKins(mySql: any, id: number) {
+    const queryDeleteKins = `
     DELETE FROM kinsRelations
     WHERE idKinA = ?
     OR idKinB = ?
   `
-  return runQuery(queryDeleteKins, mySql, [id, id])
+    return runQuery(queryDeleteKins, mySql, [id, id])
+  }
 }

@@ -11,6 +11,7 @@ import { titles } from './routes/people/titles'
 import { people } from './routes/people/people'
 import { kinsRelations } from './routes/people/kinsRelations'
 import { env } from './env'
+import { storePeoplePhoto } from './routes/people/storePhoto'
 
 // if you only pass connectionString
 declare module 'fastify' {
@@ -37,6 +38,9 @@ app.register(titles, {
 })
 app.register(kinsRelations, {
   prefix: '/people/kinsRelations',
+})
+app.register(storePeoplePhoto, {
+  prefix: '/people/storePeoplePhoto',
 })
 app.register(mySql, {
   connectionString: env.DATABASE_URL,
