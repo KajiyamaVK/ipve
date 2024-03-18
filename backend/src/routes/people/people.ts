@@ -338,6 +338,7 @@ export async function people(app: FastifyInstance) {
     return result.length > 0
   }
 
+  //eslint-disable-next-line @typescript-eslint/no-explicit-any
   async function checkIfRoleExists(role: string, mySql: any, id: number) {
     const query = `
       SELECT 1
@@ -349,6 +350,7 @@ export async function people(app: FastifyInstance) {
     return result.length > 0
   }
 
+  //eslint-disable-next-line @typescript-eslint/no-explicit-any
   async function checkRolesToDelete(roles: string[], mySql: any, id: number) {
     const query = `
       SELECT roleIdFK
