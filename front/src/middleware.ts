@@ -2,7 +2,7 @@ import { NextResponse, NextRequest } from 'next/server'
 import { getEnv } from './envSchema'
 
 export const config = {
-  matcher: ['/', '/people', '/dashboard', '/people/:path*'],
+  matcher: ['/', '/people', '/dashboard', '/people/:path*', '/login'],
 }
 
 export default function middleware(request: NextRequest) {
