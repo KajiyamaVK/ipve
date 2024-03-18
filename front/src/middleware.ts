@@ -29,5 +29,5 @@ export default function middleware(request: NextRequest) {
     console.error('Error parsing environment variables:', error)
     throw error
   }
-  // return NextResponse.next()
+  return NextResponse.next()
 }
