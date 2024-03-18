@@ -7,6 +7,7 @@ import { getData } from '@/utils/fetchData'
 
 export default async function RolesGrid() {
   let data: TRoles[] = []
+
   async function retrieveData() {
     data = await getData<TRoles[]>({
       endpoint: 'roles',
@@ -16,7 +17,9 @@ export default async function RolesGrid() {
     })
   }
 
+  console.log('Start to Retrieve Data')
   await retrieveData()
+  console.log('Finish to Retrieve Data')
   return (
     <center>
       <div className="m-10">
