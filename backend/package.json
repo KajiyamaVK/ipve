@@ -24,10 +24,10 @@
 		"zod": "^3.22.4"
 	},
 	"scripts": {
-		"dev": "nodemon ./src/server.ts",
+		"dev": "nodemon ./src/index.ts",
 		"lint": "eslint . --ext .ts",
 		"build": "eslint . --ext .ts && tsc ",
-		"start": "node dist/server.js",
+		"start": "node dist/index.js",
 		"vercel-build": "pnpm run build "
 	},
 	"dependencies": {
