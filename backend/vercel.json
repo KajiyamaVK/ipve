@@ -1,6 +1,6 @@
 {
   "version": 2, 
-  "routes": [{ "source": "/(.*)", "destination": "/dist/index.js" }] ,
+  "routes": [{ "src": "/(.*)", "dest": "/dist/index.js" }] ,
   "builds": [
     { "src": "/dist/index.js", "use": "@now/node" }
   ]
