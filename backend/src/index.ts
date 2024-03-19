@@ -50,13 +50,6 @@ app.register(mySql, {
   connectionString: env.DATABASE_URL,
 })
 
-app
-  .listen({
-    host: '0.0.0.0',
-    port: env.PORT ? Number(env.PORT) : 3001,
-  })
-  .then(() => {
-    console.info('Server running')
-  })
+console.log('server running')
 
 module.exports = app
