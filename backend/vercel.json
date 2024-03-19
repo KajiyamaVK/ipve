@@ -1,7 +1,1 @@
-{
-  "version": 2, 
-  "routes": [{ "src": "/(.*)", "dest": "/index.ts" }] ,
-  "builds": [
-    { "src": "/index.ts", "use": "@now/node" }
-  ]
-}
+{ "version": 2, "rewrites": [{ "source": "/(.*)", "destination": "/src" }] }
