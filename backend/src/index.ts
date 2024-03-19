@@ -4,7 +4,7 @@ import fastify from 'fastify'
 import cookie from '@fastify/cookie'
 import { roles } from './routes/people/roles'
 import cors from '@fastify/cors'
-import multipart from '@fastify/multipart'
+//import multipart from '@fastify/multipart'
 import mySql from '@fastify/mysql'
 import fastifyCaching from '@fastify/caching'
 import { MySQLPool } from '@fastify/mysql'
@@ -25,7 +25,7 @@ export const app = fastify({ logger: true })
 
 app.register(cookie) // Tem que ser o primeiro register dessa lista
 
-app.register(multipart)
+//app.register(multipart)
 app.register(cors)
 app.register(fastifyCaching, {
   privacy: 'private',
