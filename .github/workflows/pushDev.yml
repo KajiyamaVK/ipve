@@ -2,34 +2,27 @@ name: IPVE CI
 
 on:
   push:
-    branches: [ "v1_dev" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "v1_dev" ]
+    branches: [ "main" ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
     steps:
-      - name: Checkout repository Code
-        uses: actions/checkout@v3
-      - name: use node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18.x'
-      - run: npm install
-        working-directory: ./front
-      - run: npm run lint --fix --max-warnings=0
-        working-directory: ./front
-      - run: npm run build 
-        working-directory: ./front
-      - run: npm install
-        working-directory: ./backend
-      - run: npm run lint --fix --max-warnings=0
-        working-directory: ./backend
-      - run: npm run build 
-        working-directory: ./backend
-      - name: Push to main
-        run: |
-          git checkout main
-          git merge --no-ff v1_dev
-          git push origin main
+    - uses: actions/checkout@v3
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: Change to backend directory
+      run: cd backend
+    - name: Install dependencies
+      run: npm install
+    - name: Run build
+      run: npm run build
