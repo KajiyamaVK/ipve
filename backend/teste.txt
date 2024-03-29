@@ -1,0 +1,363 @@
+
+Erro para exportar algum(uns) produto(s).
+
+Motivo(s):
+Erro para exportar o produto FYD33103-AZ. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto FYD33103-PR. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto FYD33103-SM. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para atualizar o produto JBD22778. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto FYD17515. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto FYD17513. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto FYD17512. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto FYD17509. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto FYD17507. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto FYD17506. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto FYD17503. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para exportar o produto FYD14033-AE. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto DWN28003-PT. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para atualizar o produto BSB15012. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto BSB15011. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto BSB15010. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto BSB14118. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto BSB14117. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto BSB14096. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto BSB14069. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto BSB14068. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto BJH23895. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto BJH23893. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto BJH23892. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto BJH23891. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto BJH23890. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto BJH23889. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto BJH23888. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto BJH23887. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto BJH18660. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto BJH18659. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto BJH17317. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto BJH17303. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto BJH17302. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto BJH17301. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto BJH17300. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto BJH17299. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto BJH17298. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto BJH17297. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto BJH17296. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para exportar o produto AYJ17252-RS. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AYJ17251-AZ. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para atualizar o produto AYJ17237. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para exportar o produto AYJ17232-AZ. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AYJ17232-RS. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AYJ17232-VE. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AYJ17175. Motivo: O campo Descrição Curta é obrigatório no produto AYJ17175
+Erro para exportar o produto AYJ17172-AZ. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AYJ17172-RS. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AYJ17172-VE. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AYJ17169-VE. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para atualizar o produto AYJ17167-VE. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto AYJ17167-RS. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto AYJ17167. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para exportar o produto AYJ16052-AZ. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AYJ16052-LJ. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AYJ16052-PK. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AYJ16052-VE. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AYJ16051-LJ. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para atualizar o produto AYD17181. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto AXD19773. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para exportar o produto AWM22838-AZ. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AWM22838-CZ. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AWM22838-VE. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AWM22838-VI. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para atualizar o produto AWM20930. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para exportar o produto AWM17225-AZ. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AWM17225-RS. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AWM17223-AZ. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AWM17223-RS. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AWM17221-AZ. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AWM17221-RS. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AWM17221-VE. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AWM17219-AZ. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AWM17219-RS. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AWM17219-VE. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AWM17218-AZ. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AWM17218-RS. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AWM17163-PK. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AWM17156-PK. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AWF20919-CZ. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AWF20919-RS. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AWF20919-SM. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AWF20919-TQ. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AWA17559-RX-RS. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AWA17558-ND. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AWA17558-PK. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AWA17558-RS. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AWA17557-ND. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AWA17557-RS. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AWA17557-VM. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
+Erro para exportar o produto AWA17385-BR. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AWA17385-PR. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AWA17385-RS. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AWA17385-VM. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto ATB23871-AZ. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto ATB23871-PK. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto ATB23871-RS. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto ATB23871-VE. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto ATB17135-PR. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto ASW18591-RS. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para atualizar o produto ASW18588. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para exportar o produto ARN16118-AZ. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto ARN16118-VM. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto ARN16117-AZ. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto ARN16117-VM. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto ARN16087-AZ. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto ARN16087-VM. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto ARN16086-AZ. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto ARN16086-VM. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto ARH20881-AZ. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto ARH20881-CE. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto ARH20881-PK. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto ARH20881-PR. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto ARH20881-RS. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto ARH20881-VI. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto ARH19808-AZ. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto ARH19808-BG. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto ARH19808-CZ. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto ARH19808-PR. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto ARH19808-RS. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto ARH19808-VI. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto ARH18756-AZ. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto ARH18756-BG. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto ARH18756-CZ. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto ARH18756-PR. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto ARH18756-RS. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto ARH18756-VI. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto ARH18693-PK. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto ARH18693-RS. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto ARH18692-AZ. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto ARH18692-CZ. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto ARH18692-PR. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto ARH18692-RS. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto ARH18692-VI. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto ARH18691-AZ. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto ARH18691-PK. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto ARH18691-PR. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto ARH18689-AZ. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto ARH18689-CZ. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto ARH18689-PR. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto ARH18689-RS. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para atualizar o produto ARF18585. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para exportar o produto AQR23881-AZ. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AQR23881-BG. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AQR23881-VE. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AQR23881-VI. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AQR23880-AZ. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AQR23880-BG. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AQR23880-VE. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AQR23880-VI. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AQR21820-AZ. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AQR21820-PR. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AQR21820-VI. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AQR21819-AZ. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AQR21819-PR. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AQR21819-VI. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para atualizar o produto AQR18685-PK. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para exportar o produto AQR18628-AZ. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AQR18628-PR. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AQR18628-VI. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AQR18627-PR. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AQR18627-VI. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para atualizar o produto APT18653. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto APT18651. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto APF18605-CR. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto APF18603-CR. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto APF18602-CR. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto APF18601-MR. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto APF18600-MR. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto APF18599-MR. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto AMF19805. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto AMF19802. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto AMF19800. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto AHZ23899. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto AHZ23898. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto AHZ23897. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto AHZ22868. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto AHZ22867. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto AHZ22866. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto AHZ22865. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto AHZ22863. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto AHZ22862. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto AHZ21836. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto AHZ21833. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto AHZ20898. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto AHZ20896. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto AHZ19879. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto AHZ19877. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto AHZ19875. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto AHZ19872. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto AHZ19866. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto AHZ19863. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto AHZ19860. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto AHZ19858. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto AHZ19856. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto AHZ19853. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto AHZ19852. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto AHZ18680. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto AHZ18671. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para exportar o produto AHX23896-AZ. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AHX23896-BG. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AHX23896-VE. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AHX23896-VI. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AHX23879-AZ. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AHX23879-BG. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AHX23879-VE. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AHX23879-VI. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AHX21827-AZ. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AHX21827-PR. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AHX21826-AZ. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AHX21826-PR. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AHX20907-BR. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AHX20907-BR-RS. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AHX20907-RS. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AHX20907-RS-BR. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AHX20905-AZ. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AHX20905-RS. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AHX20905-VE. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para atualizar o produto AHX18736. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para exportar o produto AHX18735-PK. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AHX18735-VM. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AHX18733-CA. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AHX18733-MA. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AHX18733-UR. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para atualizar o produto AHX18720. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para exportar o produto AHX18715-AZ. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AHX18715-LJ. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AHX18713-AZ. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AHX18713-VE. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AHX18682-RS. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AHX17259-PK. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AHX17258-PK. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AHX17258-VE. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AHX16055-AZ. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AHL23878-AZ. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AHL23878-PK. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AHL23878-RS. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AHL23878-VE. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AHL23875-AZ. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AHL23875-PK. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AHL23875-RS. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AHL23875-VE. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AHL23873-AZ. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AHL23873-PK. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AHL23873-RS. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AHL23873-VE. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AHL23870-AZ. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AHL23870-CZ. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AHL23870-VE. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AHL23870-VI. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AHL22869-AZ. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AHL22869-PK. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para atualizar o produto AHL19850. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto AHL18710. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para exportar o produto AHL18579-PR. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para atualizar o produto AHL17522. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto AHL17518. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto AHL17397-MR. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para exportar o produto AHL17396-AE. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AHL17396-MR. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AHL17396-RS. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AHL17287-AZ. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AHL17287-PK. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AHL17287-SM. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AHL17283-AZ-1. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AHL17283-PK-1. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AHL17283-SM-1. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AHL17281-AZ-1. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para atualizar o produto AHL17270. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto AHL17265. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para exportar o produto AHL17231-VM. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AHL17227-VM. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para atualizar o produto AHL16122. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para atualizar o produto AHL16106. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para exportar o produto AHL16078-BG. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AHL16078-CM. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AHL16077-BG. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AHL16076-BG. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AHL16076-CM. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AHL16075-CM. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para atualizar o produto AHL16072. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para exportar o produto AHL16021-AZ. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para atualizar o produto AHL16020. Motivo: Ocorreu um erro de validação - Não existe um produto com o Id informado. Não existe um produto com o Id informado.
+Erro para exportar o produto AHL16007-PR. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AHL16007-VM. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AHL16002-VI. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AHL15127-AE. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AHL14057-L-CZ. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AHL14057-L-VI. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
+Erro para exportar o produto AHL14057-M-CZ. Motivo: Erro na atualização da variação.SKU não encontrado
+Erro para exportar o produto AHL14057-M-VI. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
+Erro para exportar o produto AGU17132-RS. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
+Erro para exportar o produto AGU17132-VM. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
+Erro para exportar o produto AGU17131-VM. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
+Erro para exportar o produto AGU17130-VM. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
+Erro para exportar o produto AGD23877-AZ. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
+Erro para exportar o produto AGD23877-CZ. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
+Erro para exportar o produto AGD23877-VE. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
+Erro para exportar o produto AGD23877-VI. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
+Erro para exportar o produto AGD23876-AZ. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
+Erro para exportar o produto AGD23876-CZ. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
+Erro para exportar o produto AGD23872-AZ. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
+Erro para exportar o produto AGD23872-PK. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
+Erro para exportar o produto AGD23872-RS. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
+Erro para exportar o produto AGD23872-VE. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
+Erro para exportar o produto AGD22857-AZ. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
+Erro para exportar o produto AGD22857-PK. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
+Erro para exportar o produto AGD20926-AZ. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
+Erro para exportar o produto AGD20926-RS. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
+Erro para exportar o produto AGD18638-BG. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
+Erro para exportar o produto AGD18638-RS. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
+Erro para exportar o produto AGD18638-VE. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
+Erro para exportar o produto AGD18637-BG. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
+Erro para exportar o produto AGD18637-RS. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
+Erro para exportar o produto AGD18637-VE. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
+Erro para exportar o produto AGD18636-BG. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
+Erro para exportar o produto AGD18636-RS. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
+Erro para exportar o produto AGD18635-BG. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
+Erro para exportar o produto AGD18635-RS. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
+Erro para exportar o produto AGD18635-VE. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
+Erro para exportar o produto AGD17531-CO-RS. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
+Erro para exportar o produto AGD17531-FL-RS. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
+Erro para exportar o produto ABX15055-BG. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
+Erro para exportar o produto ABX15055-PR-BG. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
+Erro para exportar o produto ABC23886-AZ. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
+Erro para exportar o produto ABC23886-DO. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
+Erro para exportar o produto ABC23886-RS. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
+Erro para exportar o produto ABC23886-RX. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
+Erro para exportar o produto ABC23885-AZ. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
+Erro para exportar o produto ABC23885-DO. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
+Erro para exportar o produto ABC23885-RS. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
+Erro para exportar o produto ABC23885-RX. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
+Erro para exportar o produto ABC23883-AZ. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
+Erro para exportar o produto ABC23883-DO. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
+Erro para exportar o produto ABC23883-RS. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
+Erro para exportar o produto ABC23883-RX. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
+Erro para exportar o produto ABC23882-AZ. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
+Erro para exportar o produto ABC23882-DO. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
+Erro para exportar o produto ABC23882-RS. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
+Erro para exportar o produto ABC23882-RX. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
+Erro para exportar o produto ABC21805-ND. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
+Erro para exportar o produto ABC21805-PR. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
+Erro para exportar o produto ABC21805-RS. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
+Erro para exportar o produto ABC21803-ND. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
+Erro para exportar o produto ABC21803-PR. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
+Erro para exportar o produto ABC21803-RS. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
+Erro para exportar o produto ABC19826-AZ. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
+Erro para exportar o produto ABC19826-CZ. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
+Erro para exportar o produto ABC19826-RS. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
+Erro para exportar o produto ABC19826-VE. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
+Erro para exportar o produto ABC19826-VI. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
+Erro para exportar o produto ABC18620-FL-PK. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
+Erro para exportar o produto ABC18617-CR. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
+Erro para exportar o produto ABC18617-FG. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
+Erro para exportar o produto ABC18617-RB. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
+Erro para exportar o produto ABC17552-PR. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
+Erro para exportar o produto ABC17381-DO. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
+Erro para exportar o produto ABC17381-RS. Motivo: Erro na atualização da variação. Não é permitido alterar o IdProduct de um SKU
