@@ -28,7 +28,8 @@
 		"lint": "eslint . --ext .ts",
 		"build": "eslint . --ext .ts && tsc ",
 		"start": "node dist/index.js",
-		"vercel-build": "npm run build "
+		"vercel-build": "npm run build ",
+		"fastgit":"git add . && git commit -m \"update\" && git push"
 	},
 	"dependencies": {
 		"@fastify/caching": "^8.3.0",
