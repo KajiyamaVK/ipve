@@ -20,6 +20,7 @@ const relativesTitlesList: string[] = [
   'Bisavô/Bisavó',
   'Trisavô/Trisavó',
   'Genro/Nora',
+  'Esposo(a)',
 ]
 
 export const relativesTitles: IRelativesConnections[] = relativesTitlesList.map((title) => ({
