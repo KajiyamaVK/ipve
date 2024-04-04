@@ -20,7 +20,14 @@ export async function kinsRelations(app: FastifyInstance) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       handleError({ err, res })
+      return
     }
+
+    res
+      .header('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate')
+      .header('Pragma', 'no-cache')
+      .header('Expires', '0')
+
     sendResponse({ data, res, statusCode: 200 })
   })
 
@@ -42,7 +49,13 @@ export async function kinsRelations(app: FastifyInstance) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       handleError({ err, res })
+      return
     }
+
+    res
+      .header('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate')
+      .header('Pragma', 'no-cache')
+      .header('Expires', '0')
 
     sendResponse({ data, res, statusCode: 200 })
   })
