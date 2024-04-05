@@ -148,16 +148,16 @@ export function DataTable<TData, TValue>({
       method: 'DELETE',
     })
       .then((response) => {
-        if (response.status === 200) {
+        if (response.status === 200 || response.status === 204) {
           toast({
             title: `Registro ${id} apagado com sucesso!`,
-            description: 'A função foi apagada com sucesso',
+            description: 'O registro foi apagado com sucesso',
             type: 'background',
           })
         } else {
           toast({
             title: `Erro ao apagar o registro ${id}`,
-            description: 'A função não foi apagada',
+            description: 'Erro ao tentar apagar o registro, avise para manutenção o quanto antes.',
             type: 'background',
           })
         }
