@@ -326,6 +326,22 @@ export async function people(app: FastifyInstance) {
     }
   })
 
+  app.delete('/:id', async (req: FastifyRequest<{ Params: IGetPeopleParams }>, res: FastifyReply) => {
+    const mySql = app.mysql
+    const { id } = req.params
+
+    await deleteKins(mySql, Number(id)).then(async () => await deleteRoles(mySql, Number(id)))
+
+    const query = `
+    DELETE FROM people
+    WHERE id = ?
+  `
+
+    await runQuery(query, mySql, [id])
+
+    sendResponse({ res, statusCode: 204 })
+  })
+
   //eslint-disable-next-line @typescript-eslint/no-explicit-any
   async function checkIfKinRelationExists(idKinA: number, idKinB: number, mySql: any) {
     const query = `
