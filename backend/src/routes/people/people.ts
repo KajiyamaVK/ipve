@@ -166,6 +166,15 @@ export async function people(app: FastifyInstance) {
       body.hasFamilyInChurch ? 1 : 0,
     ])
 
+    const findIdQuery = `
+      SELECT id
+      FROM people
+      WHERE fullName = ?
+      AND id in (SELECT MAX(id) FROM people)
+    `
+
+    const id: { id: number }[] = await runQuery(findIdQuery, mySql, [body.fullName])
+
     if (body.relatives && body.relatives?.length > 0) {
       for (const kin of body.relatives) {
         const findIdCounterQuery = `
@@ -182,8 +191,8 @@ export async function people(app: FastifyInstance) {
             VALUES (?, ?, ?)
           `
 
-        await runQuery(query, mySql, [body.id, kin.idKinB, kin.relation])
-        await runQuery(query, mySql, [kin.idKinB, body.id, idCounter])
+        await runQuery(query, mySql, [id, kin.idKinB, kin.relation])
+        await runQuery(query, mySql, [kin.idKinB, id, idCounter])
       }
     }
 
