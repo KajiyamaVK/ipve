@@ -227,7 +227,7 @@ export async function people(app: FastifyInstance) {
     await runQuery<TPeople>(query, mySql, [
       body.fullName,
       body.titleIdFK,
-      body.dateOfBirth,
+      body.dateOfBirth ? body.dateOfBirth : null,
       body.gender,
       body.address,
       body.complement,
