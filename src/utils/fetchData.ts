@@ -32,7 +32,7 @@ function getEndPointsUrl(endpoint: string): string | URL | Request {
   }
 }
 
-export function getData<T>({ endpoint, body, headers, id, isCaching = false }: TGetPatchDeleteDataSchema): Promise<T> {
+export function getData<T>({ endpoint, body, headers, id, isCaching = true }: TGetPatchDeleteDataSchema): Promise<T> {
   const methodType = body ? 'POST' : 'GET'
   const cacheValue: RequestCache = isCaching ? 'force-cache' : 'no-cache'
 
