@@ -56,5 +56,5 @@ app
     port: env.PORT ? Number(env.PORT) : 80,
   })
   .then(() => {
-    console.log('Server running')
+    
   })

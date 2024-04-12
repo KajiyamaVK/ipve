@@ -20,16 +20,16 @@ export async function roles(app: FastifyInstance) {
     let data: IRoles[] = []
 
     try {
-      console.log('Starting database query')
+      
       data = await runQuery<IRoles>(query, mySql)
-      console.log('Ending database query')
+      
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       handleError({ err, res })
     }
-    console.log('Sending Response')
+    
     sendResponse({ data, res, statusCode: 200 })
-    console.log('Response sent')
+    
   })
 
   app.get('/:id', async (req: FastifyRequest<{ Params: { id: number } }>, res: FastifyReply) => {

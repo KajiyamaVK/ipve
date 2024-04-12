@@ -285,7 +285,7 @@ export async function people(app: FastifyInstance) {
             VALUES (?, ?, ?)
           `
 
-          console.log('kinhasFmaily', kinHasFamilyUpdateQuery)
+          
 
           await runQuery(query, mySql, [id, kin.idKinB, kin.relation])
           await runQuery(query, mySql, [kin.idKinB, id, idCounter[0].idCounter])
