@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { TLocations } from '@/types/TLocations'
 import { createConnection } from '@/utils/database'
 import { FieldPacket, QueryResult, RowDataPacket } from 'mysql2'
@@ -17,7 +19,6 @@ export async function getLocations(id?: number) {
     ${id ? 'WHERE id = ?' : ''}
     `
     // Usando asserção de tipos para informar ao TypeScript o formato esperado da resposta.
-    // eslint-disable-
     const [results] = id
       ? ((await conn.query(query, id)) as [RowDataPacket[], any])
       : ((await conn.query(query)) as [RowDataPacket[], any])

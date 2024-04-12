@@ -5,7 +5,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function BasicTopPersonalInfo(formControl: any) {
   return (
-    <div className="flex flex-col gap-5 border bg-white border-gray-400 rounded-lg p-5 flex-1">
+    <div className="flex flex-1 flex-col gap-5 rounded-lg border border-gray-400 bg-white p-5">
       <h1 className="text-left">DADOS PESSOAIS</h1>
       {/* Início - Informações (Nome e sobrenome) */}
       <div className="flex gap-5">
@@ -13,7 +13,7 @@ export function BasicTopPersonalInfo(formControl: any) {
           control={formControl}
           name="fullName"
           render={({ field }) => (
-            <FormItem className="text-left flex-1">
+            <FormItem className="flex-1 text-left">
               <FormLabel className="required">Nome completo</FormLabel>
               <FormControl>
                 <Input placeholder="Ex.: Fulano da Silva Mendes" className="min-w-52 " {...field} />
@@ -49,7 +49,7 @@ export function BasicTopPersonalInfo(formControl: any) {
                     <SelectValue placeholder="Selecione" />
                   </SelectTrigger>
                 </FormControl>
-                <SelectContent className="bg-white w-full">
+                <SelectContent className="w-full bg-white">
                   <SelectItem value="m" className="cursor-pointer ">
                     Masculino
                   </SelectItem>

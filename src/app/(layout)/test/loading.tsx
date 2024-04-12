@@ -4,7 +4,7 @@ import Image from 'next/image'
 
 export default function Loading() {
   return (
-    <div className=" flex justify-center items-center bg-black bg-opacity-50 transition-opacity h-full w-full overflow-hidden">
+    <div className="  flex size-full items-center justify-center overflow-hidden bg-black/50 transition-opacity">
       <div className="screenLoader">
         <Image
           alt="Tela está carregando com o logo da IPVE pulsando"

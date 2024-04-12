@@ -63,6 +63,7 @@ export function ChurchInfo(form: UseFormReturn<any>) {
         </div>
       )
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [allRoles])
 
   useEffect(() => {

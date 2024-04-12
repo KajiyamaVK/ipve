@@ -11,7 +11,7 @@ export function AddressDataInfo(form: any) {
     form.setValue('cep', cep)
   }
   return (
-    <div className="flex flex-col gap-5 mt-5 border border-gray-400 rounded-lg p-10 bg-white">
+    <div className="mt-5 flex flex-col gap-5 rounded-lg border border-gray-400 bg-white p-10">
       <h1 className="text-left text-2xl font-bold">Endereço</h1>
 
       {/* Início - Informações (Cep, endereço e número) */}
@@ -78,7 +78,7 @@ export function AddressDataInfo(form: any) {
           control={form.control}
           name="complement"
           render={({ field }) => (
-            <FormItem className="text-left flex-1">
+            <FormItem className="flex-1 text-left">
               <FormLabel>Complemento</FormLabel>
               <FormControl>
                 <Input placeholder="Ex.: Apto 123" className=" w-full" {...field} />
@@ -92,7 +92,7 @@ export function AddressDataInfo(form: any) {
           control={form.control}
           name="suburb"
           render={({ field }) => (
-            <FormItem className="text-left flex-1">
+            <FormItem className="flex-1 text-left">
               <FormLabel>Bairro</FormLabel>
               <FormControl>
                 <Input placeholder="Ex.: Vila Euthalia" className=" w-full" {...field} />
@@ -111,7 +111,7 @@ export function AddressDataInfo(form: any) {
           control={form.control}
           name="city"
           render={({ field }) => (
-            <FormItem className="text-left flex-1">
+            <FormItem className="flex-1 text-left">
               <FormLabel>Cidade</FormLabel>
               <FormControl>
                 <Input placeholder="Ex.: São Paulo" className="w-full" {...field} />
@@ -125,7 +125,7 @@ export function AddressDataInfo(form: any) {
           control={form.control}
           name="uf"
           render={({ field }) => (
-            <FormItem className="text-left flex-1">
+            <FormItem className="flex-1 text-left">
               <FormLabel>Estado</FormLabel>
               <FormControl>
                 <Input placeholder="Ex.: SP" className="w-full" {...field} />

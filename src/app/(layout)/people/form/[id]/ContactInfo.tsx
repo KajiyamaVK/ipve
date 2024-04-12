@@ -5,8 +5,8 @@ import { Input } from '@/components/ui/input'
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function ContactInfo(form: any) {
   return (
-    <div className="  mt-5 border-gray-400 border p-5 w-1/2 bg-white">
-      <h1 className="text-left text-2xl font-bold mb-5">Contato</h1>
+    <div className="  mt-5 w-1/2 border border-gray-400 bg-white p-5">
+      <h1 className="mb-5 text-left text-2xl font-bold">Contato</h1>
       {/* Início - Informações (Email e telefone) */}
       <div className="flex gap-5 p-5">
         <FormField
@@ -41,7 +41,7 @@ export function ContactInfo(form: any) {
               control={form.control}
               name="phone1IsWhatsapp"
               render={({ field }) => (
-                <FormItem className="flex flex-row items-center space-x-3 space-y-0 mt-1 self-end">
+                <FormItem className="mt-1 flex flex-row items-center space-x-3 space-y-0 self-end">
                   <FormControl>
                     <Checkbox
                       checked={field.value}

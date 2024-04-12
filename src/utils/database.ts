@@ -2,7 +2,6 @@
 import mysql, { PoolOptions, Pool } from 'mysql2/promise'
 
 export async function createConnection(): Promise<Pool> {
-  let Conn: mysql.Pool
   try {
     const access: PoolOptions = {
       host: process.env.DB_HOST,

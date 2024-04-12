@@ -7,8 +7,8 @@ export function MenuDrawerProfile() {
     return '/images/system/logo.png'
   }
   return (
-    <div className="flex flex-col  p-5 bg-primary-dark items-center">
-      <Avatar className="border-4 border-secondary w-20 h-20 bg-white">
+    <div className="flex flex-col  items-center bg-primary-dark p-5">
+      <Avatar className="size-20 border-4 border-secondary bg-white">
         <AvatarImage src={getPhotoUrl() || '/avatar.png'} alt="Foto do usuário do sistema" />
         <AvatarFallback>
           <div className="animate-spin text-primary">
@@ -16,13 +16,9 @@ export function MenuDrawerProfile() {
           </div>
         </AvatarFallback>
       </Avatar>
-      <div className="flex flex-col justify-center  w-full items-center">
-        <p className="text-lg font-bold overflow-ellipsis whitespace-nowrap block w-48 overflow-hidden text-center">
-          Administrador
-        </p>
-        <p className="overflow-ellipsis whitespace-nowrap block w-48 overflow-hidden text-sm text-center">
-          admin@ipve.com.br
-        </p>
+      <div className="flex w-full flex-col  items-center justify-center">
+        <p className="block w-48 truncate text-center text-lg font-bold">Administrador</p>
+        <p className="block w-48 truncate text-center text-sm">admin@ipve.com.br</p>
       </div>
     </div>
   )

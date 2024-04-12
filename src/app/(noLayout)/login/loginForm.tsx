@@ -35,16 +35,12 @@ export default function LoginForm() {
   }
 
   return (
-    <div className="max-w-96 min-w-96">
-      <div className="text-align-left bg-primary">
-        <h1 className="text-white ml-4">LOGIN</h1>
+    <div className="min-w-96 max-w-96">
+      <div className="bg-primary">
+        <h1 className="ml-4 text-white">LOGIN</h1>
       </div>
       <Form {...form}>
-        <form
-          action=""
-          className="mt-6 flex flex-col  justify-left items-left gap-2"
-          onSubmit={form.handleSubmit(() => markAsLogged(router))}
-        >
+        <form action="" className="mt-6 flex flex-col gap-2" onSubmit={form.handleSubmit(() => markAsLogged(router))}>
           <FormField
             control={form.control}
             name="email"
@@ -73,7 +69,7 @@ export default function LoginForm() {
             )}
           />
 
-          <Button className="mt-6 mx-auto w-full flex gap-2" aria-label="login" type="submit" isLoading={isLoading}>
+          <Button className="mx-auto mt-6 flex w-full gap-2" aria-label="login" type="submit" isLoading={isLoading}>
             <RiLoginCircleLine />
             Entrar
           </Button>

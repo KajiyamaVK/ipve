@@ -13,7 +13,7 @@ export function SortedGridHeader({
   return (
     <Button
       variant="ghost"
-      className="text-left overflow-hidden flex justify-between p-0 gap-2"
+      className="flex justify-between gap-2 overflow-hidden p-0 text-left"
       onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
     >
       <span className="">{label}</span>

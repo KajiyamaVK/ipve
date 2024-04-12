@@ -31,7 +31,7 @@ export function DialogColorSelection({ colorSelected, setColorSelected, isDisabl
   const colorCircle: ReactNode = (
     <div className="flex items-center justify-center">
       <div
-        className={`w-5 h-5 rounded-full shadow-md shadow-black ${colorSelected} ${isDisabled ? 'opacity-50' : ''}`}
+        className={`size-5 rounded-full shadow-md shadow-black ${colorSelected} ${isDisabled ? 'opacity-50' : ''}`}
       ></div>
     </div>
   )
@@ -50,7 +50,7 @@ export function DialogColorSelection({ colorSelected, setColorSelected, isDisabl
                 {availableColors.map((color) => (
                   <div
                     key={color}
-                    className={`w-10 h-10 rounded-full cursor-pointer ${color} hover:shadow-md hover:shadow-black`}
+                    className={`size-10 cursor-pointer rounded-full ${color} hover:shadow-md hover:shadow-black`}
                     onClick={() => setColorSelected(color)}
                   ></div>
                 ))}

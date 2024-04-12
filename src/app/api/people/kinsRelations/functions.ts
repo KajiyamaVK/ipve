@@ -8,7 +8,7 @@ interface IKinsRelationsResponse {
 
 export async function getKinsRelationsLabels(id?: number) {
   const Conn = await createConnection()
-const conn = await Conn.getConnection()
+  const conn = await Conn.getConnection()
 
   const query = `
       SELECT

@@ -2,6 +2,7 @@ import { z } from 'zod'
 import { ZDataTypesEnum } from '@/types/TDataTypes'
 import { endpointsPaths } from '@/data/endpointsPaths'
 import { toast } from '@/components/ui/use-toast'
+import next from 'next'
 
 const ZGetPatchDeleteDataSchema = z.object({
   endpoint: ZDataTypesEnum,
@@ -32,35 +33,43 @@ function getEndPointsUrl(endpoint: string): string | URL | Request {
   }
 }
 
-export function getData<T>({ endpoint, body, headers, id, isCaching = true }: TGetPatchDeleteDataSchema): Promise<T> {
+export function getData<T>({ endpoint, body, headers, id, isCaching = false }: TGetPatchDeleteDataSchema): Promise<T> {
   const methodType = body ? 'POST' : 'GET'
   const cacheValue: RequestCache = isCaching ? 'force-cache' : 'no-cache'
 
   const commonProperties = {
     method: methodType,
     cache: cacheValue,
+    next: {
+      revalidate: 60 * 60,
+    },
     headers: {
       'Content-Type': 'application/json',
       ...headers,
     },
   }
 
-  const fetchParams =
-    methodType === 'POST' ? { body: JSON.stringify(body), ...commonProperties } : { ...commonProperties }
+  const fetchParams = methodType === 'POST' ? { body: JSON.stringify(body), ...commonProperties } : commonProperties
 
-  const data = fetch(`${getEndPointsUrl(endpoint)}${id ? '/' + id : ''}`, fetchParams)
-    .then((res) => res.json() as T)
-    .catch((err) => {
-      console.error(err.message)
+  return fetch(`${getEndPointsUrl(endpoint)}${id ? '/' + id : ''}`, fetchParams)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok')
+      }
+      return response.json()
+    })
+    .then((data) => JSON.parse(JSON.stringify(data))) // Assegura que os dados sejam objetos JavaScript simples
+    .catch((error) => {
+      console.error(error.message) // Logs the error
+      // Exibe um erro de maneira adequada, conforme necessário, pode ser um toast ou outra maneira
       toast({
         type: 'background',
-        description: `Evento não esperado. Entre em contato com o suporte: "${err.message}"`,
+        description: `Evento não esperado. Entre em contato com o suporte: "${error.message}"`,
         variant: 'destructive',
       })
-      return err
+      // É importante que erros retornem algo que seja serializável, por exemplo, um objeto de erro simples
+      return { error: true, message: error.message }
     })
-
-  return data
 }
 
 export function saveData<T>({ endpoint, body, headers, id }: TGetPatchDeleteDataSchema): Promise<T | void> {

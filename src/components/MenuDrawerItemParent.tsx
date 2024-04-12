@@ -26,7 +26,7 @@ export function MenuItemParent(id: string) {
     <div key={menuLabel}>
       <Accordion type="single" collapsible>
         <AccordionItem value="item-1" className="px-3  pl-5">
-          <AccordionTrigger className="text-base font-normal hover:underline flex gap-2 items-center justify-start">
+          <AccordionTrigger className="flex items-center justify-start gap-2 text-base font-normal hover:underline">
             {icon}
             {menuLabel}
           </AccordionTrigger>
@@ -45,7 +45,7 @@ export function MenuItemParent(id: string) {
                       }}
                       key={child.menuLabel}
                     >
-                      <Link href={`${child.path}`} className="hover:underline cursor-pointer px-5  pt-1">
+                      <Link href={`${child.path}`} className="cursor-pointer px-5 pt-1  hover:underline">
                         {child.menuLabel}
                       </Link>
                     </div>

@@ -121,7 +121,7 @@ export function DialogModal() {
         </DialogHeader>
         <form onSubmit={submitForm} className="mt-3 flex flex-col gap-6">
           <div className="flex justify-between">
-            <div className="flex flex-col flex-grow pr-5">
+            <div className="flex grow flex-col pr-5">
               <label htmlFor="roleName" className="font-bold">
                 Nome da função
               </label>
@@ -134,7 +134,7 @@ export function DialogModal() {
               <p className="text-destructive">{formState.errors.roleName?.message?.toString()}</p>
             </div>
             <b>Cor:</b>
-            <div className="mt-2 ml-2">
+            <div className="ml-2 mt-2">
               <div className="flex items-center">
                 <DialogColorSelection
                   colorSelected={colorSelected}
@@ -156,7 +156,7 @@ export function DialogModal() {
               {...register('description')}
             />
           </div>
-          <Button type="submit" className="mt-5 float-right mr-5">
+          <Button type="submit" className="float-right mr-5 mt-5">
             {formMode === 'view' ? 'Editar' : 'Salvar'}
           </Button>
         </form>

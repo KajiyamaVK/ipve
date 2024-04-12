@@ -6,5 +6,5 @@ interface ITagProps {
 }
 
 export function Tag({ children, color }: ITagProps) {
-  return <span className={`px-2 py-1 ${color}  text-white rounded-lg flex gap-2`}>{children}</span>
+  return <span className={`px-2 py-1 ${color}  flex gap-2 rounded-lg text-white`}>{children}</span>
 }

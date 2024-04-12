@@ -122,7 +122,7 @@ export function DialogModal() {
         </DialogHeader>
         <form onSubmit={handleSubmit(submitForm)} className="mt-3 flex flex-col gap-6">
           <div className="flex justify-between">
-            <div className="flex flex-col flex-grow pr-5">
+            <div className="flex grow flex-col pr-5">
               <label htmlFor="name" className="font-bold">
                 Nome do cargo
               </label>
@@ -135,7 +135,7 @@ export function DialogModal() {
               <p className="text-destructive">{formState.errors.name?.message?.toString()}</p>
             </div>
           </div>
-          <Button type="submit" className="mt-5 float-right mr-5" isLoading={buttonIsLoading}>
+          <Button type="submit" className="float-right mr-5 mt-5" isLoading={buttonIsLoading}>
             {formMode === 'view' ? 'Editar' : 'Salvar'}
           </Button>
         </form>

@@ -11,14 +11,14 @@ export function MenuDrawer() {
   }
 
   return (
-    <div className="w-64 bg-primary shadow-lg shadow-black text-primary-foreground z-50 flex flex-col flex-1 ">
+    <div className="z-50 flex w-64 flex-1 flex-col bg-primary text-primary-foreground shadow-lg shadow-black ">
       <div className="flex-1">
         <MenuDrawerProfile />
         <MenuDrawerItems />
       </div>
       <Link href="/login">
         <div
-          className="px-5 py-2 border-t border-gray-200 cursor-pointer flex items-center gap-2 mb-5"
+          className="mb-5 flex cursor-pointer items-center gap-2 border-t border-gray-200 px-5 py-2"
           onClick={logOut}
         >
           <SignOut size={32} />

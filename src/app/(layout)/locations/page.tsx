@@ -8,17 +8,16 @@ import { TLocations } from '@/types/TLocations'
 export default async function LocationsGrid() {
   let places: TLocations[] = []
 
-  async function retrieveData() {
+  try {
     places = await getData<TLocations[]>({
       endpoint: 'locations',
-    }).then((data) => {
-      if (!data) return []
-      return data
-    })
+    }).then((data) => data || [])
+  } catch (error) {
+    console.error('Failed to fetch locations:', error)
   }
 
-  await retrieveData()
   console.log('LocationsGrid rendered')
+
   return (
     <center>
       <div className="m-10">

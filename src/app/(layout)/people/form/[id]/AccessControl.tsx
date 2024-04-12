@@ -34,7 +34,7 @@ export function AccessControl(form: UseFormReturn<any>) {
                 control={form.control}
                 name={subMenuItem.id}
                 render={({ field }) => (
-                  <FormItem className="flex flex-row items-center space-x-3 space-y-1 ml-5 gap-2">
+                  <FormItem className="ml-5 flex flex-row items-center gap-2 space-x-3 space-y-1">
                     <FormControl>
                       <Checkbox checked={field.value} onCheckedChange={field.onChange} />
                     </FormControl>
@@ -51,7 +51,7 @@ export function AccessControl(form: UseFormReturn<any>) {
   }
 
   return (
-    <div className="flex gap-10 items-start">
+    <div className="flex items-start gap-10">
       <FormField
         control={form.control}
         name="isUser"
@@ -73,7 +73,7 @@ export function AccessControl(form: UseFormReturn<any>) {
       {form.watch('isUser') && (
         <div className="border-l-8 border-primary-dark pl-10">
           <h1>Controle de Acessos</h1>
-          <div className="flex flex-col  mt-5">{screensAccessControl()}</div>
+          <div className="mt-5 flex  flex-col">{screensAccessControl()}</div>
         </div>
       )}
     </div>

@@ -229,7 +229,7 @@ export function DataTable<TData, TValue>({
                   <Input
                     placeholder="Escolha a coluna que deseja filtrar..."
                     value={(table.getColumn(searchColumn)?.getFilterValue() as string) ?? ''}
-                    className="min-w-2xl w-[700px]"
+                    className="w-[700px]"
                     type="text"
                     {...register('search')}
                   />

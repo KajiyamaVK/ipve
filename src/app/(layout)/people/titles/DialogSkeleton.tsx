@@ -20,7 +20,7 @@ export function DialogSkeleton() {
         </DialogHeader>
         <form className="mt-3 flex flex-col gap-6">
           <div className="flex justify-between">
-            <div className="flex flex-col flex-grow pr-5">
+            <div className="flex grow flex-col pr-5">
               <label htmlFor="roleName" className="font-bold">
                 Nome do cargo
               </label>
@@ -28,7 +28,7 @@ export function DialogSkeleton() {
             </div>
           </div>
 
-          <Button className="mt-5 float-right mr-5" disabled>
+          <Button className="float-right mr-5 mt-5" disabled>
             Editar
           </Button>
         </form>

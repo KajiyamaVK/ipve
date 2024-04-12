@@ -4,7 +4,7 @@ import { FormControl, FormField, FormItem, FormLabel } from '@/components/ui/for
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function ActiveControl(formControl: any) {
   return (
-    <div className="flex gap-5 justify-start mt-5">
+    <div className="mt-5 flex justify-start gap-5">
       <FormField
         control={formControl}
         name="isActive"

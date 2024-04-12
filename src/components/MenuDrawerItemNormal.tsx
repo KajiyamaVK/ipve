@@ -20,7 +20,7 @@ export function MenuItemNormal(id: string) {
         setIsScreenLoading(true)
       }}
     >
-      <Link href={`${path}`} key={id} className="px-5 py-2 flex gap-2 items-center hover:underline cursor-pointer">
+      <Link href={`${path}`} key={id} className="flex cursor-pointer items-center gap-2 px-5 py-2 hover:underline">
         {icon}
         {menuLabel}
       </Link>
