@@ -2,6 +2,7 @@ import { z } from 'zod'
 import { ZDataTypesEnum } from '@/types/TDataTypes'
 import { endpointsPaths } from '@/data/endpointsPaths'
 import { toast } from '@/components/ui/use-toast'
+import { cache } from 'react'
 
 const ZGetPatchDeleteDataSchema = z.object({
   endpoint: ZDataTypesEnum,
@@ -34,14 +35,13 @@ function getEndPointsUrl(endpoint: string): string | URL | Request {
 
 export function getData<T>({ endpoint, body, headers, id, isCaching = true }: TGetPatchDeleteDataSchema): Promise<T> {
   const methodType = body ? 'POST' : 'GET'
-  const cacheValue: RequestCache = isCaching ? 'force-cache' : 'no-cache'
+
+  const cacheParam: { cache: RequestCache } = { cache: 'no-cache' }
+  const cacheParameter = isCaching ? { next: { revalidate: 3600 } } : cacheParam
 
   const commonProperties = {
     method: methodType,
-    cache: cacheValue,
-    next: {
-      revalidate: 60 * 60,
-    },
+    ...cacheParameter,
     headers: {
       'Content-Type': 'application/json',
       ...headers,
