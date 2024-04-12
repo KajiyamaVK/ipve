@@ -2,7 +2,6 @@ import { z } from 'zod'
 import { ZDataTypesEnum } from '@/types/TDataTypes'
 import { endpointsPaths } from '@/data/endpointsPaths'
 import { toast } from '@/components/ui/use-toast'
-import { cache } from 'react'
 
 const ZGetPatchDeleteDataSchema = z.object({
   endpoint: ZDataTypesEnum,
