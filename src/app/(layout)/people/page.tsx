@@ -15,7 +15,7 @@ async function retrieveData() {
 
 export default async function People() {
   const dataValues: TPeopleGridHeader[] = await retrieveData()
-  console.log('dataValues', JSON.stringify(dataValues))
+  
 
   return (
     <center>

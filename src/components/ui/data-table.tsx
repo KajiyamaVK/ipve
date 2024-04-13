@@ -256,7 +256,7 @@ export function DataTable<TData, TValue>({
                 return (
                   <TableRow
                     key={row.id}
-                    className="cursor-pointer hover:bg-primary-dark hover:text-primary-foreground "
+                    className="cursor-pointer  hover:bg-primary-dark hover:text-primary-foreground"
                     data-state={row.getIsSelected() && 'selected'}
                     onClick={() => handleViewState(idValue)}
                   >

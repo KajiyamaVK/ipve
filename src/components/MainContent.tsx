@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
 import TopBar from './TopBar'
-import slogan from '/public/images/system/lembre-te.jpg'
+import slogan from '/public/images/system/Lembra-te.png'
 import Image from 'next/image'
 
 export function MainContent({ children }: { children: ReactNode }) {

@@ -11,14 +11,14 @@ async function retrieveData() {
   data = await getData<TRoles[]>({
     endpoint: 'roles',
   }).then((data) => {
-    console.log('Finished RolesGrid data fetch')
+    
     return data
   })
 }
 
 export default async function RolesGrid() {
   await retrieveData()
-  console.log('Start RolesGrid data fetch')
+  
   return (
     <center>
       <div className="m-10">

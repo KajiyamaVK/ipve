@@ -9,6 +9,7 @@ export const columns: ColumnDef<TPeopleGridHeader>[] = [
     accessorKey: 'id',
     header: ({ column }) => <SortedGridHeader column={column} label="ID" />,
     size: 1,
+    cell: ({ renderValue }) => <div className="ml-2 md:ml-10">{renderValue() as string}</div>,
   },
   {
     accessorKey: 'fullName',
@@ -25,12 +26,12 @@ export const columns: ColumnDef<TPeopleGridHeader>[] = [
     header: 'Funções',
     cell: ({ renderValue }) => {
       const role = renderValue() as { name: string; color: string }[]
-      if (!role) return null
+
       return (
         <div className="flex flex-wrap">
           {role.map((r, index) => (
-            <div key={index} className={` m-1 rounded-lg  px-2 py-1 text-xs text-white ${r.color}`}>
-              {r.name}
+            <div key={index} className={` m-1 rounded-lg  px-2 py-1 text-xs  text-white ${r.color}`}>
+              {r.name || '-'}
             </div>
           ))}
         </div>

@@ -68,7 +68,7 @@ export default function PeopleForm({ params }: { params: { id: number } }) {
 
   useEffect(() => {
     async function getFormData() {
-      console.log('Retriving data...')
+      
       await getData<TPeople>({
         endpoint: 'people',
         id: params.id,
@@ -77,7 +77,7 @@ export default function PeopleForm({ params }: { params: { id: number } }) {
         if (data) {
           populatingFields(data)
           setIsLoading(false)
-          console.log('Finished retriving data...')
+          
         }
       })
     }

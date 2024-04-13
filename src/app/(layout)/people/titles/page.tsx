@@ -10,7 +10,7 @@ async function retrieveData() {
   data = await getData<TMembersTitles[]>({
     endpoint: 'titles',
   }).then((data) => {
-    console.log('Finished MemberTitlesGrid fetch')
+    
     return data
   })
 
@@ -18,7 +18,7 @@ async function retrieveData() {
 }
 
 export default async function MemberTitlesGrid() {
-  console.log('Started MemberTitlesGrid fetch')
+  
   await retrieveData()
 
   return (

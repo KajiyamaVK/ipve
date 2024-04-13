@@ -38,7 +38,7 @@ export function ChurchInfo(form: UseFormReturn<any>) {
 
   const roles = useMemo(() => {
     const rolesIds: string[] = form.watch('rolesIds').split(';')
-    console.log('rolesIds', rolesIds)
+    
 
     console.log(
       'allRoles.filter',
@@ -67,14 +67,14 @@ export function ChurchInfo(form: UseFormReturn<any>) {
   }, [allRoles])
 
   useEffect(() => {
-    console.log('roles', roles)
+    
   }, [roles])
 
   const toast = useToast()
 
   useEffect(() => {
     async function getSTDTitlesData() {
-      console.log('Retrieving titles for Select')
+      
       await getData<TMembersTitles[]>({
         endpoint: 'titles',
       })
@@ -94,7 +94,7 @@ export function ChurchInfo(form: UseFormReturn<any>) {
               }),
             )
           }
-          console.log('Titles retrieved for Select')
+          
         })
         .catch((err) => {
           console.error(err)
@@ -149,7 +149,7 @@ export function ChurchInfo(form: UseFormReturn<any>) {
   function checkIfRoleIsAlreadyChosen(roleId: number) {
     //return form.watch('rolesIds').includes(roleId)
 
-    console.log(form.watch('rolesIds').split(';').includes(roleId.toString()))
+    
     //return form.watch('rolesIds').split(';').includes(roleId.toString())
     return roles.map((role) => role.id).includes(roleId)
   }
@@ -163,8 +163,8 @@ export function ChurchInfo(form: UseFormReturn<any>) {
   }
 
   function renderTags() {
-    console.log('allRoles', allRoles)
-    console.log('roles', roles)
+    
+    
     return (
       <div className="flex gap-2">
         {roles.map((role: IRoles) => {
@@ -178,7 +178,7 @@ export function ChurchInfo(form: UseFormReturn<any>) {
                   onClick={() => {
                     const newRoles = roles.filter((roleValue) => roleValue.id !== role.id)
                     const newRolesIds = newRoles.map((roleValue) => roleValue.id)
-                    console.log('newRoles', newRolesIds)
+                    
                     form.setValue('rolesId', newRolesIds.join(';'))
                   }}
                 >

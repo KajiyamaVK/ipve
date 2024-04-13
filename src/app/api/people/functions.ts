@@ -12,6 +12,7 @@ export async function getPeople(id?: number) {
       people.id,
       people.fullName,
       people.titleIdFK,
+      peopleTitles.name as title,
       people.dateOfBirth,
       people.gender,
       people.address,
@@ -46,6 +47,7 @@ export async function getPeople(id?: number) {
     FROM people
     LEFT JOIN peopleRolesData ON peopleRolesData.peopleIdFK = people.id
     LEFT JOIN peopleRoles ON peopleRoles.id = peopleRolesData.roleIdFK
+    JOIN peopleTitles on titleIdFK = peopleTitles.id
     ${id ? `WHERE people.id = ?` : ''}
     GROUP BY people.id`
 
