@@ -38,7 +38,6 @@ export function ChurchInfo(form: UseFormReturn<any>) {
 
   const roles = useMemo(() => {
     const rolesIds: string[] = form.watch('rolesIds').split(';')
-    
 
     console.log(
       'allRoles.filter',
@@ -66,15 +65,12 @@ export function ChurchInfo(form: UseFormReturn<any>) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [allRoles])
 
-  useEffect(() => {
-    
-  }, [roles])
+  useEffect(() => {}, [roles])
 
   const toast = useToast()
 
   useEffect(() => {
     async function getSTDTitlesData() {
-      
       await getData<TMembersTitles[]>({
         endpoint: 'titles',
       })
@@ -94,7 +90,6 @@ export function ChurchInfo(form: UseFormReturn<any>) {
               }),
             )
           }
-          
         })
         .catch((err) => {
           console.error(err)
@@ -149,7 +144,6 @@ export function ChurchInfo(form: UseFormReturn<any>) {
   function checkIfRoleIsAlreadyChosen(roleId: number) {
     //return form.watch('rolesIds').includes(roleId)
 
-    
     //return form.watch('rolesIds').split(';').includes(roleId.toString())
     return roles.map((role) => role.id).includes(roleId)
   }
@@ -163,8 +157,6 @@ export function ChurchInfo(form: UseFormReturn<any>) {
   }
 
   function renderTags() {
-    
-    
     return (
       <div className="flex gap-2">
         {roles.map((role: IRoles) => {
@@ -178,7 +170,7 @@ export function ChurchInfo(form: UseFormReturn<any>) {
                   onClick={() => {
                     const newRoles = roles.filter((roleValue) => roleValue.id !== role.id)
                     const newRolesIds = newRoles.map((roleValue) => roleValue.id)
-                    
+
                     form.setValue('rolesId', newRolesIds.join(';'))
                   }}
                 >

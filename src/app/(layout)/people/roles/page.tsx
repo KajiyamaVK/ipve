@@ -11,14 +11,13 @@ async function retrieveData() {
   data = await getData<TRoles[]>({
     endpoint: 'roles',
   }).then((data) => {
-    
     return data
   })
 }
 
 export default async function RolesGrid() {
   await retrieveData()
-  
+
   return (
     <center>
       <div className="m-10">

@@ -11,7 +11,6 @@ async function retrieveData() {
   data = await getData<TLocations[]>({
     endpoint: 'locations',
   }).then((data) => {
-    
     return data
   })
 
@@ -19,7 +18,6 @@ async function retrieveData() {
 }
 
 export default async function LocationsGrid() {
-  
   await retrieveData()
 
   return (
