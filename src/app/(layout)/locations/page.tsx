@@ -6,24 +6,29 @@ import { getData } from '@/utils/fetchData'
 import { TLocations } from '@/types/TLocations'
 
 export default async function LocationsGrid() {
-  let places: TLocations[] = []
+  const data: TLocations[] = []
 
-  try {
-    places = await getData<TLocations[]>({
+  async function retrieveData() {
+    const result = await getData<TLocations[]>({
       endpoint: 'locations',
-    }).then((data) => data || [])
-  } catch (error) {
-    console.error('Failed to fetch locations:', error)
+    }).then((data) => {
+      console.log('Finished LocationsGrid data fetch')
+      return data
+    })
+
+    return result
   }
 
-  console.log('LocationsGrid rendered')
+  retrieveData()
+
+  console.log('Started LocationsGrid data fetch')
 
   return (
     <center>
       <div className="m-10">
         <DataTable
           columns={columns}
-          data={places}
+          data={data}
           dialogForm={<DialogModal />}
           dialogSkeleton={<DialogModalSkeleton />}
         />

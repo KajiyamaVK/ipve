@@ -5,20 +5,22 @@ import { TMembersTitles } from '@/types/TMembersTitles'
 import { getData } from '@/utils/fetchData'
 import { DialogSkeleton } from './DialogSkeleton'
 
+let data: TMembersTitles[] = []
 async function retrieveData() {
-  const result = await getData<TMembersTitles[]>({
+  data = await getData<TMembersTitles[]>({
     endpoint: 'titles',
   }).then((data) => {
+    console.log('Finished MemberTitlesGrid fetch')
     return data
   })
 
-  return result
+  return data
 }
 
-console.log('MemberTitlesGrid rended')
+console.log('Started MemberTitlesGrid fetch')
 
-export default async function MemberTitlesGrid() {
-  const data = await retrieveData()
+retrieveData()
+export default function MemberTitlesGrid() {
   return (
     <center>
       <div className="m-10">
