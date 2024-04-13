@@ -18,11 +18,9 @@ async function retrieveData() {
   return result
 }
 
-retrieveData()
-
-console.log('Started LocationsGrid data fetch')
-
 export default async function LocationsGrid() {
+  console.log('Started LocationsGrid data fetch')
+  await retrieveData()
   return (
     <center>
       <div className="m-10">

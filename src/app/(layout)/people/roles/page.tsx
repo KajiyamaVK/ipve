@@ -18,10 +18,9 @@ async function retrieveData() {
   return result
 }
 
-console.log('Start RolesGrid data fetch')
-
-retrieveData()
 export default async function RolesGrid() {
+  console.log('Start RolesGrid data fetch')
+  await retrieveData()
   return (
     <center>
       <div className="m-10">

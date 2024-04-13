@@ -17,10 +17,10 @@ async function retrieveData() {
   return data
 }
 
-console.log('Started MemberTitlesGrid fetch')
+export default async function MemberTitlesGrid() {
+  console.log('Started MemberTitlesGrid fetch')
+  await retrieveData()
 
-retrieveData()
-export default function MemberTitlesGrid() {
   return (
     <center>
       <div className="m-10">
