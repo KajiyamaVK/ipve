@@ -5,24 +5,24 @@ import { DialogModal } from './DialogModal'
 import { getData } from '@/utils/fetchData'
 import { TLocations } from '@/types/TLocations'
 
+const data: TLocations[] = []
+
+async function retrieveData() {
+  const result = await getData<TLocations[]>({
+    endpoint: 'locations',
+  }).then((data) => {
+    console.log('Finished LocationsGrid data fetch')
+    return data
+  })
+
+  return result
+}
+
+retrieveData()
+
+console.log('Started LocationsGrid data fetch')
+
 export default async function LocationsGrid() {
-  const data: TLocations[] = []
-
-  async function retrieveData() {
-    const result = await getData<TLocations[]>({
-      endpoint: 'locations',
-    }).then((data) => {
-      console.log('Finished LocationsGrid data fetch')
-      return data
-    })
-
-    return result
-  }
-
-  retrieveData()
-
-  console.log('Started LocationsGrid data fetch')
-
   return (
     <center>
       <div className="m-10">
