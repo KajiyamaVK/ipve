@@ -333,20 +333,41 @@ export async function updatePeople(
 export async function deletePeople(id: number) {
   if (!id) return Response.json({ message: 'ID is required in the body' }, { status: 400 })
 
-  const query = `
+  const queryDeleteKinsRelations = `
+      DELETE FROM kinsRelations
+      WHERE idKinA = ?
+      OR idKinB = ?
+      `
+
+  const queryDeletePeople = `
       DELETE FROM people
       WHERE id = ?
       `
   const Conn = await createConnection()
   const conn = await Conn.getConnection()
 
-  return conn
-    .query(query, id)
+  conn.beginTransaction()
+
+  await conn
+    .query(queryDeleteKinsRelations, [id, id])
+    .catch((error) => {
+      console.error(`Error deleting : ${error}`)
+      conn.rollback()
+      return Response.json({ message: 'Erro ao deletar o registro: ' + error }, { status: 500 })
+    })
+    .finally(() => {
+      conn.release()
+    })
+
+  return await conn
+    .query(queryDeletePeople, id)
     .then(() => {
-      return Response.json({ message: ' Registro apagado com sucesso' }, { status: 200 })
+      conn.commit()
+      return Response.json({ message: 'Registro deletado com sucesso' }, { status: 200 })
     })
     .catch((error) => {
       console.error(`Error deleting : ${error}`)
+      conn.rollback()
       return Response.json({ message: 'Erro ao deletar o registro: ' + error }, { status: 500 })
     })
     .finally(() => {
