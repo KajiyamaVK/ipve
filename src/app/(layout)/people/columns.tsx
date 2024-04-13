@@ -24,10 +24,17 @@ export const columns: ColumnDef<TPeopleGridHeader>[] = [
     accessorKey: 'roles',
     header: 'Funções',
     cell: ({ renderValue }) => {
-      let value: string = ''
-      value = renderValue() as string
-      if (!value) return <div className="text-sm">-</div>
-      return <div className="text-sm">{value.replace(';', ', ')}</div>
+      const role = renderValue() as { name: string; color: string }[]
+      if (!role) return null
+      return (
+        <div className="flex flex-wrap">
+          {role.map((r, index) => (
+            <div key={index} className={` m-1 rounded-lg  px-2 py-1 text-xs text-white ${r.color}`}>
+              {r.name}
+            </div>
+          ))}
+        </div>
+      )
     },
   },
 ]

@@ -35,7 +35,14 @@ export async function getPeople(id?: number) {
       people.isUser,
       people.addressNumber,
       people.hasFamilyInChurch,
-      group_concat(peopleRoles.id SEPARATOR ';') as rolesIds
+      COALESCE(
+        JSON_ARRAYAGG(
+          JSON_OBJECT(
+            'name', peopleRoles.name, 
+            'color', peopleRoles.tailwindColor
+          )
+        ), JSON_ARRAY()
+      ) AS roles
     FROM people
     LEFT JOIN peopleRolesData ON peopleRolesData.peopleIdFK = people.id
     LEFT JOIN peopleRoles ON peopleRoles.id = peopleRolesData.roleIdFK

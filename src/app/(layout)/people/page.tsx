@@ -3,17 +3,20 @@ import { columns } from './columns'
 import { getData } from '@/utils/fetchData'
 import { TPeopleGridHeader } from '@/types/TPeopleGridHeader'
 
-let dataValues: TPeopleGridHeader[] = []
 async function retrieveData() {
-  dataValues = await getData<TPeopleGridHeader[]>({
+  const data = await getData<TPeopleGridHeader[]>({
     endpoint: 'people',
   }).then((data) => {
     if (data) return data
     else return []
   })
+  return data
 }
+
 export default async function People() {
-  await retrieveData()
+  const dataValues: TPeopleGridHeader[] = await retrieveData()
+  console.log('dataValues', JSON.stringify(dataValues))
+
   return (
     <center>
       <div className="m-10">
