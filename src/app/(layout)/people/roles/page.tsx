@@ -9,7 +9,7 @@ const data: TRoles[] = []
 
 async function retrieveData() {
   const result = await getData<TRoles[]>({
-    endpoint: 'titles',
+    endpoint: 'roles',
   }).then((data) => {
     console.log('Finished RolesGrid data fetch')
     return data
@@ -19,6 +19,7 @@ async function retrieveData() {
 }
 
 console.log('Start RolesGrid data fetch')
+
 retrieveData()
 export default async function RolesGrid() {
   return (
