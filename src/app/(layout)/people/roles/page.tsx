@@ -8,7 +8,7 @@ import { getData } from '@/utils/fetchData'
 import { useEffect, useState } from 'react'
 import { toast } from '@/components/ui/use-toast'
 
-export default async function RolesGrid() {
+export default function RolesGrid() {
   //let data: TRoles[] = []
   const [data, setData] = useState<TRoles[]>([])
   useEffect(() => {
