@@ -5,17 +5,15 @@ import { DialogModal } from './DialogModal'
 import { TRoles } from '@/types/TRoles'
 import { getData } from '@/utils/fetchData'
 
-const data: TRoles[] = []
+let data: TRoles[] = []
 
 async function retrieveData() {
-  const result = await getData<TRoles[]>({
+  data = await getData<TRoles[]>({
     endpoint: 'roles',
   }).then((data) => {
     console.log('Finished RolesGrid data fetch')
     return data
   })
-
-  return result
 }
 
 export default async function RolesGrid() {
