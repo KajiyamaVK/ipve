@@ -2,7 +2,7 @@
 
 import { Dispatch, ReactNode, SetStateAction, createContext, useState } from 'react'
 
-type TFormMode = 'add' | 'edit' | 'view' | null
+type TFormMode = 'add' | 'edit' | null
 
 interface IFormsContext {
   isDialogOpen: boolean

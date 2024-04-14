@@ -81,7 +81,13 @@ export function DataTable<TData, TValue>({
   })
 
   useEffect(() => {
-    setFormMode('add')
+    function resetFormMode() {
+      setFormMode('add')
+      setIsDialogOpen(false)
+      setIsSkeletonOpen(false)
+      setCurrentSelectedItem(0)
+    }
+    resetFormMode()
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -111,11 +117,11 @@ export function DataTable<TData, TValue>({
     }
   }
 
-  function handleViewState(id: number) {
+  function handleEditState(id: number) {
     setCurrentSelectedItem(id)
-
-    setFormMode('view')
+    setFormMode('edit')
     if (currentScreen.formType === 'dialog') {
+      setIsDialogOpen(true)
       setIsSkeletonOpen(true)
     } else router.push(`/${currentScreen.id}/form/${id}`)
   }
@@ -258,7 +264,7 @@ export function DataTable<TData, TValue>({
                     key={row.id}
                     className="cursor-pointer  hover:bg-primary-dark hover:text-primary-foreground"
                     data-state={row.getIsSelected() && 'selected'}
-                    onClick={() => handleViewState(idValue)}
+                    onClick={() => handleEditState(idValue)}
                   >
                     {row.getVisibleCells().map((cell) => renderTableCell(cell))}
                     <TableCell className="flex cursor-pointer gap-2">

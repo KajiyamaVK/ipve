@@ -11,7 +11,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { formsContext } from '@/contexts/formsContext'
 import { useToast } from '@/components/ui/use-toast'
 import { TMembersTitles } from '@/types/TMembersTitles'
-import { getData, saveData } from '@/utils/fetchData'
+import { saveData } from '@/utils/fetchData'
 
 const DialogFormSchema = z.object({
   name: z
@@ -21,7 +21,7 @@ const DialogFormSchema = z.object({
     .min(1, 'Campo obrigatório'),
 })
 
-export function DialogModal() {
+export function DialogModal({ data }: { data: TMembersTitles[] }) {
   const { register, formState, setValue, watch, handleSubmit } = useForm({
     resolver: zodResolver(DialogFormSchema),
   })
@@ -47,21 +47,11 @@ export function DialogModal() {
   }, [isDialogOpen, formMode])
 
   useEffect(() => {
-    if (isSkeletonOpen && formMode === 'view') {
-      ;(async () => {
-        await getData<TMembersTitles>({
-          endpoint: 'titles',
-          id: currentSelectedItem,
-        })
-          .then((data) => {
-            setValue('name', data?.name)
-          })
-          .then(() => {
-            setIsDialogOpen(true)
-            setIsSkeletonOpen(false)
-          })
-      })()
+    if (isSkeletonOpen && formMode === 'edit') {
+      setValue('name', data.find((item) => item.id === currentSelectedItem)?.name)
+      setIsSkeletonOpen(false)
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSkeletonOpen, formMode, currentSelectedItem])
 
@@ -126,17 +116,12 @@ export function DialogModal() {
               <label htmlFor="name" className="font-bold">
                 Nome do cargo
               </label>
-              <Input
-                type="text"
-                placeholder="Ex: Pastor, presbítero, membro, etc."
-                disabled={formMode === 'view'}
-                {...register('name')}
-              />
+              <Input type="text" placeholder="Ex: Pastor, presbítero, membro, etc." {...register('name')} />
               <p className="text-destructive">{formState.errors.name?.message?.toString()}</p>
             </div>
           </div>
           <Button type="submit" className="float-right mr-5 mt-5" isLoading={buttonIsLoading}>
-            {formMode === 'view' ? 'Editar' : 'Salvar'}
+            Salvar
           </Button>
         </form>
       </DialogContent>

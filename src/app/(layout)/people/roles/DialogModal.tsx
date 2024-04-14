@@ -52,7 +52,7 @@ export function DialogModal() {
   }, [isDialogOpen, formMode])
 
   useEffect(() => {
-    if (isSkeletonOpen && formMode === 'view') {
+    if (isSkeletonOpen && formMode === 'edit') {
       ;(async () => {
         await getData<TRoles>({
           endpoint: 'roles',
@@ -125,22 +125,13 @@ export function DialogModal() {
               <label htmlFor="roleName" className="font-bold">
                 Nome da função
               </label>
-              <Input
-                type="text"
-                placeholder="Ex: Louvor, Pregação, Tesouraria, etc."
-                disabled={formMode === 'view'}
-                {...register('roleName')}
-              />
+              <Input type="text" placeholder="Ex: Louvor, Pregação, Tesouraria, etc." {...register('roleName')} />
               <p className="text-destructive">{formState.errors.roleName?.message?.toString()}</p>
             </div>
             <b>Cor:</b>
             <div className="ml-2 mt-2">
               <div className="flex items-center">
-                <DialogColorSelection
-                  colorSelected={colorSelected}
-                  setColorSelected={setColorSelected}
-                  isDisabled={formMode === 'view'}
-                />
+                <DialogColorSelection colorSelected={colorSelected} setColorSelected={setColorSelected} />
               </div>
             </div>
           </div>
@@ -152,12 +143,11 @@ export function DialogModal() {
 
             <Input
               placeholder="Ex.: Função administrativa de controle financeiro da igreja"
-              disabled={formMode === 'view'}
               {...register('description')}
             />
           </div>
           <Button type="submit" className="float-right mr-5 mt-5">
-            {formMode === 'view' ? 'Editar' : 'Salvar'}
+            Salvar
           </Button>
         </form>
       </DialogContent>

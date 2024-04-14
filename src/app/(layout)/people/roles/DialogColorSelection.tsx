@@ -12,7 +12,6 @@ import { Dispatch, ReactNode } from 'react'
 interface IColorSelected {
   colorSelected: string
   setColorSelected: Dispatch<React.SetStateAction<string>>
-  isDisabled: boolean
 }
 
 export const availableColors: string[] = [
@@ -27,40 +26,34 @@ export const availableColors: string[] = [
   'bg-white',
 ]
 
-export function DialogColorSelection({ colorSelected, setColorSelected, isDisabled }: IColorSelected) {
+export function DialogColorSelection({ colorSelected, setColorSelected }: IColorSelected) {
   const colorCircle: ReactNode = (
     <div className="flex items-center justify-center">
-      <div
-        className={`size-5 rounded-full shadow-md shadow-black ${colorSelected} ${isDisabled ? 'opacity-50' : ''}`}
-      ></div>
+      <div className={`size-5 rounded-full shadow-md shadow-black ${colorSelected} `}></div>
     </div>
   )
   return (
     <div>
-      {!isDisabled ? (
-        <Dialog>
-          <DialogTrigger>{colorCircle}</DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Selecione uma cor</DialogTitle>
-              <DialogDescription>Escolha uma cor para identificar a responsabilidade</DialogDescription>
-            </DialogHeader>
-            <DialogClose>
-              <div className="flex flex-wrap gap-2">
-                {availableColors.map((color) => (
-                  <div
-                    key={color}
-                    className={`size-10 cursor-pointer rounded-full ${color} hover:shadow-md hover:shadow-black`}
-                    onClick={() => setColorSelected(color)}
-                  ></div>
-                ))}
-              </div>
-            </DialogClose>
-          </DialogContent>
-        </Dialog>
-      ) : (
-        colorCircle
-      )}
+      <Dialog>
+        <DialogTrigger>{colorCircle}</DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Selecione uma cor</DialogTitle>
+            <DialogDescription>Escolha uma cor para identificar a responsabilidade</DialogDescription>
+          </DialogHeader>
+          <DialogClose>
+            <div className="flex flex-wrap gap-2">
+              {availableColors.map((color) => (
+                <div
+                  key={color}
+                  className={`size-10 cursor-pointer rounded-full ${color} hover:shadow-md hover:shadow-black`}
+                  onClick={() => setColorSelected(color)}
+                ></div>
+              ))}
+            </div>
+          </DialogClose>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

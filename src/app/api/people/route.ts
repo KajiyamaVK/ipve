@@ -1,5 +1,5 @@
 import { revalidatePath } from 'next/cache'
-import { deletePeople, getPeople, savePeople, updatePeople } from './functions'
+import { deletePeople, getPeople, savePeople, updatePeople } from '../../(layout)/people/functions'
 
 export async function GET() {
   const data = await getPeople()

@@ -54,7 +54,7 @@ export function DialogModal() {
         isSkeletonOpen && setIsSkeletonOpen(false)
       })
     }
-    if (isSkeletonOpen && formMode === 'view') {
+    if (isSkeletonOpen && formMode === 'edit') {
       retrieveData()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -132,12 +132,7 @@ export function DialogModal() {
             <label htmlFor="locationName" className="font-bold">
               Nome do local
             </label>
-            <Input
-              type="text"
-              placeholder="Ex: Prédio, Templo, Externo, etc."
-              disabled={formMode === 'view'}
-              {...register('locationName')}
-            />
+            <Input type="text" placeholder="Ex: Prédio, Templo, Externo, etc." {...register('locationName')} />
             <p className="text-destructive">{formState.errors.locationName?.message?.toString()}</p>
           </div>
 
@@ -146,14 +141,10 @@ export function DialogModal() {
               Descrição
             </label>
 
-            <Input
-              placeholder="Ex.: Salão de festas logo após as escadas."
-              disabled={formMode === 'view'}
-              {...register('locationDesc')}
-            />
+            <Input placeholder="Ex.: Salão de festas logo após as escadas." {...register('locationDesc')} />
           </div>
           <Button type="submit" className="float-right  mt-5">
-            {formMode === 'view' ? 'Editar' : 'Salvar'}
+            Salvar
           </Button>
         </form>
       </DialogContent>
