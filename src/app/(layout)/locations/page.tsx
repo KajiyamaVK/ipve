@@ -4,16 +4,17 @@ import { DialogModalSkeleton } from './DialogModalSkeleton'
 import { DialogModal } from './DialogModal'
 import { TLocations } from '@/types/TLocations'
 import { getLocations } from './functions'
+import { IDBResponse } from '@/types/IDBResponse'
 
 let data: TLocations[] = []
 
 async function retrieveData() {
   try {
-    const response = await getLocations()
+    const response: IDBResponse = await getLocations()
     if (response.status !== 200) {
       throw new Error(`HTTP error! status: ${response.status}`)
     }
-    data = await response.json()
+    data = response.data as TLocations[]
   } catch (error) {
     console.error(error)
   }

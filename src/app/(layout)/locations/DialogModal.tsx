@@ -58,16 +58,16 @@ export function DialogModal({ data }: { data: TLocations[] }) {
   }, [isSkeletonOpen, formMode, currentSelectedItem])
 
   async function saveForm() {
-    const body: TLocations = {
-      locationName: watch('locationName'),
-      locationDesc: watch('locationDesc'),
-    }
     if (formMode === 'edit') {
-      await updateLocations({
-        id: currentSelectedItem,
-        locationName: body.locationName,
-        locationDesc: body.locationDesc,
-      })
+      if (!currentSelectedItem) {
+        toast({
+          type: 'background',
+          description: 'Erro interno, por favor entre em contato com o suporte: ID não encontrado',
+          variant: 'destructive',
+        })
+        return
+      }
+      await updateLocations(watch('locationName'), watch('locationDesc'), currentSelectedItem)
         .then(() => {
           setIsDialogOpen(false)
           toast({ type: 'background', description: 'Local atualizado com sucesso' })
@@ -77,10 +77,7 @@ export function DialogModal({ data }: { data: TLocations[] }) {
           toast({ type: 'background', description: 'Erro ao atualizar local: ' + err.message, variant: 'destructive' })
         })
     } else {
-      await saveLocations({
-        locationName: body.locationName,
-        locationDesc: body.locationDesc,
-      })
+      await saveLocations(watch('locationName'), watch('locationDesc'))
         .then(() => {
           setFormMode('add')
           setIsDialogOpen(false)

@@ -69,7 +69,7 @@ export async function savePeopleTitle(name: string) {
 export async function updatePeopleTitle(id: number, name: string) {
   if (!id || !name)
     return {
-      message: 'Erro intenrno. Por favor, entre em contato com o suporte. ID and Name are required in the body',
+      message: 'Erro interno. Por favor, entre em contato com o suporte. ID and Name are required in the body',
       status: 400,
     }
 

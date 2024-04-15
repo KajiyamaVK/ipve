@@ -1,14 +1,18 @@
 'use server'
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { TLocations } from '@/types/TLocations'
 import { getDatabaseConnection } from '@/utils/database'
-import { FieldPacket, QueryResult, RowDataPacket } from 'mysql2'
-import { NextResponse } from 'next/server'
+import { FieldPacket, QueryResult } from 'mysql2'
+
+interface ILocations {
+  id?: number
+  locationName: string
+  locationDesc: string
+}
 
 export async function getLocations(id?: number) {
   const Conn = await getDatabaseConnection()
-  try {
-    const query = `
+
+  const query = `
     SELECT 
       id,
       locationName,
@@ -16,47 +20,74 @@ export async function getLocations(id?: number) {
     FROM locations
     ${id ? 'WHERE id = ?' : ''}
     `
-    // Usando asserção de tipos para informar ao TypeScript o formato esperado da resposta.
-    const [results] = id
-      ? ((await Conn.query(query, id)) as [RowDataPacket[], any])
-      : ((await Conn.query(query)) as [RowDataPacket[], any])
+  let data: ILocations[] = []
 
-    if (results.length === 0) {
-      // Checando se existem resultados.
-      return { error: 'Não há cadastros de locais disponíveis no momento.', status: 400 }
-      //return new Response(JSON.stringify({ message: 'Error fetching products' }), { status: 500 })
-    }
-
-    return new Response(JSON.stringify(results), { status: 200 })
-  } catch (error) {
-    console.error(`Error fetching locations: ${error}`)
-    return { error: 'Error fetching locations', status: 500 }
+  if (id) {
+    return Conn.query(query, id)
+      .then((value: [QueryResult, FieldPacket[]]) => {
+        data = JSON.parse(JSON.stringify(value[0]))
+      })
+      .then(() => {
+        return { data, status: 200 }
+      })
+      .catch((error) => {
+        console.error(`Error fetching titles: ${error}`)
+        return { message: 'Error fetching titles', status: 500 }
+      })
+  } else {
+    return Conn.query(query)
+      .then((value: [QueryResult, FieldPacket[]]) => {
+        data = JSON.parse(JSON.stringify(value[0]))
+      })
+      .then(() => {
+        return { data, status: 200 }
+      })
+      .catch((error) => {
+        console.error(`Error fetching titles: ${error}`)
+        return { message: 'Error fetching titles', status: 500 }
+      })
   }
 }
 
-export async function saveLocations(body: TLocations) {
+export async function saveLocations(locationName: string, locationDesc: string) {
   const Conn = await getDatabaseConnection()
-  try {
-    const query = `
+  if (!locationDesc || !locationName)
+    return {
+      message:
+        'Erro interno. Por favor, entre em contato com o suporte. Location name and location Desc are required in the body',
+      status: 400,
+    }
+  const query = `
       INSERT INTO locations (locationName, locationDesc)
       VALUES (?, ?)
-      `
-    await Conn.execute(query, [body.locationName, body.locationDesc])
-  } catch (error) {
-    console.error(`Error saving locations: ${error}`)
-    return { error: 'Error saving locations', status: 500 }
-  }
+    `
+
+  return Conn.query(query, [locationName, locationDesc])
+    .then(() => {
+      return { message: 'Title saved', status: 201 }
+    })
+    .catch((error) => {
+      console.error(`Error saving title: ${error}`)
+      return { message: 'Error saving title', status: 500 }
+    })
 }
 
-export async function updateLocations(body: TLocations) {
+export async function updateLocations(locationName: string, locationDesc: string, id: number) {
+  if (!id || !locationName || !locationDesc)
+    return {
+      message:
+        'Erro interno. Por favor, entre em contato com o suporte. Location name and location Desc are required in the body',
+      status: 400,
+    }
+
   const Conn = await getDatabaseConnection()
   try {
     const query = `
-    UPDATE locations
-    SET locationName = ?, locationDesc = ?
-    WHERE id = ?
+      UPDATE locations
+      SET locationName = ?, locationDesc = ?
+      WHERE id = ?
     `
-    await Conn.execute(query, [body.locationName, body.locationDesc, body.id])
+    await Conn.execute(query, [locationName, locationDesc, id])
   } catch (error) {
     console.error(`Error updating locations: ${error}`)
   }
