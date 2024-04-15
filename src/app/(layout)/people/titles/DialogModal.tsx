@@ -12,6 +12,7 @@ import { formsContext } from '@/contexts/formsContext'
 import { useToast } from '@/components/ui/use-toast'
 import { TMembersTitles } from '@/types/TMembersTitles'
 import { saveData } from '@/utils/fetchData'
+import { savePeopleTitle, updatePeopleTitle } from './functions'
 
 const DialogFormSchema = z.object({
   name: z
@@ -62,35 +63,57 @@ export function DialogModal({ data }: { data: TMembersTitles[] }) {
   async function saveForm() {
     setButtonIsLoading(true)
 
-    const body: TMembersTitles = {
-      name: watch('name'),
-    }
-    const id = formMode === 'edit' ? { id: currentSelectedItem } : {}
-    await saveData({ body, endpoint: 'titles', ...id })
-      //eslint-disable-next-line
+    formMode === 'add' &&
+      (await savePeopleTitle(watch('name'))
+        //eslint-disable-next-line
       .then((data: any) => {
-        if (data) {
+          if (data) {
+            toast({
+              type: 'background',
+              description: 'Título cadastrado com sucesso!',
+              variant: 'default',
+            })
+          }
+        })
+        .then(() => {
+          setFormMode('add')
+          setIsDialogOpen(false)
+        })
+        .catch((error) => {
           toast({
             type: 'background',
-            description: 'Título cadastrado com sucesso!',
-            variant: 'default',
+            description: error.toString(),
+            variant: 'destructive',
           })
+        })
+        .finally(() => {
+          setButtonIsLoading(false)
+        }))
+
+    if (formMode === 'edit')
+      if (currentSelectedItem)
+        try {
+          await updatePeopleTitle(currentSelectedItem, watch('name'))
+        } catch (error) {
+          console.error(error)
+          toast({
+            type: 'background',
+            description: 'Erro interno ao atualizar título. Entre em contato com o suporte: ' + error,
+            variant: 'destructive',
+          })
+        } finally {
+          setButtonIsLoading(false)
+          setFormMode('add')
+          setIsDialogOpen(false)
         }
-      })
-      .then(() => {
-        setFormMode('add')
-        setIsDialogOpen(false)
-      })
-      .catch((error) => {
+      else {
         toast({
           type: 'background',
-          description: error.toString(),
+          description: 'Erro interno. Por favor, avise o suporte.',
           variant: 'destructive',
         })
-      })
-      .finally(() => {
         setButtonIsLoading(false)
-      })
+      }
   }
 
   function submitForm() {

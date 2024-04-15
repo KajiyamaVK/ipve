@@ -25,6 +25,9 @@ import { formsContext } from '@/contexts/formsContext'
 import { generalContext } from '@/contexts/generalContext'
 import { toast } from './use-toast'
 import { ImSpinner9 } from 'react-icons/im'
+import { deletePeople } from '@/app/(layout)/people/functions'
+import { deletePeopleTitle } from '@/app/(layout)/people/titles/functions'
+import { deleteLocations } from '@/app/(layout)/locations/functions'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -148,13 +151,25 @@ export function DataTable<TData, TValue>({
   }
 
   async function handleDelete(id: number) {
-    await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api${path}`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ id }),
-    })
+    let deleteData: () => Promise<{ message?: string; status: number }> = () =>
+      Promise.resolve({ message: '', status: 0 })
+
+    switch (path) {
+      case '/people':
+        deleteData = () => deletePeople(id)
+        break
+      case '/people/titles':
+        deleteData = () => deletePeopleTitle(id)
+        break
+      case '/locations':
+        deleteData = () => deleteLocations(id)
+        break
+      default:
+        console.error(`Unknown path: ${path}`)
+        break
+    }
+
+    await deleteData()
       .then((response) => {
         if (response.status === 200 || response.status === 204) {
           toast({
@@ -165,9 +180,11 @@ export function DataTable<TData, TValue>({
         } else {
           toast({
             title: `Erro ao apagar o registro ${id}`,
-            description: 'Erro ao tentar apagar o registro, avise para manutenção o quanto antes.',
+            description: response.message,
             type: 'background',
+            variant: 'destructive',
           })
+          setButtonIsLoading(false)
         }
       })
       .then(() => {

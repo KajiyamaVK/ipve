@@ -1,4 +1,5 @@
-import { createConnection } from '@/utils/database'
+'use server'
+import { getDatabaseConnection } from '@/utils/database'
 import { FieldPacket, QueryResult } from 'mysql2'
 
 interface IPeopleTitlesResponse {
@@ -17,113 +18,112 @@ export async function getPeopleTitles(id?: number) {
 
   let data: IPeopleTitlesResponse[] = []
 
-  const Conn = await createConnection()
-  const conn = await Conn.getConnection()
+  const Conn = await getDatabaseConnection()
 
   if (id) {
-    return conn
-      .query(query, id)
+    return Conn.query(query, id)
       .then((value: [QueryResult, FieldPacket[]]) => {
         data = JSON.parse(JSON.stringify(value[0]))
       })
       .then(() => {
-        return Response.json(data[0], { status: 200 })
+        return { data, status: 200 }
       })
       .catch((error) => {
         console.error(`Error fetching titles: ${error}`)
-        return Response.json({ message: 'Error fetching titles' }, { status: 500 })
-      })
-      .finally(() => {
-        conn.release()
+        return { message: 'Error fetching titles', status: 500 }
       })
   } else {
-    return conn
-      .query(query)
+    return Conn.query(query)
       .then((value: [QueryResult, FieldPacket[]]) => {
         data = JSON.parse(JSON.stringify(value[0]))
       })
       .then(() => {
+        //return { data, status: 200 }
         return new Response(JSON.stringify(data), { status: 200 })
       })
       .catch((error) => {
         console.error(`Error fetching titles: ${error}`)
-        return Response.json({ message: 'Error fetching titles' }, { status: 500 })
-      })
-      .finally(() => {
-        conn.release()
+        return { message: 'Error fetching titles', status: 500 }
       })
   }
 }
 
 export async function savePeopleTitle(name: string) {
-  if (!name) return Response.json({ message: 'Name is required in the body' }, { status: 400 })
+  if (!name) return { message: 'Name is required in the body', status: 400 }
 
   const query = `
       INSERT INTO peopleTitles (name)
       VALUES (?)
       `
-  const Conn = await createConnection()
-  const conn = await Conn.getConnection()
+  const Conn = await getDatabaseConnection()
 
-  return conn
-    .query(query, name)
+  return Conn.query(query, name)
     .then(() => {
-      return Response.json({ message: 'Title saved' }, { status: 201 })
+      return { message: 'Title saved', status: 201 }
     })
     .catch((error) => {
       console.error(`Error saving title: ${error}`)
-      return Response.json({ message: 'Error saving title' }, { status: 500 })
-    })
-    .finally(() => {
-      conn.release()
+      return { message: 'Error saving title', status: 500 }
     })
 }
 
 export async function updatePeopleTitle(id: number, name: string) {
-  if (!id || !name) return Response.json({ message: 'ID and Name are required in the body' }, { status: 400 })
+  if (!id || !name)
+    return {
+      message: 'Erro intenrno. Por favor, entre em contato com o suporte. ID and Name are required in the body',
+      status: 400,
+    }
+
+  const Conn = await getDatabaseConnection()
 
   const query = `
       UPDATE peopleTitles
       SET name = ?
       WHERE id = ?
       `
-  const Conn = await createConnection()
-  const conn = await Conn.getConnection()
 
-  return conn
-    .query(query, [name, id])
+  return await Conn.query(query, [name, id])
     .then(() => {
-      return Response.json({ message: 'Title updated' }, { status: 200 })
+      return { message: 'Title updated', status: 200 }
     })
     .catch((error) => {
       console.error(`Error updating title: ${error}`)
-      return Response.json({ message: 'Error updating title' }, { status: 500 })
-    })
-    .finally(() => {
-      conn.release()
+      return { message: 'Error updating title', status: 500 }
     })
 }
 
 export async function deletePeopleTitle(id: number) {
-  if (!id) return Response.json({ message: 'ID is required in the body' }, { status: 400 })
+  if (!id) return { message: 'ID is required in the body', status: 400 }
+
+  const Conn = await getDatabaseConnection()
+
+  const checkIfTitleIsInUse = `
+      SELECT 1
+      FROM people
+      WHERE titleIdFK = ?
+      GROUP BY titleIdFK
+      `
+  const value: [QueryResult, FieldPacket[]] = await Conn.query(checkIfTitleIsInUse, [id])
+
+  if (Array.isArray(value[0]) && value[0].length > 0) {
+    return {
+      message:
+        'Esse cargo está em uso e não pode ser apagado. Para apagar o registro, remova o cargo no cadastro de pessoas',
+      status: 400,
+    }
+  }
 
   const query = `
       DELETE FROM peopleTitles
       WHERE id = ?
       `
-  const Conn = await createConnection()
-  const conn = await Conn.getConnection()
 
-  return conn
-    .query(query, id)
+  return Conn.query(query, id)
     .then(() => {
-      return Response.json({ message: 'Title deleted' }, { status: 200 })
+      return { message: 'Título apagado com sucesso.', status: 200 }
     })
     .catch((error) => {
       console.error(`Error deleting title: ${error}`)
-      return Response.json({ message: 'Error deleting title' }, { status: 500 })
-    })
-    .finally(() => {
-      conn.release()
+      return { message: 'Error updating title', status: 500 }
     })
 }

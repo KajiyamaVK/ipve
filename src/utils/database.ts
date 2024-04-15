@@ -1,26 +1,30 @@
-// // database.ts
+// database.ts
 import mysql, { PoolOptions, Pool } from 'mysql2/promise'
 
-export async function createConnection(): Promise<Pool> {
+// Função para criar o pool de conexões
+async function createConnection(): Promise<Pool> {
+  const access: PoolOptions = {
+    host: process.env.DB_HOST,
+    port: parseInt(process.env.DB_PORT || '3306'), // Valor padrão para MySQL
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0,
+    connectTimeout: 60000,
+    // As propriedades abaixo não são suportadas diretamente pelo mysql2 e foram removidas
+    // maxIdle, idleTimeout, enableKeepAlive, keepAliveInitialDelay
+  }
   try {
-    const access: PoolOptions = {
-      host: process.env.DB_HOST,
-      port: parseInt(process.env.DB_PORT || ''),
-      user: process.env.DB_USER,
-      password: process.env.DB_PASSWORD,
-      database: process.env.DB_NAME,
-      waitForConnections: true,
-      maxIdle: 10,
-      idleTimeout: 60000,
-      connectionLimit: 10,
-      enableKeepAlive: true,
-      keepAliveInitialDelay: 0,
-      queueLimit: 0,
-      connectTimeout: 60000,
-    }
-    return mysql.createPool(access)
+    const pool = await mysql.createPool(access)
+
+    return pool
   } catch (error) {
-    console.error('Error connecting to database')
+    console.error('Error connecting to database:', error)
     throw new Error('Error connecting to database')
   }
 }
+
+// Exportar a função para criar a conexão, em vez do pool diretamente
+export const getDatabaseConnection = () => createConnection()

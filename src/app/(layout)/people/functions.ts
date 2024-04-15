@@ -1,3 +1,4 @@
+'use server'
 import { createConnection } from '@/utils/database'
 import { FieldPacket, QueryResult } from 'mysql2'
 

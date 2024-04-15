@@ -1,4 +1,4 @@
-import { getLocations } from '../functions'
+import { getLocations } from '../../../(layout)/locations/functions'
 export async function GET(req: Request, { params }: { params: { id: string } }) {
   const { id } = params
 

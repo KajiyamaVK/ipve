@@ -4,19 +4,19 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { useForm } from 'react-hook-form'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import React, { useContext, useEffect } from 'react'
+import { useContext, useEffect } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { formsContext } from '@/contexts/formsContext'
 import { useToast } from '@/components/ui/use-toast'
-import { getData } from '@/utils/fetchData'
 import { TLocations } from '@/types/TLocations'
+import { saveLocations, updateLocations } from './functions'
 
 const DialogFormSchema = z.object({
   locationName: z.string().min(1, 'Campo obrigatório'),
   locationDesc: z.string(),
 })
 
-export function DialogModal() {
+export function DialogModal({ data }: { data: TLocations[] }) {
   const { register, formState, setValue, watch } = useForm({
     resolver: zodResolver(DialogFormSchema),
   })
@@ -42,59 +42,44 @@ export function DialogModal() {
   }, [isDialogOpen, formMode])
 
   useEffect(() => {
-    async function retrieveData() {
-      await getData<TLocations[]>({
-        endpoint: 'locations',
-        id: currentSelectedItem,
-      }).then((data) => {
-        setValue('locationName', data[0]?.locationName)
-        setValue('locationDesc', data[0]?.locationDesc)
+    function getLocationData() {
+      const locationData = data.filter((item) => item.id === currentSelectedItem)
+      setValue('locationName', locationData[0].locationName)
+      setValue('locationDesc', locationData[0].locationDesc)
 
-        setIsDialogOpen(true)
-        isSkeletonOpen && setIsSkeletonOpen(false)
-      })
+      setIsDialogOpen(true)
+      isSkeletonOpen && setIsSkeletonOpen(false)
     }
+
     if (isSkeletonOpen && formMode === 'edit') {
-      retrieveData()
+      getLocationData()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSkeletonOpen, formMode, currentSelectedItem])
-
-  function enableForm() {
-    setFormMode('edit')
-  }
 
   async function saveForm() {
     const body: TLocations = {
       locationName: watch('locationName'),
       locationDesc: watch('locationDesc'),
     }
-    const id = formMode === 'edit' ? { id: currentSelectedItem } : {}
-
     if (formMode === 'edit') {
-      await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/locations`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ data: body, id }),
+      await updateLocations({
+        id: currentSelectedItem,
+        locationName: body.locationName,
+        locationDesc: body.locationDesc,
       })
         .then(() => {
-          setFormMode('add')
           setIsDialogOpen(false)
           toast({ type: 'background', description: 'Local atualizado com sucesso' })
         })
         .catch((err) => {
           console.error(err)
-          toast({ type: 'background', description: 'Erro ao atualizar local', variant: 'destructive' })
+          toast({ type: 'background', description: 'Erro ao atualizar local: ' + err.message, variant: 'destructive' })
         })
     } else {
-      await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/locations`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ data: body }),
+      await saveLocations({
+        locationName: body.locationName,
+        locationDesc: body.locationDesc,
       })
         .then(() => {
           setFormMode('add')
@@ -103,19 +88,14 @@ export function DialogModal() {
         })
         .catch((err) => {
           console.error(err)
-          toast({ type: 'background', description: 'Erro ao atualizar local', variant: 'destructive' })
+          toast({ type: 'background', description: 'Erro ao gravar local', variant: 'destructive' })
         })
     }
   }
 
   function submitForm(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-
-    if (formMode === 'add' || formMode === 'edit') {
-      saveForm()
-    } else if (formMode === 'view') {
-      enableForm()
-    }
+    saveForm()
   }
 
   return (
