@@ -28,6 +28,7 @@ import { ImSpinner9 } from 'react-icons/im'
 import { deletePeople } from '@/app/(layout)/people/functions'
 import { deletePeopleTitle } from '@/app/(layout)/people/titles/functions'
 import { deleteLocations } from '@/app/(layout)/locations/functions'
+import { deletePeopleRole } from '@/app/(layout)/people/roles/functions'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -163,6 +164,9 @@ export function DataTable<TData, TValue>({
         break
       case '/locations':
         deleteData = () => deleteLocations(id)
+        break
+      case '/people/roles':
+        deleteData = () => deletePeopleRole(id)
         break
       default:
         console.error(`Unknown path: ${path}`)

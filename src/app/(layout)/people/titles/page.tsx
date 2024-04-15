@@ -4,16 +4,17 @@ import { DialogModal } from './DialogModal'
 import { TMembersTitles } from '@/types/TMembersTitles'
 import { DialogSkeleton } from './DialogSkeleton'
 import { getPeopleTitles } from './functions'
+import { IDBResponse } from '@/types/IDBResponse'
 
 let data: TMembersTitles[] = []
 
 async function retrieveData() {
   try {
-    const response = await getPeopleTitles()
-    if (!response.ok) {
+    const response: IDBResponse = await getPeopleTitles()
+    if (response.status !== 200) {
       throw new Error(`HTTP error! status: ${response.status}`)
     }
-    data = await response.json()
+    data = response.data as TMembersTitles[]
   } catch (error) {
     console.error(error)
   }

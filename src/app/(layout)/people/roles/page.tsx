@@ -1,18 +1,23 @@
 import { DataTable } from '@/components/ui/data-table'
-import { columns } from '@/app/(layout)/people/roles/columns'
+import { columns } from './columns'
 import { DialogModalSkeleton } from './DialogModalSkeleton'
 import { DialogModal } from './DialogModal'
 import { TRoles } from '@/types/TRoles'
-import { getData } from '@/utils/fetchData'
+import { IDBResponse } from '@/types/IDBResponse'
+import { getPeopleRoles } from './functions'
 
 let data: TRoles[] = []
 
 async function retrieveData() {
-  data = await getData<TRoles[]>({
-    endpoint: 'roles',
-  }).then((data) => {
-    return data
-  })
+  try {
+    const response: IDBResponse = await getPeopleRoles()
+    if (response.status !== 200) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+    data = response.data as TRoles[]
+  } catch (error) {
+    console.error(error)
+  }
 }
 
 export default async function RolesGrid() {

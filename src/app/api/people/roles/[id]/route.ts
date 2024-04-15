@@ -1,4 +1,4 @@
-import { getPeopleRoles } from '../functions'
+import { getPeopleRoles } from '../../../../(layout)/people/roles/functions'
 
 interface IGET {
   id: number

@@ -11,6 +11,7 @@ import { DialogColorSelection, availableColors } from './DialogColorSelection'
 import { formsContext } from '@/contexts/formsContext'
 import { useToast } from '@/components/ui/use-toast'
 import { getData, saveData } from '@/utils/fetchData'
+import { savePeopleRole, updatePeopleRole } from './functions'
 
 const DialogFormSchema = z.object({
   roleName: z.string().min(1, 'Campo obrigatório'),
@@ -30,6 +31,7 @@ export function DialogModal() {
   const elementoAleatorio = obterElementoAleatorio(availableColors)
 
   const [colorSelected, setColorSelected] = useState<string>(elementoAleatorio)
+  const [isButtonLoading, setButtonIsLoading] = useState(false)
   const { toast } = useToast()
   const {
     isDialogOpen,
@@ -77,27 +79,59 @@ export function DialogModal() {
   }
 
   async function saveForm() {
-    const body: TRoles = {
-      name: watch('roleName'),
-      description: watch('description'),
-      tailwindColor: colorSelected,
-    }
-    const id = formMode === 'edit' ? { id: currentSelectedItem } : {}
+    setButtonIsLoading(true)
 
-    await saveData({ body, endpoint: 'roles', ...id })
-      .then((data) => {
-        if (data) {
+    formMode === 'add' &&
+      (await savePeopleRole(watch('roleName'), watch('description'), colorSelected)
+        //eslint-disable-next-line
+      .then((data: any) => {
+          if (data) {
+            toast({
+              type: 'background',
+              description: 'Função cadastrada com sucesso!',
+              variant: 'default',
+            })
+          }
+        })
+        .then(() => {
+          setFormMode('add')
+          setIsDialogOpen(false)
+        })
+        .catch((error) => {
           toast({
             type: 'background',
-            description: 'Função cadastrada com sucesso!',
-            variant: 'default',
+            description: error.toString(),
+            variant: 'destructive',
           })
+        })
+        .finally(() => {
+          setButtonIsLoading(false)
+        }))
+
+    if (formMode === 'edit')
+      if (currentSelectedItem)
+        try {
+          await updatePeopleRole(currentSelectedItem, watch('roleName'), watch('description'), colorSelected)
+        } catch (error) {
+          console.error(error)
+          toast({
+            type: 'background',
+            description: 'Erro interno ao atualizar a função. Entre em contato com o suporte: ' + error,
+            variant: 'destructive',
+          })
+        } finally {
+          setButtonIsLoading(false)
+          setFormMode('add')
+          setIsDialogOpen(false)
         }
-      })
-      .then(() => {
-        setFormMode('add')
-        setIsDialogOpen(false)
-      })
+      else {
+        toast({
+          type: 'background',
+          description: 'Erro interno. Por favor, avise o suporte.',
+          variant: 'destructive',
+        })
+        setButtonIsLoading(false)
+      }
   }
 
   function submitForm(e: React.FormEvent<HTMLFormElement>) {
@@ -146,7 +180,7 @@ export function DialogModal() {
               {...register('description')}
             />
           </div>
-          <Button type="submit" className="float-right mr-5 mt-5">
+          <Button type="submit" className="float-right mr-5 mt-5" isLoading={isButtonLoading}>
             Salvar
           </Button>
         </form>

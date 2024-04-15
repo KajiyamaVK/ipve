@@ -38,8 +38,7 @@ export async function getPeopleTitles(id?: number) {
         data = JSON.parse(JSON.stringify(value[0]))
       })
       .then(() => {
-        //return { data, status: 200 }
-        return new Response(JSON.stringify(data), { status: 200 })
+        return { data, status: 200 }
       })
       .catch((error) => {
         console.error(`Error fetching titles: ${error}`)
@@ -120,7 +119,7 @@ export async function deletePeopleTitle(id: number) {
 
   return Conn.query(query, id)
     .then(() => {
-      return { message: 'Título apagado com sucesso.', status: 200 }
+      return { message: 'Cargo apagado com sucesso.', status: 200 }
     })
     .catch((error) => {
       console.error(`Error deleting title: ${error}`)

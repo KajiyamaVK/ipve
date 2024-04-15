@@ -10,7 +10,7 @@ let data: TLocations[] = []
 async function retrieveData() {
   try {
     const response = await getLocations()
-    if (!response.ok) {
+    if (response.status !== 200) {
       throw new Error(`HTTP error! status: ${response.status}`)
     }
     data = await response.json()
