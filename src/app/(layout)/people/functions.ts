@@ -1,5 +1,5 @@
 'use server'
-import { createConnection } from '@/utils/database'
+import { getDatabaseConnection } from '@/utils/database'
 import { FieldPacket, QueryResult } from 'mysql2'
 
 interface IPeopleResponse {
@@ -53,12 +53,10 @@ export async function getPeople(id?: number) {
     GROUP BY people.id`
 
   let data: IPeopleResponse[] = []
-  const Conn = await createConnection()
-  const conn = await Conn.getConnection()
+  const Conn = await getDatabaseConnection()
 
   if (id) {
-    return conn
-      .query(query, id)
+    return Conn.query(query, id)
       .then((value: [QueryResult, FieldPacket[]]) => {
         data = JSON.parse(JSON.stringify(value[0]))
       })
@@ -69,12 +67,8 @@ export async function getPeople(id?: number) {
         console.error(`Error fetching : ${error}`)
         return Response.json({ message: 'Error fetching ' }, { status: 500 })
       })
-      .finally(() => {
-        conn.release()
-      })
   } else {
-    return conn
-      .query(query)
+    return Conn.query(query)
       .then((value: [QueryResult, FieldPacket[]]) => {
         data = JSON.parse(JSON.stringify(value[0]))
       })
@@ -84,9 +78,6 @@ export async function getPeople(id?: number) {
       .catch((error) => {
         console.error(`Error fetching : ${error}`)
         return Response.json({ message: 'Error fetching ' }, { status: 500 })
-      })
-      .finally(() => {
-        conn.release()
       })
   }
 }
@@ -168,44 +159,39 @@ export async function savePeople(
       hasFamilyInChurch)
     VALUES (
       ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
-  const Conn = await createConnection()
-  const conn = await Conn.getConnection()
+  const Conn = await getDatabaseConnection()
 
-  return conn
-    .query(query, [
-      fullName,
-      titleIdFK,
-      dateOfBirth,
-      gender,
-      address,
-      complement,
-      city,
-      suburb,
-      uf,
-      cep,
-      phone1,
-      phone1IsWhatsapp,
-      phone2,
-      photoUrl,
-      email,
-      isActive,
-      isActiveEBD,
-      ebdClassroom,
-      society,
-      isMember,
-      isUser,
-      addressNumber,
-      hasFamilyInChurch,
-    ])
+  return Conn.query(query, [
+    fullName,
+    titleIdFK,
+    dateOfBirth,
+    gender,
+    address,
+    complement,
+    city,
+    suburb,
+    uf,
+    cep,
+    phone1,
+    phone1IsWhatsapp,
+    phone2,
+    photoUrl,
+    email,
+    isActive,
+    isActiveEBD,
+    ebdClassroom,
+    society,
+    isMember,
+    isUser,
+    addressNumber,
+    hasFamilyInChurch,
+  ])
     .then(() => {
       return Response.json({ message: 'People saved' }, { status: 201 })
     })
     .catch((error) => {
       console.error(`Error saving People: ${error}`)
       return Response.json({ message: 'Error saving ' }, { status: 500 })
-    })
-    .finally(() => {
-      conn.release()
     })
 }
 
@@ -289,45 +275,40 @@ export async function updatePeople(
       WHERE id = ?
       `
 
-  const Conn = await createConnection()
-  const conn = await Conn.getConnection()
+  const Conn = await getDatabaseConnection()
 
-  return conn
-    .query(query, [
-      fullName,
-      titleIdFK,
-      dateOfBirth,
-      gender,
-      address,
-      complement,
-      city,
-      suburb,
-      uf,
-      cep,
-      phone1,
-      phone1IsWhatsapp,
-      phone2,
-      photoUrl,
-      email,
-      isActive,
-      isActiveEBD,
-      ebdClassroom,
-      society,
-      isMember,
-      isUser,
-      addressNumber,
-      hasFamilyInChurch,
-      id,
-    ])
+  return Conn.query(query, [
+    fullName,
+    titleIdFK,
+    dateOfBirth,
+    gender,
+    address,
+    complement,
+    city,
+    suburb,
+    uf,
+    cep,
+    phone1,
+    phone1IsWhatsapp,
+    phone2,
+    photoUrl,
+    email,
+    isActive,
+    isActiveEBD,
+    ebdClassroom,
+    society,
+    isMember,
+    isUser,
+    addressNumber,
+    hasFamilyInChurch,
+    id,
+  ])
     .then(() => {
       return Response.json({ message: 'Cadastro de pessoa efetuado com sucesso' }, { status: 200 })
     })
     .catch((error) => {
       console.error(`Erro ao atualizar : ${error}`)
       return Response.json({ message: 'Erro ao atualizar ' }, { status: 500 })
-    })
-    .finally(() => {
-      conn.release()
     })
 }
 
@@ -344,34 +325,24 @@ export async function deletePeople(id: number) {
       DELETE FROM people
       WHERE id = ?
       `
-  const Conn = await createConnection()
-  const conn = await Conn.getConnection()
+  const Conn = await getDatabaseConnection()
 
-  conn.beginTransaction()
+  Conn.beginTransaction()
 
-  await conn
-    .query(queryDeleteKinsRelations, [id, id])
-    .catch((error) => {
-      console.error(`Error deleting : ${error}`)
-      conn.rollback()
-      return Response.json({ message: 'Erro ao deletar o registro: ' + error }, { status: 500 })
-    })
-    .finally(() => {
-      conn.release()
-    })
+  await Conn.query(queryDeleteKinsRelations, [id, id]).catch((error) => {
+    console.error(`Error deleting : ${error}`)
+    Conn.rollback()
+    return Response.json({ message: 'Erro ao deletar o registro: ' + error }, { status: 500 })
+  })
 
-  return await conn
-    .query(queryDeletePeople, id)
+  return await Conn.query(queryDeletePeople, id)
     .then(() => {
-      conn.commit()
+      Conn.commit()
       return Response.json({ message: 'Registro deletado com sucesso' }, { status: 200 })
     })
     .catch((error) => {
       console.error(`Error deleting : ${error}`)
-      conn.rollback()
+      Conn.rollback()
       return Response.json({ message: 'Erro ao deletar o registro: ' + error }, { status: 500 })
-    })
-    .finally(() => {
-      conn.release()
     })
 }
