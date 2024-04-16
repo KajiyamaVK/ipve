@@ -5,11 +5,13 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { TPeopleGridHeader } from '@/types/TPeopleGridHeader'
-import { getData } from '@/utils/fetchData'
-import { ReactNode, useEffect, useState } from 'react'
+import { ReactNode, useEffect, useMemo, useState } from 'react'
 
 import { Trash } from '@phosphor-icons/react'
+import { IDBResponse } from '@/types/IDBResponse'
+import { IKinsRelationsResponse, getKinsRelations, getKinsRelationsSTD } from './functions'
+import { getPeople } from '../../functions'
+import { TPeople } from './formSchema'
 
 export default function FamilyInfo({
   hasFamilyValue,
@@ -24,16 +26,31 @@ export default function FamilyInfo({
   relatives: { idKinB: number; relation: string }[] | undefined
   personId: number
 }) {
-  interface IMemberSearchValue {
-    id: number
-    fullName: string
-  }
-
-  const [personList, setPersonList] = useState<IMemberSearchValue[]>([])
+  const [personList, setPersonList] = useState<TPeople[]>([])
   const [relativesTitles, setRelativesTitles] = useState<{ id: number; relationName: string }[]>([])
   const [relativeSelectValue, setRelativeSelectValue] = useState<string>('')
   const [relativeTitleSelectValue, setRelativeTitleSelectValue] = useState('')
   const [relativesTable, setRelativesTable] = useState<ReactNode>(<></>)
+
+  const kinsOptions = useMemo(() => {
+    return personList.map((data) => {
+      if (data.id)
+        return (
+          <SelectItem key={data.id as number} value={data.id.toString()} className="cursor-pointer ">
+            {data.fullName}
+          </SelectItem>
+        )
+    })
+  }, [personList])
+
+  const renderRelativeTitlesOptions = useMemo(() => {
+    console.log('relativesTitles', relativesTitles)
+    return relativesTitles.map((title) => (
+      <SelectItem key={title.id} value={title.id.toString()} className="cursor-pointer ">
+        {title.relationName}
+      </SelectItem>
+    ))
+  }, [relativesTitles])
 
   useEffect(() => {
     if (!relativesTitles || relativesTitles.length === 0) return
@@ -43,7 +60,7 @@ export default function FamilyInfo({
   }, [relativesTitles])
 
   useEffect(() => {
-    getKinsRelationsTitles()
+    getKinsRelationsTitle()
     getKinsRelations(personId)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -54,14 +71,6 @@ export default function FamilyInfo({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hasFamilyValue])
 
-  async function getKinsRelationsTitles() {
-    await getData({
-      endpoint: 'kinsRelations',
-    }).then((data) => {
-      setRelativesTitles(data as { id: number; relationName: string }[])
-    })
-  }
-
   useEffect(() => {
     if (!relatives || relatives.length === 0) return
     if (personList.length === 0) return
@@ -70,34 +79,39 @@ export default function FamilyInfo({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [relatives, personList])
 
-  interface KinsRelationData {
-    idKinB: string
-    relation: string
-  }
+  async function getKinsRelationsTitle() {
+    try {
+      const response: IDBResponse = await getKinsRelationsSTD()
 
-  async function getKinsRelations(id: number) {
-    if (!id) return
-    await getData({
-      endpoint: 'kinsRelations',
-      id,
-    }).then((data) => {
-      const kinsData = data as KinsRelationData
+      if (response.status !== 200) {
+        throw new Error(
+          `Erro interno. Por favor, entre em contato com o suporte: HTTP error! status: ${response.status}`,
+        )
+      }
+      const data = response.data as IKinsRelationsResponse[]
+      setRelativesTitles(data)
 
-      setRelatives(kinsData)
-    })
+      return data
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   async function getSelectOptions() {
-    await getData<TPeopleGridHeader[]>({
-      endpoint: 'people',
-    }).then((data) => {
-      const people: IMemberSearchValue[] = []
-      data.forEach((p: TPeopleGridHeader) => {
-        const { id, fullName } = p
-        people.push({ id, fullName })
+    try {
+      await getPeople().then((response) => {
+        const data: IDBResponse = response
+        if (data.data === undefined) {
+          console.error('data.data is undefined')
+          throw new Error('data.data is undefined')
+        }
+        const personData = data.data as TPeople[]
+        console.log('personData', personData)
+        setPersonList(personData)
       })
-      setPersonList(people)
-    })
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   function handleAddRelative(): void {
@@ -116,14 +130,6 @@ export default function FamilyInfo({
     if (!relatives) return
     const newRelatives = relatives.filter((relative) => relative.idKinB !== id)
     setRelatives(newRelatives)
-  }
-
-  function renderSelectOptions(): ReactNode {
-    return personList.map((data) => (
-      <SelectItem key={data.id} value={data.id.toString()} className="cursor-pointer ">
-        {data.fullName}
-      </SelectItem>
-    ))
   }
 
   function renderRelatives(): ReactNode {
@@ -163,20 +169,6 @@ export default function FamilyInfo({
     ))
   }
 
-  function renderRelativeTitlesSelect(): ReactNode {
-    return (
-      <FormItem className="w-fit">
-        <FormLabel className="font-normal">Parentesco:</FormLabel>
-        <Select value={relativeTitleSelectValue} onValueChange={setRelativeTitleSelectValue} name="membeTitleNames">
-          <SelectTrigger>
-            <SelectValue placeholder="Selecione" />
-          </SelectTrigger>
-          <SelectContent className="bg-white ">{renderRelativesTitles()}</SelectContent>
-        </Select>
-      </FormItem>
-    )
-  }
-
   return (
     <div className="flex gap-10">
       <FormField
@@ -202,10 +194,22 @@ export default function FamilyInfo({
                 <SelectTrigger>
                   <SelectValue placeholder="Selecione" />
                 </SelectTrigger>
-                <SelectContent className="bg-white ">{renderSelectOptions()}</SelectContent>
+                <SelectContent className="bg-white ">{kinsOptions}</SelectContent>
               </Select>
             </FormItem>
-            {renderRelativeTitlesSelect()}
+            <FormItem className="w-fit">
+              <FormLabel className="font-normal">Parentesco:</FormLabel>
+              <Select
+                value={relativeTitleSelectValue}
+                onValueChange={setRelativeTitleSelectValue}
+                name="membeTitleNames"
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Selecione" />
+                </SelectTrigger>
+                <SelectContent className="bg-white ">{renderRelativeTitlesOptions}</SelectContent>
+              </Select>
+            </FormItem>
             <Button
               type="button"
               disabled={!relativeSelectValue || !relativeTitleSelectValue}

@@ -1,25 +1,30 @@
 import { DataTable } from '@/components/ui/data-table'
 import { columns } from './columns'
-import { getData } from '@/utils/fetchData'
-import { TPeopleGridHeader } from '@/types/TPeopleGridHeader'
+import { IDBResponse } from '@/types/IDBResponse'
+import { getPeople } from './functions'
+import { TPeople } from '@/types/TPeople'
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let data: any[] = []
 async function retrieveData() {
-  const data = await getData<TPeopleGridHeader[]>({
-    endpoint: 'people',
-  }).then((data) => {
-    if (data) return data
-    else return []
-  })
-  return data
+  try {
+    const response: IDBResponse = await getPeople()
+    if (response.status !== 200) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+    data = response.data as TPeople[]
+  } catch (error) {
+    console.error(error)
+  }
 }
 
 export default async function People() {
-  const dataValues: TPeopleGridHeader[] = await retrieveData()
+  await retrieveData()
 
   return (
     <center>
       <div className="m-10">
-        <DataTable columns={columns} data={dataValues} />
+        <DataTable columns={columns} data={data} />
       </div>
     </center>
   )

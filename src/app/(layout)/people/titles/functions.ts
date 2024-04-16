@@ -8,6 +8,7 @@ interface IPeopleTitlesResponse {
 }
 
 export async function getPeopleTitles(id?: number) {
+  const Conn = await getDatabaseConnection()
   const query = `
       SELECT
         id,
@@ -18,10 +19,8 @@ export async function getPeopleTitles(id?: number) {
 
   let data: IPeopleTitlesResponse[] = []
 
-  const Conn = await getDatabaseConnection()
-
   if (id) {
-    return Conn.query(query, id)
+    return await Conn.query(query, id)
       .then((value: [QueryResult, FieldPacket[]]) => {
         data = JSON.parse(JSON.stringify(value[0]))
       })
@@ -36,8 +35,7 @@ export async function getPeopleTitles(id?: number) {
     return Conn.query(query)
       .then((value: [QueryResult, FieldPacket[]]) => {
         data = JSON.parse(JSON.stringify(value[0]))
-      })
-      .then(() => {
+
         return { data, status: 200 }
       })
       .catch((error) => {

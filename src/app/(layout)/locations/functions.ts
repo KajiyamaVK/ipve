@@ -102,12 +102,15 @@ export async function deleteLocations(id: number) {
     WHERE id = ?
     `
     Conn.execute(query, [id]).catch((error) => {
-      console.error(`Error deleting locations: ${error}`)
-      return { error: 'Error deleting locations: ' + error.message, status: 500 }
+      console.error(`Erro interno. Favor entrar em contato com o suporte. \nError deleting locations: ${error}`)
+      return {
+        error: 'Erro interno. Favor entrar em contato com o suporte. \nError deleting locations: ' + error.message,
+        status: 500,
+      }
     })
     return { message: 'Local deletado com sucesso', status: 200 }
   } catch (error) {
-    console.error(`Error deleting locations: ${error}`)
-    return { error: 'Error deleting locations', status: 500 }
+    console.error(`Erro interno. Favor entrar em contato com o suporte. \nError deleting locations: ${error}`)
+    return { error: 'Erro interno. Favor entrar em contato com o suporte. \nError deleting locations', status: 500 }
   }
 }

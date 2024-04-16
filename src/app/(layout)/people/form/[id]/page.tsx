@@ -15,7 +15,6 @@ import { ChurchInfo } from './ChurchInfo'
 import { AccessControl } from './AccessControl'
 import { getEnv } from '@/envSchema'
 import FamilyInfo from './FamilyInfo'
-import { getData } from '@/utils/fetchData'
 import { format } from 'date-fns'
 import PageSkeleton from './pageSkeleton'
 import { Button } from '@/components/ui/button'
@@ -23,8 +22,9 @@ import { formsContext } from '@/contexts/formsContext'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { ImSpinner9 } from 'react-icons/im'
 import { Input } from '@/components/ui/input'
-import { generateRandomNumberWithDigits } from '@/utils/generateRandomNumber'
 import { TPeople, ZPeople } from './formSchema'
+import { getPeople } from '../../functions'
+import { IDBResponse } from '@/types/IDBResponse'
 
 export default function PeopleForm({ params }: { params: { id: number } }) {
   const toast = useToast()
@@ -46,14 +46,10 @@ export default function PeopleForm({ params }: { params: { id: number } }) {
     },
   })
   const { control } = form
+
   const hasFamilyValue: boolean = useWatch({
     control,
     name: 'hasFamilyInChurch',
-  })
-
-  const photoUrlValue = useWatch({
-    control,
-    name: 'photoUrl',
   })
 
   const [isLoading, setIsLoading] = useState(params.id > 0 ? true : false)
@@ -68,16 +64,20 @@ export default function PeopleForm({ params }: { params: { id: number } }) {
 
   useEffect(() => {
     async function getFormData() {
-      await getData<TPeople>({
-        endpoint: 'people',
-        id: params.id,
-      }).then((response) => {
-        const data = response
-        if (data) {
-          populatingFields(data)
+      try {
+        await getPeople(params.id).then((response) => {
+          const data: IDBResponse = response
+          if (data.data === undefined) {
+            console.error('data.data is undefined')
+            throw new Error('data.data is undefined')
+          }
+          const personData = data.data[0] as TPeople
+          populatingFields(personData)
           setIsLoading(false)
-        }
-      })
+        })
+      } catch (error) {
+        console.error(error)
+      }
     }
 
     if (params.id > 0) {
@@ -176,53 +176,6 @@ export default function PeopleForm({ params }: { params: { id: number } }) {
     form.setValue('obs', data.obs ?? '')
     form.setValue('relatives', data.relatives)
     form.setValue('gender', data.gender ?? '')
-  }
-
-  function storePersonPhoto(e: React.ChangeEvent<HTMLInputElement>): void {
-    let photo: File
-    if (e.target.files) {
-      photo = e.target.files[0]
-    } else {
-      throw new Error('Erro ao carregar a foto')
-    }
-
-    const fileName = `TMP${generateRandomNumberWithDigits(7)}_${new Date().getTime()}.png`
-
-    const formData = new FormData()
-
-    formData.append('photo', photo, fileName)
-
-    fetch(`/api/uploadFile`, {
-      method: 'POST',
-      body: formData,
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(response.statusText)
-        }
-        return response.json()
-      })
-      .then((data) => {
-        if (data.success) {
-          form.setValue('photoUrl', `${process.env.NEXT_PUBLIC_APP_URL}/images/users/${fileName}`)
-
-          toast.toast({
-            title: 'Sucesso!',
-            description: 'Foto salva com sucesso!',
-          })
-          form.setValue('photoUrl', fileName)
-        } else {
-          throw new Error(data.message)
-        }
-      })
-      .catch((err) => {
-        const message = err.message
-        toast.toast({
-          title: 'Erro!',
-          description: `Ocorreu um erro ao salvar a foto! Erro: ${message}`,
-          variant: 'destructive',
-        })
-      })
   }
 
   const {
@@ -339,7 +292,6 @@ export default function PeopleForm({ params }: { params: { id: number } }) {
                 <Button type="submit">Salvar</Button>
               </div>
               <div className="mb-5 ml-20 flex items-center gap-5">
-                {/* <ProfileAvatar file={selectedFile} control={form.control} /> */}
                 <FormField
                   control={form.control}
                   name="photoUrl"
@@ -349,7 +301,7 @@ export default function PeopleForm({ params }: { params: { id: number } }) {
                         <div className="my-auto mr-10 flex flex-col items-center">
                           <Avatar className="size-48 cursor-pointer border-4 border-secondary bg-white">
                             <AvatarImage
-                              src={photoUrlValue ? `/images/users/${photoUrlValue}` : '/images/system/avatar.png'}
+                              src={'/images/system/avatar.png'}
                               alt="Foto do usuário do sistema"
                               id="photo"
                               className="object-cover"
@@ -378,7 +330,6 @@ export default function PeopleForm({ params }: { params: { id: number } }) {
                               {...form.register('photoUrl')}
                               onChange={(e) => {
                                 onChange(e)
-                                storePersonPhoto(e)
                               }}
                             />
                           )}

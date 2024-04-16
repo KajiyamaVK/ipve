@@ -2,13 +2,14 @@
 
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { useToast } from '@/components/ui/use-toast'
-import { TMembersTitles } from '@/types/TMembersTitles'
-import { getData } from '@/utils/fetchData'
 import { Tag } from '@/components/ui/tag'
 import { ReactNode, useEffect, useMemo, useState } from 'react'
 import { Check, X } from '@phosphor-icons/react'
 import { UseFormReturn } from 'react-hook-form'
+import { getPeopleTitles } from '../../titles/functions'
+import { IDBResponse } from '@/types/IDBResponse'
+import { getPeopleRoles } from '../../roles/functions'
+import { Toast } from '@/components/ui/toast'
 
 function populatingSociety(): ReactNode {
   const societies = ['UPH', 'SAF', 'UMP', 'UPA', 'UCP']
@@ -39,10 +40,6 @@ export function ChurchInfo(form: UseFormReturn<any>) {
   const roles = useMemo(() => {
     const rolesIds: string[] = form.watch('rolesIds').split(';')
 
-    console.log(
-      'allRoles.filter',
-      allRoles.filter((role) => rolesIds.includes(role.id.toString())),
-    )
     return allRoles.filter((role) => rolesIds.includes(role.id.toString()))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form.watch('rolesIds'), allRoles])
@@ -65,69 +62,63 @@ export function ChurchInfo(form: UseFormReturn<any>) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [allRoles])
 
-  useEffect(() => {}, [roles])
-
-  const toast = useToast()
-
   useEffect(() => {
     async function getSTDTitlesData() {
-      await getData<TMembersTitles[]>({
-        endpoint: 'titles',
-      })
-        .then((data) => {
-          if (data && data.length > 0) {
-            setTitleSelectValues(
-              data.map((title) => {
-                if (title.id) {
-                  return (
-                    <SelectItem key={title.id} value={title.id.toString()} className="cursor-pointer ">
-                      {title.name}
-                    </SelectItem>
-                  )
-                } else {
-                  throw new Error('Erro ao carregar os cargos')
-                }
-              }),
-            )
+      try {
+        await getPeopleTitles().then((response) => {
+          const data: IDBResponse = response
+          if (data.data === undefined) {
+            console.error('data.data is undefined')
+            throw new Error('data.data is undefined')
+          }
+
+          setTitleSelectValues(
+            data.data.map((title) => {
+              if (title.id) {
+                return (
+                  <SelectItem key={title.id} value={title.id.toString()} className="cursor-pointer ">
+                    {title.name}
+                  </SelectItem>
+                )
+              } else {
+                throw new Error('Erro ao carregar os cargos')
+              }
+            }),
+          )
+
+          if (response.status !== 200) {
+            throw new Error(`HTTP error! status: ${response.status}`)
           }
         })
-        .catch((err) => {
-          console.error(err)
-          toast.toast({
-            title: 'Erro ao carregar os cargos',
-            description: 'Erro ao carregar os cargos',
-            variant: 'destructive',
-          })
+      } catch (error) {
+        console.error(error)
+        Toast({
+          title: 'Erro ao carregar os cargos',
+          variant: 'destructive',
+          content: 'Erro interno. Por favor, procure o suporte: ' + error,
         })
+      }
     }
 
     async function getSTDRolesData() {
-      const roles: IRoles[] = []
-      await getData<IRoles[]>({
-        endpoint: 'roles',
-      })
-        .then((data) => {
-          if (data && data.length > 0) {
-            data.map((role) => {
-              if (role.id) {
-                roles.push({ id: role.id, name: role.name, tailwindColor: role.tailwindColor })
-              } else {
-                throw new Error('Erro ao carregar as funções')
-              }
-            }),
-              setAllRoles(roles)
+      try {
+        await getPeopleRoles().then((response) => {
+          const data: IDBResponse = response
+          if (data.data === undefined) {
+            console.error('data.data is undefined')
+            throw new Error('data.data is undefined')
           }
-        })
 
-        .then(() => {})
-        .catch((err) => {
-          console.error(err)
-          toast.toast({
-            title: 'Erro ao carregar os cargos',
-            description: 'Erro ao carregar os cargos',
-            variant: 'destructive',
-          })
+          setAllRoles(data.data as IRoles[])
         })
+      } catch (error) {
+        console.error(error)
+        Toast({
+          title: 'Erro ao carregar as funções',
+          variant: 'destructive',
+          content: 'Erro interno. Por favor, procure o suporte',
+        })
+      }
     }
 
     getSTDTitlesData()

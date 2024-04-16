@@ -10,7 +10,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { DialogColorSelection, availableColors } from './DialogColorSelection'
 import { formsContext } from '@/contexts/formsContext'
 import { useToast } from '@/components/ui/use-toast'
-import { getData, saveData } from '@/utils/fetchData'
+import { getData } from '@/utils/fetchData'
 import { savePeopleRole, updatePeopleRole } from './functions'
 
 const DialogFormSchema = z.object({

@@ -12,7 +12,6 @@ interface IPeopleRolesResponse {
 
 export async function getPeopleRoles(id?: number) {
   const Conn = await getDatabaseConnection()
-  const conn = await Conn.getConnection()
 
   const query = `
       SELECT
@@ -27,7 +26,7 @@ export async function getPeopleRoles(id?: number) {
   let data: IPeopleRolesResponse[] = []
 
   if (id) {
-    return Conn.query(query, id)
+    return await Conn.query(query, id)
       .then((value: [QueryResult, FieldPacket[]]) => {
         data = JSON.parse(JSON.stringify(value[0]))
       })
@@ -42,10 +41,10 @@ export async function getPeopleRoles(id?: number) {
     return Conn.query(query)
       .then((value: [QueryResult, FieldPacket[]]) => {
         data = JSON.parse(JSON.stringify(value[0]))
-      })
-      .then(() => {
+
         return { data, status: 200 }
       })
+
       .catch((error) => {
         console.error(`Error fetching roles: ${error}`)
         return { message: 'Error fetching roles', status: 500 }

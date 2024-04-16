@@ -8,16 +8,16 @@ interface IPeopleResponse {
 }
 
 export async function getPeople(id?: number) {
+  const Conn = await getDatabaseConnection()
   const query = `
     SELECT 
-      people.id,
-      people.fullName,
-      people.titleIdFK,
-      peopleTitles.name as title,
-      people.dateOfBirth,
-      people.gender,
-      people.address,
-      people.complement,
+      people.id, 
+      people.fullName, 
+      people.titleIdFK, 
+      people.dateOfBirth, 
+      people.gender, 
+      people.address, 
+      people.complement, 
       people.city,
       people.suburb,
       people.uf,
@@ -37,10 +37,12 @@ export async function getPeople(id?: number) {
       people.isUser,
       people.addressNumber,
       people.hasFamilyInChurch,
-      COALESCE(
+      peopleTitles.name AS title,
+            COALESCE(
         JSON_ARRAYAGG(
           JSON_OBJECT(
-            'name', peopleRoles.name, 
+            'name',
+            peopleRoles.name, 
             'color', peopleRoles.tailwindColor
           )
         ), JSON_ARRAY()
@@ -53,7 +55,6 @@ export async function getPeople(id?: number) {
     GROUP BY people.id`
 
   let data: IPeopleResponse[] = []
-  const Conn = await getDatabaseConnection()
 
   if (id) {
     return Conn.query(query, id)
@@ -61,11 +62,11 @@ export async function getPeople(id?: number) {
         data = JSON.parse(JSON.stringify(value[0]))
       })
       .then(() => {
-        return Response.json(data[0], { status: 200 })
+        return { data, status: 200 }
       })
       .catch((error) => {
-        console.error(`Error fetching : ${error}`)
-        return Response.json({ message: 'Error fetching ' }, { status: 500 })
+        console.error(`Erro interno, por favor, entre em contato o suporte:  ${error}`)
+        return { message: 'Erro interno, por favor, entre em contato o suporte: ' + error, status: 500 }
       })
   } else {
     return Conn.query(query)
@@ -73,11 +74,11 @@ export async function getPeople(id?: number) {
         data = JSON.parse(JSON.stringify(value[0]))
       })
       .then(() => {
-        return new Response(JSON.stringify(data), { status: 200 })
+        return { data, status: 200 }
       })
       .catch((error) => {
-        console.error(`Error fetching : ${error}`)
-        return Response.json({ message: 'Error fetching ' }, { status: 500 })
+        console.error(`Erro interno, por favor, entre em contato o suporte: : ${error}`)
+        return { message: 'Erro interno, por favor, entre em contato o suporte: ' + error, status: 500 }
       })
   }
 }
@@ -126,10 +127,7 @@ export async function savePeople(
   if (!hasFamilyInChurch) dataMissingInBody.push('hasFamilyInChurch')
 
   if (dataMissingInBody.length > 0) {
-    return Response.json(
-      { message: `The following fields are missing in the body: ${dataMissingInBody.join(', ')}` },
-      { status: 400 },
-    )
+    return { message: `The following fields are missing in the body: ${dataMissingInBody.join(', ')}`, status: 400 }
   }
 
   const query = `
@@ -187,11 +185,11 @@ export async function savePeople(
     hasFamilyInChurch,
   ])
     .then(() => {
-      return Response.json({ message: 'People saved' }, { status: 201 })
+      return { message: 'People saved', status: 201 }
     })
     .catch((error) => {
       console.error(`Error saving People: ${error}`)
-      return Response.json({ message: 'Error saving ' }, { status: 500 })
+      return { message: 'Error saving ', status: 500 }
     })
 }
 
@@ -241,10 +239,7 @@ export async function updatePeople(
   if (!hasFamilyInChurch) dataMissingInBody.push('hasFamilyInChurch')
 
   if (dataMissingInBody.length > 0) {
-    return Response.json(
-      { message: `The following fields are missing in the body: ${dataMissingInBody.join(', ')}` },
-      { status: 400 },
-    )
+    return { message: `The following fields are missing in the body: ${dataMissingInBody.join(', ')}`, status: 400 }
   }
 
   const query = `
@@ -304,16 +299,16 @@ export async function updatePeople(
     id,
   ])
     .then(() => {
-      return Response.json({ message: 'Cadastro de pessoa efetuado com sucesso' }, { status: 200 })
+      return { message: 'Cadastro de pessoa efetuado com sucesso', status: 200 }
     })
     .catch((error) => {
       console.error(`Erro ao atualizar : ${error}`)
-      return Response.json({ message: 'Erro ao atualizar ' }, { status: 500 })
+      return { message: 'Erro ao atualizar ', status: 500 }
     })
 }
 
 export async function deletePeople(id: number) {
-  if (!id) return Response.json({ message: 'ID is required in the body' }, { status: 400 })
+  if (!id) return { message: 'ID is required in the body', status: 400 }
 
   const queryDeleteKinsRelations = `
       DELETE FROM kinsRelations
@@ -327,22 +322,67 @@ export async function deletePeople(id: number) {
       `
   const Conn = await getDatabaseConnection()
 
-  Conn.beginTransaction()
+  await Conn.query('START TRANSACTION')
 
   await Conn.query(queryDeleteKinsRelations, [id, id]).catch((error) => {
     console.error(`Error deleting : ${error}`)
-    Conn.rollback()
-    return Response.json({ message: 'Erro ao deletar o registro: ' + error }, { status: 500 })
+    Conn.query('ROLLBACK')
+    return { message: 'Erro ao deletar o registro: ' + error, status: 500 }
   })
 
   return await Conn.query(queryDeletePeople, id)
     .then(() => {
-      Conn.commit()
-      return Response.json({ message: 'Registro deletado com sucesso' }, { status: 200 })
+      Conn.query('COMMIT')
+      return { message: 'Registro deletado com sucesso', status: 200 }
     })
     .catch((error) => {
       console.error(`Error deleting : ${error}`)
-      Conn.rollback()
-      return Response.json({ message: 'Erro ao deletar o registro: ' + error }, { status: 500 })
+      Conn.query('ROLLBACK')
+      return { message: 'Erro ao deletar o registro: ' + error, status: 500 }
     })
+}
+
+interface IKinsRelationsResponse {
+  id: number
+  relationName: string
+}
+
+export async function getKinsRelationsLabels(id?: number) {
+  const Conn = await getDatabaseConnection()
+
+  const query = `
+      SELECT
+        id,
+        relationName
+      FROM stdKinsRelations
+      ${id ? `WHERE id = ?` : ''}
+      `
+
+  let data: IKinsRelationsResponse[] = []
+
+  if (id) {
+    return Conn.query(query, id)
+      .then((value: [QueryResult, FieldPacket[]]) => {
+        data = JSON.parse(JSON.stringify(value[0]))
+      })
+      .then(() => {
+        return new Response(JSON.stringify(data[0]), { status: 200 })
+      })
+      .catch((error) => {
+        console.error(`Error fetching kins relations: ${error}`)
+        return new Response('Error fetching kins relations', { status: 500 })
+      })
+  } else {
+    return Conn.query(query)
+      .then((value: [QueryResult, FieldPacket[]]) => {
+        data = JSON.parse(JSON.stringify(value[0]))
+      })
+      .then(() => {
+        return new Response(JSON.stringify(data), { status: 200 })
+      })
+      .catch((error) => {
+        console.error(`Error fetching kins relations: ${error}`)
+        return new Response('Error fetching kins relations', { status: 500 })
+      })
+  }
 }
