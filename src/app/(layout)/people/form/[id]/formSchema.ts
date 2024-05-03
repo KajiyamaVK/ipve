@@ -1,16 +1,20 @@
+import { ZPeopleRoles } from '@/types/TPeopleRoles'
 import { z } from 'zod'
 
-export const ZPeople = z.object({
+export const ZPeopleForm = z.object({
   id: z.number().optional(),
-  fullName: z.string({ required_error: 'Nome completo é um campo obrigatório' }).min(1).default(''),
-  titleIdFK: z.string({ required_error: 'Cargo é um campo obrigatório' }), // VK: O <select> do form não está aceitando number
-  rolesNames: z.string().optional(),
-  rolesIds: z.string().optional(),
-  dateOfBirth: z.string().optional(),
+  fullName: z
+    .string({ required_error: 'Nome completo é um campo obrigatório' })
+    .min(1, 'Nome completo é um campo obrigatório')
+    .default(''),
+  titleIdFK: z.number({ required_error: 'Cargo é um campo obrigatório' }).min(1, 'Cargo é um campo obrigatório'),
+  dateOfBirth: z.date().nullable(), // React-Hook-forms  doesn't accept date for the input value
   society: z.string().optional(),
-  gender: z.string({
-    required_error: 'Gênero é um campo obrigatório',
-  }),
+  gender: z
+    .string({
+      required_error: 'Gênero é um campo obrigatório',
+    })
+    .min(1, 'Gênero é um campo obrigatório'),
   address: z.string().optional(),
   addressNumber: z.string().optional(),
   ebdClassroom: z.string().optional(),
@@ -45,14 +49,17 @@ export const ZPeople = z.object({
   isMember: z.boolean().default(true),
   hasFamilyInChurch: z.boolean().default(false),
   obs: z.string().optional(),
+  roles: ZPeopleRoles.array(),
   relatives: z
     .array(
       z.object({
         idKinB: z.number(),
-        relation: z.string(),
+        relativeName: z.string(),
+        relationId: z.number(),
+        relationName: z.string(),
       }),
     )
     .optional(),
 })
 
-export type TPeople = z.infer<typeof ZPeople>
+export type TPeopleForm = z.infer<typeof ZPeopleForm>

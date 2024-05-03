@@ -2,7 +2,7 @@ import { DataTable } from '@/components/ui/data-table'
 import { columns } from './columns'
 import { DialogModalSkeleton } from './DialogModalSkeleton'
 import { DialogModal } from './DialogModal'
-import { TRoles } from '@/types/TRoles'
+import { TRoles } from '@/types/TPeopleRoles'
 import { IDBResponse } from '@/types/IDBResponse'
 import { getPeopleRoles } from './functions'
 

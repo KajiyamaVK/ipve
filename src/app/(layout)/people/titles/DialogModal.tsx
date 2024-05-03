@@ -10,7 +10,7 @@ import { useContext, useEffect, useState } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { formsContext } from '@/contexts/formsContext'
 import { useToast } from '@/components/ui/use-toast'
-import { TMembersTitles } from '@/types/TMembersTitles'
+import { TPeopleTitles } from '@/types/TPeopleTitles'
 import { savePeopleTitle, updatePeopleTitle } from './functions'
 
 const DialogFormSchema = z.object({
@@ -21,7 +21,7 @@ const DialogFormSchema = z.object({
     .min(1, 'Campo obrigatório'),
 })
 
-export function DialogModal({ data }: { data: TMembersTitles[] }) {
+export function DialogModal({ data }: { data: TPeopleTitles[] }) {
   const { register, formState, setValue, watch, handleSubmit } = useForm({
     resolver: zodResolver(DialogFormSchema),
   })

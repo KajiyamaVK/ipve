@@ -20,7 +20,6 @@ async function retrieveData() {
 
 export default async function People() {
   await retrieveData()
-
   return (
     <center>
       <div className="m-10">

@@ -1,14 +1,8 @@
 'use server'
 
+import { TPeopleRoles } from '@/types/TPeopleRoles'
 import { getDatabaseConnection } from '@/utils/database'
 import { FieldPacket, QueryResult } from 'mysql2'
-
-interface IPeopleRolesResponse {
-  id: number
-  name: string
-  description: string
-  tailwindColor: string
-}
 
 export async function getPeopleRoles(id?: number) {
   const Conn = await getDatabaseConnection()
@@ -23,7 +17,7 @@ export async function getPeopleRoles(id?: number) {
       ${id ? `WHERE id = ?` : ''}
       `
 
-  let data: IPeopleRolesResponse[] = []
+  let data: TPeopleRoles[] = []
 
   if (id) {
     return await Conn.query(query, id)
@@ -37,6 +31,9 @@ export async function getPeopleRoles(id?: number) {
         console.error(`Error fetching roles: ${error}`)
         return { message: 'Error fetching roles', status: 500 }
       })
+      .finally(() => {
+        Conn.end()
+      })
   } else {
     return Conn.query(query)
       .then((value: [QueryResult, FieldPacket[]]) => {
@@ -48,6 +45,9 @@ export async function getPeopleRoles(id?: number) {
       .catch((error) => {
         console.error(`Error fetching roles: ${error}`)
         return { message: 'Error fetching roles', status: 500 }
+      })
+      .finally(() => {
+        Conn.end()
       })
   }
 }
@@ -72,6 +72,9 @@ export async function savePeopleRole(roleName: string, description: string, tail
     .catch((error) => {
       console.error(`Error saving role: ${error}`)
       return { message: 'Error saving role', status: 500 }
+    })
+    .finally(() => {
+      Conn.end()
     })
 }
 
@@ -99,6 +102,9 @@ export async function updatePeopleRole(id: number, name: string, description: st
     .catch((error) => {
       console.error(`Error updating role: ${error}`)
       return { message: 'Error updating role', status: 500 }
+    })
+    .finally(() => {
+      Conn.end()
     })
 }
 
@@ -135,5 +141,8 @@ export async function deletePeopleRole(id: number) {
     .catch((error) => {
       console.error(`Error deleting role: ${error}`)
       return { message: 'Error updating role', status: 500 }
+    })
+    .finally(() => {
+      Conn.end()
     })
 }

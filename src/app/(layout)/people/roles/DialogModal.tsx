@@ -1,6 +1,6 @@
 'use client'
 import { z } from 'zod'
-import { TRoles } from '@/types/TRoles'
+import { TRoles } from '@/types/TPeopleRoles'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { useForm } from 'react-hook-form'
 import { Button } from '@/components/ui/button'

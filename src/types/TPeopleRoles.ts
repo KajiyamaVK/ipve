@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
-export const ZRoles = z.object({
-  id: z.number().nullable().optional(),
+export const ZPeopleRoles = z.object({
+  id: z.number(),
   name: z.string(),
   description: z.string().nullable().optional(),
   tailwindColor: z.string().min(1, 'Formato de HexColor inválido'),
@@ -9,4 +9,4 @@ export const ZRoles = z.object({
   updatedAt: z.string().optional(),
 })
 
-export type TRoles = z.infer<typeof ZRoles>
+export type TPeopleRoles = z.infer<typeof ZPeopleRoles>

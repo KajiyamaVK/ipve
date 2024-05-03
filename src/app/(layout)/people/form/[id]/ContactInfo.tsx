@@ -8,7 +8,7 @@ export function ContactInfo(form: any) {
     <div className="  mt-5 w-1/2 border border-gray-400 bg-white p-5">
       <h1 className="mb-5 text-left text-2xl font-bold">Contato</h1>
       {/* Início - Informações (Email e telefone) */}
-      <div className="flex gap-5 p-5">
+      <div className="flex flex-col gap-5 p-5">
         <FormField
           control={form.control}
           name="email"
@@ -41,7 +41,7 @@ export function ContactInfo(form: any) {
               control={form.control}
               name="phone1IsWhatsapp"
               render={({ field }) => (
-                <FormItem className="mt-1 flex flex-row items-center space-x-3 space-y-0 self-end">
+                <FormItem className="mt-1 flex flex-row items-center space-x-3 space-y-0 self-start">
                   <FormControl>
                     <Checkbox
                       checked={field.value}
@@ -73,10 +73,6 @@ export function ContactInfo(form: any) {
         </div>
       </div>
       {/* Fim - Informações (Email e telefone) */}
-
-      {/* Início - Cargo */}
-
-      {/* Fim - Cargo */}
     </div>
   )
 }

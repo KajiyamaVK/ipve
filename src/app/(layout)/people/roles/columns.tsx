@@ -1,10 +1,10 @@
 'use client'
 
-import { TRoles } from '@/types/TRoles'
+import { TPeopleRoles } from '@/types/TPeopleRoles'
 import { ColumnDef } from '@tanstack/react-table'
 import { SortedGridHeader } from '@/components/ui/sortedGridHeader'
 
-export const columns: ColumnDef<TRoles>[] = [
+export const columns: ColumnDef<TPeopleRoles>[] = [
   {
     accessorKey: 'id',
     header: ({ column }) => <SortedGridHeader column={column} label="ID" />,

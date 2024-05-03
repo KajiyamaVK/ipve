@@ -2,7 +2,7 @@
 
 import { ColumnDef } from '@tanstack/react-table'
 import { SortedGridHeader } from '@/components/ui/sortedGridHeader'
-import { TMembersTitles } from '@/types/TMembersTitles'
+import { TMembersTitles } from '@/types/TPeopleTitles'
 
 export const columns: ColumnDef<TMembersTitles>[] = [
   {

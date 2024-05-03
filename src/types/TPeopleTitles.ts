@@ -1,10 +1,10 @@
 import { z } from 'zod'
 
-export const ZMembersTitles = z.object({
+export const ZPeopleTitles = z.object({
   id: z.number().nullable().optional(),
   name: z.string(),
   createdAt: z.string().optional(),
   updatedAt: z.string().optional(),
 })
 
-export type TMembersTitles = z.infer<typeof ZMembersTitles>
+export type TPeopleTitles = z.infer<typeof ZPeopleTitles>

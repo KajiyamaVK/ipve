@@ -31,6 +31,9 @@ export async function getPeopleTitles(id?: number) {
         console.error(`Error fetching titles: ${error}`)
         return { message: 'Error fetching titles', status: 500 }
       })
+      .finally(() => {
+        Conn.end()
+      })
   } else {
     return Conn.query(query)
       .then((value: [QueryResult, FieldPacket[]]) => {
@@ -41,6 +44,9 @@ export async function getPeopleTitles(id?: number) {
       .catch((error) => {
         console.error(`Error fetching titles: ${error}`)
         return { message: 'Error fetching titles', status: 500 }
+      })
+      .finally(() => {
+        Conn.end()
       })
   }
 }
@@ -61,6 +67,9 @@ export async function savePeopleTitle(name: string) {
     .catch((error) => {
       console.error(`Error saving title: ${error}`)
       return { message: 'Error saving title', status: 500 }
+    })
+    .finally(() => {
+      Conn.end()
     })
 }
 
@@ -86,6 +95,9 @@ export async function updatePeopleTitle(id: number, name: string) {
     .catch((error) => {
       console.error(`Error updating title: ${error}`)
       return { message: 'Error updating title', status: 500 }
+    })
+    .finally(() => {
+      Conn.end()
     })
 }
 
@@ -122,5 +134,8 @@ export async function deletePeopleTitle(id: number) {
     .catch((error) => {
       console.error(`Error deleting title: ${error}`)
       return { message: 'Error updating title', status: 500 }
+    })
+    .finally(() => {
+      Conn.end()
     })
 }

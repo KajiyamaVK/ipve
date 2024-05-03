@@ -25,15 +25,16 @@ export const columns: ColumnDef<TPeopleGridHeader>[] = [
     accessorKey: 'roles',
     header: 'Funções',
     cell: ({ renderValue }) => {
-      const role = renderValue() as { name: string; color: string }[]
+      const roles = renderValue() as { id: number; name: string; tailwindColor: string }[]
 
       return (
         <div className="flex flex-wrap">
-          {role.map((r, index) => (
-            <div key={index} className={` m-1 rounded-lg  px-2 py-1 text-xs  text-white ${r.color}`}>
-              {r.name || '-'}
-            </div>
-          ))}
+          {roles &&
+            roles.map((role) => (
+              <div key={role.id} className={` m-1 rounded-lg  px-2 py-1 text-xs  text-white ${role.tailwindColor}`}>
+                {role.name}
+              </div>
+            ))}
         </div>
       )
     },

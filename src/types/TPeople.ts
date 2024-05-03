@@ -21,7 +21,7 @@ export const ZPeople = z.object({
   phone1: z.string().optional(),
   phone1IsWhatsapp: z.boolean().default(false),
   phone2: z.string().optional(),
-  photoUrl: z.instanceof(FileList).transform((value) => value.item(0)),
+  photoUrl: z.string().optional(),
   email: z.string().email().optional(),
   isActive: z.boolean().default(true),
   isUser: z.boolean().default(false),

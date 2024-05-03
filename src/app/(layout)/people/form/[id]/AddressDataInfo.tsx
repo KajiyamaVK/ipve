@@ -1,13 +1,14 @@
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { handleCepMask } from '@/utils/handleCepMask'
+import { formatCEP } from '@/utils/maskFunctions'
 import { KeyboardEvent } from 'react'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function AddressDataInfo(form: any) {
   function handleCepChanges(e: KeyboardEvent<HTMLInputElement>) {
     const { value } = e.currentTarget
-    const cep = handleCepMask(value, e)
+    //const cep = handleCepMask(value, e)
+    const cep = formatCEP(value)
     form.setValue('cep', cep)
   }
   return (

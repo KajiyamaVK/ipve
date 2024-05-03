@@ -1,393 +1,125 @@
-'use client'
-import { Controller, useForm, useWatch } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import { Textarea } from '@/components/ui/textarea'
-import { useContext, useEffect, useState } from 'react'
-import { useToast } from '@/components/ui/use-toast'
-import { useRouter } from 'next/navigation'
-import { ActiveControl } from './ActiveControl'
-import { BasicTopPersonalInfo } from './BasicTopPersonalInfo'
-import { AddressDataInfo } from './AddressDataInfo'
-import { ContactInfo } from './ContactInfo'
-import { ChurchInfo } from './ChurchInfo'
-import { AccessControl } from './AccessControl'
-import { getEnv } from '@/envSchema'
-import FamilyInfo from './FamilyInfo'
-import { format } from 'date-fns'
-import PageSkeleton from './pageSkeleton'
-import { Button } from '@/components/ui/button'
-import { formsContext } from '@/contexts/formsContext'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { ImSpinner9 } from 'react-icons/im'
-import { Input } from '@/components/ui/input'
-import { TPeople, ZPeople } from './formSchema'
+import { TPeopleForm } from './formSchema'
 import { getPeople } from '../../functions'
 import { IDBResponse } from '@/types/IDBResponse'
+import { MainContainer } from './MainContainer'
+import { getPeopleTitles } from '../../titles/functions'
+import { TPeopleTitles } from '@/types/TPeopleTitles'
+import { getPeopleRoles } from '../../roles/functions'
+import { TPeopleRoles } from '@/types/TPeopleRoles'
+import { IKinsRelationsSTDTitles, getKinsRelationsSTD } from './functions'
 
-export default function PeopleForm({ params }: { params: { id: number } }) {
-  const toast = useToast()
-  const router = useRouter()
+async function getAllPeople() {
+  const personData: TPeopleForm[] = [] // Assign a default value
 
-  // eslint-disable-next-line
-  const { formMode, setFormMode } = useContext(formsContext)
+  try {
+    await getPeople().then((response) => {
+      const data: IDBResponse = response
 
-  const form = useForm<z.infer<typeof ZPeople>>({
-    resolver: zodResolver(ZPeople),
-    defaultValues: {
-      fullName: '',
-      photoUrl: '',
-      isActive: true,
-      isMember: false,
-      isUser: false,
-      hasFamilyInChurch: false,
-      relatives: [],
-    },
-  })
-  const { control } = form
-
-  const hasFamilyValue: boolean = useWatch({
-    control,
-    name: 'hasFamilyInChurch',
-  })
-
-  const [isLoading, setIsLoading] = useState(params.id > 0 ? true : false)
-  const [isButtonLoading, setIsButtonLoading] = useState(false)
-
-  // interface IRelative {
-  //   id: number
-  //   fullName: string
-  //   kinshipId: string
-  //   relativeTitle: string
-  // }
-
-  useEffect(() => {
-    async function getFormData() {
-      try {
-        await getPeople(params.id).then((response) => {
-          const data: IDBResponse = response
-          if (data.data === undefined) {
-            console.error('data.data is undefined')
-            throw new Error('data.data is undefined')
-          }
-          const personData = data.data[0] as TPeople
-          populatingFields(personData)
-          setIsLoading(false)
-        })
-      } catch (error) {
-        console.error(error)
+      if (data.data === undefined) {
+        console.error('data.data is undefined')
+        throw new Error('data.data is undefined')
       }
-    }
 
-    if (params.id > 0) {
-      getFormData()
-    }
+      if (response.status !== 200) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [params.id])
-
-  useEffect(() => {
-    const cep = form.watch('cep') || '' // form.watch can be undefined. That's why we are creating this
-    if (cep.length === 9) {
-      handleCepSearch(cep)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [form.watch('cep')])
-
-  useEffect(() => {
-    const phone1 = form.watch('phone1')
-    if (phone1) {
-      form.setValue('phone1', handlePhoneMask(phone1))
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [form.watch('phone1')])
-
-  useEffect(() => {
-    const phone2 = form.watch('phone2')
-    if (phone2) {
-      form.setValue('phone2', handlePhoneMask(phone2))
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [form.watch('phone2')])
-
-  function handlePhoneMask(value: string | undefined) {
-    if (!value) return ''
-    if (value.length === 15) return value
-
-    //Remove todas as letras e caracteres especiais que não sejam parenteses, espaços e traços
-    value = value.replace(/[^0-9()-\s]/g, '')
-
-    if (value.length < 15) {
-      return value
-        .replace(/[\D]/g, '')
-        .replace(/(\d{2})(\d)/, '($1) $2')
-        .replace(/(\d{4})(\d)/, '$1-$2')
-        .replace(/(-\d{4})(\d+?)/, '$1')
-    }
-    // Deixa no formato (99) 99999-9999
-    if (value.length === 15) {
-      return value
-        .replace(/[\D]/g, '')
-        .replace(/(\d{2})(\d)/, '($1) $2')
-        .replace(/(\d{5})(\d)/, '$1-$2')
-    }
+      personData.push(...(data.data as TPeopleForm[]))
+    })
+  } catch (error) {
+    console.error(error)
   }
 
-  function setRelatives(
-    value: {
-      idKinB: number
-      relation: string
-    }[],
-  ) {
-    form.setValue('relatives', value)
+  return personData
+}
+
+async function getSTDTitlesData(): Promise<TPeopleTitles[]> {
+  const result: TPeopleTitles[] = []
+  try {
+    await getPeopleTitles().then((response) => {
+      const data: IDBResponse = response
+
+      if (data.data === undefined) {
+        console.error('data.data is undefined')
+        throw new Error('data.data is undefined')
+      }
+
+      if (response.status !== 200) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+      result.push(...(data.data as TPeopleTitles[]))
+    })
+  } catch (error) {
+    console.error(error)
+    throw new Error('Erro ao carregar os cargos: ' + error)
   }
+  return result
+}
 
-  function handleBack() {
-    setIsButtonLoading(true)
-    router.push('/people')
+async function getSTDRolesData(): Promise<TPeopleRoles[]> {
+  const result: TPeopleRoles[] = []
+  try {
+    await getPeopleRoles().then((response) => {
+      const data: IDBResponse = response
+      if (data.data === undefined) {
+        console.error('data.data is undefined')
+        throw new Error('data.data is undefined')
+      }
+      if (response.status !== 200) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+
+      result.push(...(data.data as TPeopleRoles[]))
+    })
+  } catch (error) {
+    console.error(error)
+    throw new Error('Erro ao carregar as funções: ' + error)
   }
+  return result
+}
 
-  function populatingFields(data: TPeople) {
-    form.setValue('id', data.id)
-    form.setValue('photoUrl', data.photoUrl ?? '')
-    form.setValue('fullName', data.fullName ?? '')
-    form.setValue('titleIdFK', (data.titleIdFK ?? '').toString())
-    form.setValue('dateOfBirth', data.dateOfBirth ? format(new Date(data.dateOfBirth), 'yyyy-MM-dd') : '')
-    form.setValue('rolesIds', data.rolesIds ?? '')
-    form.setValue('rolesNames', data.rolesNames ?? '')
-    form.setValue('ebdClassroom', data.ebdClassroom ?? '')
-    form.setValue('society', data.society ?? '')
-    form.setValue('address', data.address ?? '')
-    form.setValue('addressNumber', data.addressNumber ?? '')
-    form.setValue('complement', data.complement ?? '')
-    form.setValue('city', data.city ?? '')
-    form.setValue('suburb', data.suburb ?? '')
-    form.setValue('uf', data.uf ?? '')
-    form.setValue('cep', data.cep ?? '')
-    form.setValue('phone1', data.phone1 ?? '')
-    form.setValue('phone1IsWhatsapp', !!data.phone1IsWhatsapp)
-    form.setValue('phone2', data.phone2 ?? '')
-    form.setValue('email', data.email ?? '')
-    form.setValue('isActive', !!data.isActive)
-    form.setValue('isMember', !!data.isMember)
-    form.setValue('isUser', !!data.isUser)
-    form.setValue('hasFamilyInChurch', !!data.hasFamilyInChurch)
-    form.setValue('obs', data.obs ?? '')
-    form.setValue('relatives', data.relatives)
-    form.setValue('gender', data.gender ?? '')
+async function getSTDKinsLabels(): Promise<IKinsRelationsSTDTitles[]> {
+  const result: IKinsRelationsSTDTitles[] = []
+  try {
+    await getKinsRelationsSTD().then((response) => {
+      const data: IDBResponse = response
+      if (data.data === undefined) {
+        console.error('data.data is undefined')
+        throw new Error('data.data is undefined')
+      }
+      if (response.status !== 200) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+
+      result.push(...(data.data as IKinsRelationsSTDTitles[]))
+    })
+  } catch (error) {
+    console.error(error)
+    throw new Error('Erro ao carregar os parentescos: ' + error)
   }
+  return result
+}
 
-  const {
-    formState: { errors },
-  } = form
+export default async function PeopleForm({ params }: { params: { id: string } }) {
+  const [allTitles, allRoles, allKinsLabels, allPeople] = await Promise.all([
+    getSTDTitlesData(),
+    getSTDRolesData(),
+    getSTDKinsLabels(),
+    getAllPeople(),
+  ])
 
-  function handleFormErrors() {
-    console.error('errors', errors)
-  }
+  let data: TPeopleForm = {} as TPeopleForm
 
-  async function saveData(values: z.infer<typeof ZPeople>) {
-    const relatives = form.watch('relatives') ?? []
-    if (hasFamilyValue && relatives.length === 0) {
-      toast.toast({
-        title: 'Erro!',
-        description:
-          'É necessário informar ao menos um familiar caso a opção "Possui família na igreja" esteja marcada.',
-        variant: 'destructive',
-      })
-      return
-    }
-    if (formMode === 'add') {
-      await fetch(`${getEnv().NEXT_PUBLIC_API_URL}/people`, {
-        method: 'POST',
-        body: JSON.stringify(values),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error(response.statusText)
-          }
-        })
-        .then(() => {
-          toast.toast({
-            title: 'Sucesso!',
-            variant: 'default',
-            description: 'Dados salvos com sucesso!',
-          })
+  data = allPeople.filter((person) => person.id?.toString() === params.id)[0]
 
-          router.push('/people')
-        })
-        .catch((err) => {
-          toast.toast({
-            title: 'Erro!',
-            description: `Ocorreu um erro ao criar os dados! Erro: ${err.message}`,
-            variant: 'destructive',
-          })
-        })
-    } else if (formMode === 'edit') {
-      await fetch(`${getEnv().NEXT_PUBLIC_API_URL}/people/${params.id}`, {
-        method: 'PUT',
-        body: JSON.stringify(values),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-        .then((response) => {
-          if (!response.ok) {
-            return response.json().then((err) => {
-              throw err
-            })
-          }
-        })
-        .then(() => {
-          toast.toast({
-            title: 'Sucesso!',
-            variant: 'default',
-            description: 'Dados salvos com sucesso!',
-          })
-
-          router.push('/people')
-        })
-        .catch((err) => {
-          const message = err.message
-          toast.toast({
-            title: 'Erro!',
-            description: `Ocorreu um erro ao editar os dados! Erro: ${message}`,
-            variant: 'destructive',
-          })
-
-          console.error(message)
-        })
-    }
-  }
-
-  async function handleCepSearch(cep: string) {
-    const cepWithoutMask = cep.replace('-', '')
-    const response = await fetch(`https://viacep.com.br/ws/${cepWithoutMask}/json/`)
-    const data = await response.json()
-
-    form.setValue('address', data.logradouro)
-    form.setValue('suburb', data.bairro)
-    form.setValue('city', data.localidade)
-    form.setValue('uf', data.uf)
-  }
-  if (isLoading) {
-    return <PageSkeleton />
-  } else
-    return (
-      <Form {...form}>
-        <div className="flex justify-center">
-          <form
-            className="my-10 max-w-[1500px] px-36 xl:px-10"
-            onSubmit={form.handleSubmit(saveData, handleFormErrors)}
-          >
-            <div>
-              <div className="flex justify-end gap-5">
-                <Button isLoading={isButtonLoading} onClick={handleBack}>
-                  Voltar
-                </Button>
-
-                <Button type="submit">Salvar</Button>
-              </div>
-              <div className="mb-5 ml-20 flex items-center gap-5">
-                <FormField
-                  control={form.control}
-                  name="photoUrl"
-                  render={() => (
-                    <FormItem className="min-w-36 text-left md:min-w-52">
-                      <FormLabel htmlFor="photoUrl">
-                        <div className="my-auto mr-10 flex flex-col items-center">
-                          <Avatar className="size-48 cursor-pointer border-4 border-secondary bg-white">
-                            <AvatarImage
-                              src={'/images/system/avatar.png'}
-                              alt="Foto do usuário do sistema"
-                              id="photo"
-                              className="object-cover"
-                            />
-                            <AvatarFallback>
-                              <div className="animate-spin text-primary">
-                                <ImSpinner9 />
-                              </div>
-                            </AvatarFallback>
-                          </Avatar>
-                          <center>
-                            <p className="mx-auto">Clique para editar</p>
-                          </center>
-                        </div>
-                      </FormLabel>
-                      <FormControl>
-                        <Controller
-                          control={form.control}
-                          name="photoUrl"
-                          render={({ field: { onChange } }) => (
-                            <Input
-                              type="file"
-                              accept="image/*"
-                              id="photoUrl"
-                              className="hidden"
-                              {...form.register('photoUrl')}
-                              onChange={(e) => {
-                                onChange(e)
-                              }}
-                            />
-                          )}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <div className="flex flex-col gap-5">
-                  <ActiveControl {...form.control} />
-                  <div className="flex flex-wrap gap-5">
-                    <BasicTopPersonalInfo {...form.control} />
-                  </div>
-                </div>
-              </div>
-              <ChurchInfo {...form} />
-
-              <AddressDataInfo {...form} />
-
-              <div className="flex flex-1 gap-5 ">
-                <ContactInfo {...form} />
-
-                <FormField
-                  control={form.control}
-                  name="obs"
-                  render={({ field }) => (
-                    <FormItem className="mt-5 flex-1 bg-white text-left">
-                      <FormLabel>Observação</FormLabel>
-                      <FormControl>
-                        <Textarea
-                          placeholder="Caso necessário algum detalhe adicional, informe aqui."
-                          className="h-48 resize-none "
-                          {...field}
-                          value={field.value || ''}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <div className="flex flex-col gap-10">
-                <div className="mt-5 flex gap-10 ">
-                  <AccessControl {...form} />
-                </div>
-                <div>
-                  <FamilyInfo
-                    hasFamilyValue={hasFamilyValue as boolean}
-                    setRelatives={setRelatives}
-                    relatives={form.watch('relatives')}
-                    personId={form.watch('id') || 0}
-                  />
-                </div>
-              </div>
-            </div>
-          </form>
-        </div>
-      </Form>
-    )
+  return (
+    <MainContainer
+      data={data}
+      allTitles={allTitles}
+      allRoles={allRoles}
+      allKinsLabels={allKinsLabels}
+      allPeople={allPeople}
+      mode={params.id === '0' ? 'create' : 'edit'}
+    />
+  )
 }

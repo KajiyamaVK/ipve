@@ -87,7 +87,9 @@ export async function updateLocations(locationName: string, locationDesc: string
       SET locationName = ?, locationDesc = ?
       WHERE id = ?
     `
-    await Conn.execute(query, [locationName, locationDesc, id])
+    await Conn.execute(query, [locationName, locationDesc, id]).finally(() => {
+      Conn.end()
+    })
   } catch (error) {
     console.error(`Error updating locations: ${error}`)
   }
@@ -101,13 +103,17 @@ export async function deleteLocations(id: number) {
     DELETE FROM locations
     WHERE id = ?
     `
-    Conn.execute(query, [id]).catch((error) => {
-      console.error(`Erro interno. Favor entrar em contato com o suporte. \nError deleting locations: ${error}`)
-      return {
-        error: 'Erro interno. Favor entrar em contato com o suporte. \nError deleting locations: ' + error.message,
-        status: 500,
-      }
-    })
+    Conn.execute(query, [id])
+      .catch((error) => {
+        console.error(`Erro interno. Favor entrar em contato com o suporte. \nError deleting locations: ${error}`)
+        return {
+          error: 'Erro interno. Favor entrar em contato com o suporte. \nError deleting locations: ' + error.message,
+          status: 500,
+        }
+      })
+      .finally(() => {
+        Conn.end()
+      })
     return { message: 'Local deletado com sucesso', status: 200 }
   } catch (error) {
     console.error(`Erro interno. Favor entrar em contato com o suporte. \nError deleting locations: ${error}`)
