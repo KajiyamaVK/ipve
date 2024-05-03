@@ -59,6 +59,9 @@ dependencies:
   date-fns:
     specifier: ^3.3.0
     version: 3.3.0
+  ipve:
+    specifier: 'link:'
+    version: 'link:'
   js-cookie:
     specifier: ^3.0.5
     version: 3.0.5
@@ -151,6 +154,9 @@ devDependencies:
   git-commit-msg-linter:
     specifier: ^5.0.6
     version: 5.0.6
+  husky:
+    specifier: ^9.0.11
+    version: 9.0.11
   postcss:
     specifier: ^8.4.33
     version: 8.4.33
@@ -2875,6 +2881,12 @@ packages:
     dependencies:
       react-is: 16.13.1
     dev: false
+
+  /husky@9.0.11:
+    resolution: {integrity: sha512-AB6lFlbwwyIqMdHYhwPe+kjOC3Oc5P3nThEoW/AaO2BX3vJDjWPFxYLxokUZOo6RNX20He3AaT8sESs9NJcmEw==}
+    engines: {node: '>=18'}
+    hasBin: true
+    dev: true
 
   /iconv-lite@0.6.3:
     resolution: {integrity: sha512-4fCk79wshMdzMp2rH06qWrJE4iolqLhCUH+OiuIgU++RB0+94NlDL81atO7GX55uUKueo0txHNtvEyI6D7WdMw==}

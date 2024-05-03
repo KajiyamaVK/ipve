@@ -1,26 +1,40 @@
-//import bgImg from '/pubnlic/images/system/bg_events_form.jpg'
-//import { z } from 'zod'
-//import { useForm } from 'react-hook-form'
-//import { start } from 'repl'
-
-// const schema = z.object({
-//   requesterName: z.string({ required_error: 'Selecione seu nome na lista' }),
-//   eventName: z.string({ required_error: 'Diga o nome do evento' }),
-//   society: z.string({ required_error: 'Selecione a sociedade' }),
-//   isMultipleDays: z.boolean(),
-//   startDate: z.date(),
-//   endDate: z.date(),
-//   startTime: z.string(),
-//   endTime: z.string(),
-//   description: z.string().optional(),
-//   location: z.string().optional(),
-//   backupTeam: z.string().optional(),
-// })
+'use client'
+import React, { useState, useEffect } from 'react'
 
 export default function EventsForm() {
+  const [imageUrl, setImageUrl] = useState('')
+  const [textColor, setTextColor] = useState('') // eslint-disable-line 
+
+  useEffect(() => {
+    const handleResize = () => {
+      const screenWidth = window.innerWidth
+      const baseUrl = '/images/system/'
+
+      // Decida qual URL usar com base no tamanho da tela
+      if (screenWidth < 768) {
+        setImageUrl(`${baseUrl}events_form_bg_mobile.jpg`)
+        setTextColor('text-gray-900')
+      } else {
+        setImageUrl(`${baseUrl}bg_events_form.jpg`)
+        setTextColor('text-gray-100')
+      }
+    }
+
+    // Chame a função handleResize quando a janela for redimensionada
+    window.addEventListener('resize', handleResize)
+
+    // Chame handleResize quando o componente for montado
+    handleResize()
+
+    // Remova o listener de redimensionamento quando o componente for desmontado
+    return () => {
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [])
+
   return (
-    <div>
-      <form action=""></form>
-    </div>
+    <form className="text-gray-100">
+      <div style={{ backgroundImage: `url(${imageUrl})` }} className={`min-h-screen bg-cover bg-no-repeat`}></div>
+    </form>
   )
 }
