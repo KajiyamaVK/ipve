@@ -8,7 +8,6 @@ import { Check, X } from '@phosphor-icons/react'
 import { UseFormReturn } from 'react-hook-form'
 import { TPeopleRoles } from '@/types/TPeopleRoles'
 import { TPeopleTitles } from '@/types/TPeopleTitles'
-import { isValid } from 'date-fns'
 
 function populatingSociety(): ReactNode {
   const societies = ['UPH', 'SAF', 'UMP', 'UPA', 'UCP']

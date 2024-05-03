@@ -1,6 +1,6 @@
 'use client'
 import { z } from 'zod'
-import { TRoles } from '@/types/TPeopleRoles'
+import { TPeopleRoles } from '@/types/TPeopleRoles'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { useForm } from 'react-hook-form'
 import { Button } from '@/components/ui/button'
@@ -56,7 +56,7 @@ export function DialogModal() {
   useEffect(() => {
     if (isSkeletonOpen && formMode === 'edit') {
       ;(async () => {
-        await getData<TRoles>({
+        await getData<TPeopleRoles>({
           endpoint: 'roles',
           id: currentSelectedItem,
         })

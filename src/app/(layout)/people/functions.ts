@@ -130,7 +130,6 @@ export async function savePeople({
   isMember,
   hasFamilyInChurch,
   isUser,
-  relatives, // eslint-disable-line @typescript-eslint/no-unused-vars
   roles,
 }: TPeopleForm) {
   const dataMissingInBody: string[] = []
@@ -171,20 +170,21 @@ export async function savePeople({
       hasFamilyInChurch)
     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
 
-  const insertPeopleRelationsQuery = `
-      INSERT INTO kinsRelations (idKinA, idKinB, relation)
-      VALUES (?, ?, ?)
-      `
+  // Eu vou comentar esses trechos porque não sei se deveriam estar sendo usados
+  // const insertPeopleRelationsQuery = `
+  //     INSERT INTO kinsRelations (idKinA, idKinB, relation)
+  //     VALUES (?, ?, ?)
+  //     `
 
-  const insertPeopleRolesQuery = `
-      INSERT INTO peopleRolesData (peopleIdFK, roleIdFK)
-      VALUES (?, ?)
-      `
+  // const insertPeopleRolesQuery = `
+  //     INSERT INTO peopleRolesData (peopleIdFK, roleIdFK)
+  //     VALUES (?, ?)
+  //     `
 
-  let errorStatus: boolean = false
-  let errorMessages: string = ''
+  // let errorStatus: boolean = false
+  // let errorMessages: string = ''
 
-  const insertedId: number = 0
+  //const insertedId: number = 0
 
   const Conn = await getDatabaseConnection()
 
@@ -213,14 +213,12 @@ export async function savePeople({
     isUser,
     addressNumber,
     hasFamilyInChurch,
-  ])
-    .then((value) => {})
-    .catch((error) => {
-      console.error(`Erro ao criar o cadastro: ${error}`)
-      Conn.query('ROLLBACK')
-      errorStatus = true
-      errorMessages = error
-    })
+  ]).catch((error) => {
+    console.error(`Erro ao criar o cadastro: ${error}`)
+    Conn.query('ROLLBACK')
+    //errorStatus = true
+    //errorMessages = error
+  })
 
   // if (!errorStatus && relatives) {
   //

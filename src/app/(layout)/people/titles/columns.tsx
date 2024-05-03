@@ -2,9 +2,9 @@
 
 import { ColumnDef } from '@tanstack/react-table'
 import { SortedGridHeader } from '@/components/ui/sortedGridHeader'
-import { TMembersTitles } from '@/types/TPeopleTitles'
+import { TPeopleTitles } from '@/types/TPeopleTitles'
 
-export const columns: ColumnDef<TMembersTitles>[] = [
+export const columns: ColumnDef<TPeopleTitles>[] = [
   {
     accessorKey: 'id',
     header: ({ column }) => <SortedGridHeader column={column} label="ID" />,
